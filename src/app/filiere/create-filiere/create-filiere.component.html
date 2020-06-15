@@ -1,0 +1,95 @@
+<div class="container mt-4 col-md-8 offset-md-2 col-sm-8 offse-sm-2">
+  <div class="card">
+    <div class="card-header">
+      <h3>Ajout de filiere</h3>
+    </div>
+    <div class="card-body">
+      <form #addFiliereForm="ngForm" (ngSubmit)="onSubmit(addFiliereForm.value)">
+        <div class="form-group">
+          <label>Libellé de la filière</label>
+          <input type="text" name="libeleFiliere" [(ngModel)]="libeleFiliere" class="form-control" ngModel>
+        </div>
+        <div class="form-group">
+          <label>Nombre de semestres</label>
+          <input type="number" [(ngModel)]="semestresCount" name="semestreCount"
+                 class="form-control" (change)="onSemstreCountChange()" [min]="1" ngModel>
+        </div>
+        <div class="form-group">
+          <label>Elements</label>
+          <span class="elements-select"></span>
+        </div>
+        <div class="form-group">
+          <label>Nom de module</label>
+          <input type="text" [(ngModel)]="currentModule" name="module" class="form-control">
+
+        </div>
+
+        <div class="form-group">
+          <button type="button" class="btn btn-success" (click)="onAddModule()">add Module</button>
+
+        </div>
+
+        <fieldset class="p-3 border">
+          <legend><small>Modules</small></legend>
+          <div class="row" cdkDropListGroup>
+          <div class="col-6">
+            <div class="card">
+              <div class="card-header">
+                <h5>Semestres</h5>
+              </div>
+              <div class="card-body">
+                <ng-container *ngFor="let semestre of semestresList">
+                  <div class="card mb-1">
+                    <div class="card-header"><span>Semestre{{semestre.id}}</span></div>
+                    <div class="card-body " [cdkDropListData]="semestre.modules" cdkDropList
+                         [id]="'semestre'+semestre.id"
+                         style="min-height: 50px" (cdkDropListDropped)="dropOnSemestre($event,semestre)"
+                    >
+
+                      <ng-container *ngFor="let mod of semestre['modules']">
+                        <button class="list-group-item list-group-item-action"
+                                cdkDrag
+                                type="button"
+                                [id]="mod.id"
+                                (dblclick)="this.onDeleteModule(semestre['modules'],mod.id)">{{mod.libelle}}</button>
+                      </ng-container>
+
+
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div id="modules-list" class="list-group col-6">
+            <div class="card">
+              <div class="card-header">
+                <h5>Modules</h5>
+              </div>
+              <div class="card-body" cdkDropList [cdkDropListData]="modules" id="modules-list-cdk"
+                   (cdkDropListDropped)="dropOnModule($event)">
+                <ng-container *ngFor="let mod of modules">
+                  <button class="list-group-item list-group-item-action"
+                          cdkDrag
+                          type="button"
+                          [id]="mod.id"
+                          (dblclick)="this.onDeleteModule(modules,mod.id)">{{mod.libelle}}</button>
+                </ng-container>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        </fieldset>
+        <hr>
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit">Créer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+
+
+</script>

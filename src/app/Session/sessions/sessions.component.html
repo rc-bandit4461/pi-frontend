@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+          <h2>Sessions</h2>
+    </div>
+    <div class="card-body" >
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <td>ID</td>
+          <td>Filiere</td>
+          <td>Annee</td>
+          <td>created_at</td>
+          <td>updated_at</td>
+          <td>Action</td>
+        </tr>
+        </thead>
+        <tbody *ngIf="sessionsList?.length > 0">
+                  <tr *ngFor="let session of sessionsList">
+                    <td>{{session.id}}</td>
+                    <td>{{session.filiere.libelle}}</td>
+                    <td>{{session.annee}}</td>
+                    <td>{{session.created_at}}</td>
+                    <td>{{session.updated_at}}</td>
+                    <td>Actions</td>
+                  </tr>
+        </tbody>
+        <tbody *ngIf="sessionsList?.length == 0">
+            <tr><td colspan="6">Aucune session</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

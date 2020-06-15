@@ -1,0 +1,81 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+
+        <h3 class="col-sm-6 col-xs-12">Elements</h3>
+
+
+        <div class="col-sm-6 col-xs-12 m-0">
+
+          <form #searchElement="ngForm" id="search-form" class="float-right row ml-1"
+                (ngSubmit)="onSearch(searchElement.value)">
+
+            <input type="text" class="form-control d-inline-block col-7" name="libelle" ngModel>
+            <button type="submit" class="btn btn-primary col-4 ml-1" form="search-form">Search</button>
+
+          </form>
+          <button class="btn btn-info  float-right mr-1" (click)="onAdd()">Ajouter</button>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="card-body" *ngIf="elementsList.length > 0">
+      <table class="table table-hover">
+        <thead class="bg-light">
+        <tr>
+          <td>id</td>
+          <td>libelle</td>
+          <td>Action</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let  element of elementsList">
+          <td>{{element.id}}</td>
+          <td>{{element.libelle}}</td>
+          <td>
+            <button class="btn btn-danger" (click)="onDelete(element)">Supprimer</button>
+            <button class="btn btn-info" (click)="onModify(element)">Modifier</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <ul *ngIf="pagesArray.length>0; " class="nav nav-pills">
+        <li *ngFor="let p of pagesArray" class="nav-item mr-1 ">
+          <a (click)="onPageClick(p)" class="nav-link btn" [ngClass]="p == currentPage ? ' disabled active':''"
+          >{{p + 1}}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body" *ngIf="elementsList.length == 0">
+      La liste est vide.
+    </div>
+  </div>
+
+
+</div>
+<div id="element-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addElementForm="ngForm" id="element-form" (ngSubmit)="onSubmit(addElementForm.value)">
+          <div class="form-group">
+            <label>Libelle</label>
+            <input type="text" name="libelle" [value]="currentElement.libelle" class="form-control" ngModel>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" form="element-form">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
