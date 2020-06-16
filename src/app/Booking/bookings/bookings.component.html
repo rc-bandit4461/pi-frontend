@@ -1,0 +1,89 @@
+<div class="container">
+  <button
+    class="btn btn-success"
+    routerLink="/admin/newBooking"
+    style="float: right;"
+  >
+    Add Booking
+  </button>
+  <h1>Room Booking System</h1>
+
+  <form>
+    <h2>
+      <br />
+
+      <input
+        type="date"
+        class="form-control col-4"
+        style="float: right;"
+        [(ngModel)]="date"
+        name="date"
+      />
+      <br />
+    </h2>
+  </form>
+  <br /><br />
+  <h3 class="mt-5" *ngIf="!bookings">
+    There are no meetings currently scheduled for this date.
+  </h3>
+
+  <div class="row row-striped" *ngFor="let b of bookings | filter: date">
+    <div class="col-2 text-right">
+      <h1 class="display-4">
+        <span class="badge badge-secondary">{{ b.displayDay }}</span>
+      </h1>
+      <h2>{{ b.displayMonth }}</h2>
+    </div>
+    <div class="col-10">
+      <h3 class="text-uppercase">
+        <strong
+          ><span>{{ b.title }}</span></strong
+        >
+      </h3>
+      <ul class="list-inline">
+        <li class="list-inline-item">
+          <i class="fa fa-calendar-o" aria-hidden="true"></i
+          ><span> {{ b.displayDayOfWeek }}</span>
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-clock-o" aria-hidden="true"></i
+          ><span> {{ b.startTime }}</span
+          ><span> - </span><span>{{ b.endTime }}</span>
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-location-arrow" aria-hidden="true"></i
+          ><span> {{ b.room.name }}</span>
+        </li>
+      </ul>
+      <div class="row">
+        <div class="col-6">
+          <p class="mb-0">
+            Booked by :
+            <span style="text-transform: uppercase;"
+              ><b>{{ b.user.nom | uppercase }} {{ b.user.prenom }}</b></span
+            >
+          </p>
+          <!-- <p>
+            Participants:
+            <span th:text="${booking.getRoom().getSeats()}">participants</span>
+          </p> -->
+        </div>
+        <div class="col-6">
+          <button
+            class="btn btn-warning"
+            [routerLink]="['/admin/editBooking', b.id]"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-danger"
+            style="margin-left: 10px;"
+            (click)="onDeleteBoonking(b.id)"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

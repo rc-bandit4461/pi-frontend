@@ -72,13 +72,13 @@ body {
 }
 
 .select-pure__selected-label {
-  align-items: 'center';
+  align-items: "center";
   background: #5e6264;
   border-radius: 4px;
   color: #fff;
   cursor: initial;
   display: inline-flex;
-  justify-content: 'center';
+  justify-content: "center";
   margin: 5px 10px 5px 0;
   padding: 3px 7px;
 }
@@ -122,6 +122,24 @@ body {
   display: none;
 }
 
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.row-striped:nth-of-type(odd) {
+  background-color: #efefef;
+  border-left: 4px #000000 solid;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.row-striped:nth-of-type(even) {
+  background-color: #ffffff;
+  border-left: 4px #efefef solid;
+}
+
+.row-striped {
+  padding: 15px 0;
+}
