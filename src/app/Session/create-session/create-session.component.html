@@ -16,11 +16,15 @@
               </select>
             </div>
             <div class="form-group">
+              <label>Annee</label>
+              <input type="number" max="2030" min="2000" name="annee" [(ngModel)]="toCreateSession.annee" ngModel
+                     class="form-control">
+            </div>
+            <div class="form-group">
               <div class="row">
                 <div class="col-10">
                   Etudiants
                   <input class="form-control" type="text" name="searchCin" [(ngModel)]="searchCin" ngModel>
-
                 </div>
                 <div class="col-2">
                   <button type="button" (click)="onSearchCin($event)" class="btn btn-primary">
@@ -32,6 +36,7 @@
                 </div>
               </div>
             </div>
+
             <fieldset class="border p-3">
               <legend>Etudiants</legend>
               <div>

@@ -11,12 +11,16 @@ import { CreateElementComponent } from './element/create-element/create-element.
 import { CreateFiliereComponent } from './filiere/create-filiere/create-filiere.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { EditFiliereComponent } from './filiere/edit-filiere/edit-filiere.component';
-import { CreateSessionComponent } from './Session/create-session/create-session.component';
-import { EditSessionComponent } from './Session/edit-session/edit-session.component';
-import { SessionsComponent } from './Session/sessions/sessions.component';
+import { CreateSessionComponent } from './session/create-session/create-session.component';
+import { EditSessionComponent } from './session/edit-session/edit-session.component';
+import { SessionsComponent } from './session/sessions/sessions.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
+import { SessionActionsComponent } from './session/session-actions/session-actions.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatInputModule} from '@angular/material/input';
+import { SessionExamsComponent } from './session/session-exams/session-exams.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,9 @@ import {MatListModule} from '@angular/material/list';
     EditFiliereComponent,
     CreateSessionComponent,
     EditSessionComponent,
-    SessionsComponent
+    SessionsComponent,
+    SessionActionsComponent,
+    SessionExamsComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +45,8 @@ import {MatListModule} from '@angular/material/list';
     BrowserAnimationsModule,
     MatIconModule,
     MatListModule,
+    MatSlideToggleModule,
+    MatInputModule,
 
 
   ],

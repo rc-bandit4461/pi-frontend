@@ -45,6 +45,14 @@ export class CreateSessionComponent implements OnInit {
   }
 
   onSubmit(value: any, selected: MatListOption[]) {
+    console.log(this.currentStudents);
+    let selectedStudents = [];
+    selected.forEach(selectedItem => {
+      selectedStudents.push(selectedItem['value']);
+    })
+    console.log(selectedStudents);
+    console.log(this.toCreateSession);
+    this.toCreateSession['etudiants'] = selectedStudents;
       if(selected.length == 0 ){
         this.common.toastMessage('Erreur','Inserer au moins un etudiant');
         return;

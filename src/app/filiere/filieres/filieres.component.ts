@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
-import {Filiere} from '../../entities/entities';
+import {Diplome, Filiere} from '../../entities/entities';
 import {Router} from '@angular/router';
 import {toBase64String} from '@angular/compiler/src/output/source_map';
 
@@ -13,6 +13,8 @@ import {toBase64String} from '@angular/compiler/src/output/source_map';
 export class FilieresComponent implements OnInit {
   filieresList: Filiere[];
   pagesArray: any;
+  isLoaded: boolean = false;
+  isError: boolean = false;
   currentPage: Boolean;
 
   constructor(private httpClient: HttpClient, private common: CommonService, private router: Router) {
@@ -22,18 +24,20 @@ export class FilieresComponent implements OnInit {
     this.getList();
   }
 
-  getList() {
-    this.httpClient.get<Filiere>(this.common.url + '/filieres').subscribe(
-      data => {
-        this.filieresList = data['_embedded'].filieres;
-      },
-      error => {
-        this.common.toastMessage('Error', 'Erreur lors de l\'importation des filieres');
-        console.log(error);
-      }, () => {
-        console.log('fetching filieres completed');
-      }
-    );
+  async getList() {
+    try {
+      let data = await this.httpClient.get<Filiere>(this.common.url + '/filieres').toPromise();
+    this.filieresList = data['_embedded'].filieres;
+    for (const filiere of this.filieresList) {
+      filiere.diplome = <Diplome>  await this.httpClient.get(filiere._links['diplome']['href']).toPromise();
+    }
+    this.isLoaded = true;
+    }catch (e) {
+      this.isError = true;
+    this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+
+    }
+
   }
 
   onDelete(filiere: Filiere) {

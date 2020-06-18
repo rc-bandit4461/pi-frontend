@@ -4,9 +4,11 @@ import {ElementsComponent} from './element/elements/elements.component';
 import {FilieresComponent} from './filiere/filieres/filieres.component';
 import {CreateFiliereComponent} from './filiere/create-filiere/create-filiere.component';
 import {EditFiliereComponent} from './filiere/edit-filiere/edit-filiere.component';
-import {SessionsComponent} from './Session/sessions/sessions.component';
-import {CreateSessionComponent} from './Session/create-session/create-session.component';
-import {EditSessionComponent} from './Session/edit-session/edit-session.component';
+import {SessionsComponent} from './session/sessions/sessions.component';
+import {CreateSessionComponent} from './session/create-session/create-session.component';
+import {EditSessionComponent} from './session/edit-session/edit-session.component';
+import {SessionActionsComponent} from './session/session-actions/session-actions.component';
+import {SessionExamsComponent} from './session/session-exams/session-exams.component';
 
 
 const routes: Routes = [
@@ -37,6 +39,14 @@ const routes: Routes = [
   {
     path:'admin/sessions/edit/:url',
     component:EditSessionComponent
+  },
+    {
+    path:'admin/sessions/:id',
+    component:SessionActionsComponent
+  },
+  {
+    path:'admin/sessions/:id/examens',
+    component:SessionExamsComponent
   },
 ];
 

@@ -294,6 +294,7 @@ export class EditFiliereComponent implements OnInit {
       return;
     }
     //IL faut Verifier qu'il ya au moins un module dans chaqye semestre
+    this.filiere['nbr_semestres'] = this.semestresCount;
     this.filiere['libelle'] = this.libelleFiliere;
     this.filiere['semestreFilieres'] = [];
     console.log(this.filiere);

@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <div class="card">
+    <ng-container *ngIf="isLoaded">
+      <div class="card-header">
+        <H2><span>Examens</span> de la session {{filiere.libelle}}: {{session.annee}}</H2>
+      </div>
+      <div class="card-body" >
+        <table class="table table-hover table-responsive-sm">
+          <thead>
+          <tr>
+            <th>Examen</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Facteur</th>
+            <th>Module</th>
+            <th>Element</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="examensList.length > 0">
+          <tr *ngFor="let examen of examensList">
+            <td>{{examen.id}}</td>
+            <td>{{examen.description}}</td>
+            <td>{{!examen.is_ratt ? 'Normale' : 'Rattrappage'}}</td>
+            <td>{{examen.facteur}}</td>
+            <td>{{examen['module'].libelle}}</td>
+            <td>{{examen.element.libelle}}</td>
+            <td>
+              <button class="btn btn-danger" (click)="onDeleteExam(examen)">Supprimer</button>
+              <button class="btn btn-primary">Modifier</button>
+            </td>
+          </tr>
+          </tbody>
+          <tbody *ngIf="examensList.length == 0">
+                <tr>
+                  <td colspan="7" class="text-center">La liste est vide.</td>
+                </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</div>
