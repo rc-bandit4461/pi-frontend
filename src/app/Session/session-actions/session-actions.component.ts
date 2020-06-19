@@ -210,6 +210,9 @@ export class SessionActionsComponent implements OnInit {
         if (etudiant['selectedAttestation']) {
           etudiants.push(etudiant);
         }
+        if(etudiants.length == 0){
+          this.common.toastMessage('Info','Choisir au moins un étudiant de la liste.');return;
+        }
       }
       let data = await this.attestationService.generateAS(this.session, etudiants, fileReader.result);
       // let blob: Blob;
