@@ -24,7 +24,7 @@
           <td>{{session.updatedAt | date:'medium'}}</td>
           <td><button class="btn btn-danger mr-1" (click)="onDeleteSession(session)">delete</button> <button
             class="btn btn-info">Edit
-          </button></td>
+          </button><a [routerLink]="'/admin/sessions/' + session.id" class="btn btn-primary mr-1">Actions</a></td>
         </tr>
         </tbody>
         <tbody>
