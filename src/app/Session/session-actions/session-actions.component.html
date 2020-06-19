@@ -29,14 +29,56 @@
           <a [routerLink]="'/admin/sessions/' + session.id + '/examens'" class="btn btn-info">Examens</a>
         </div>
         <div class="col-12">
-          <h4>Etudiants inscris</h4>
-          <ul>
-            <li *ngFor="let etudiant of etudiantsList">
-              <a href="#" (click)="onClickEtudiant(etudiant)">{{etudiant.prenom }} {{etudiant.nom}}</a>
-            </li>
-          </ul>
+          <div class="card">
+            <div class="card-header">Liste des etudiants</div>
+            <div class="card-body">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Nom</th>
+                  <th>Prénom</th>
+                  <th>Date de naissance</th>
+                  <th>Ville de naissance</th>
+                  <th>Etat</th>
+                  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let etudiant of etudiantsList">
+                  <td>{{etudiant.id}}</td>
+                  <td>{{etudiant.nom}}</td>
+                  <td>{{etudiant.prenom}}</td>
+                  <td>{{etudiant.date_naissance}}</td>
+                  <td>{{etudiant.ville_naissance}}</td>
+                  <td>{{etudiant['etudiantSession'].is_dropped ? 'Abondonné' : 'Enrollé'}}</td>
+                  <td>
+                    <mat-slide-toggle [disabled]="etudiant['is_dropped']"
+                                      [checked]="etudiant['selectedAttestation']"
+                                      (change)="onChangeToggleAttestation($event,etudiant)"
+                    >
+                    </mat-slide-toggle>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
+        <div class="col-12">
+          Attestations:
+          <div class="row">
+            <div class="col-6">
+              <label id="lbl">Fichier</label>
+              <input type='file' class="form-" (change)="fileChanged($event)">
+            </div>
+            <div class="col-6">
+              <button class="btn btn-primary" (click)="GenerateCertificates()">Generer attestations</button>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div>
@@ -98,10 +140,12 @@
                   <td class="p-1">
                     <input type="number" [max]="20" [min]="0" class="form-control d-block"
                            [(ngModel)]="etudiant['note']"
-                           [ngModelOptions]="{standalone: true}">
+                           [ngModelOptions]="{standalone: true}" [disabled]="etudiant['etudiantSession']['is_dropped']">
                   </td>
                   <td>
-                    <mat-slide-toggle [checked]="etudiant['selected']" [(ngModel)]="etudiant['selected']"
+                    <mat-slide-toggle [disabled]="etudiant['etudiantSession']['is_dropped']"
+                                      [checked]="etudiant['selected']"
+                                      [(ngModel)]="etudiant['selected']"
                                       [ngModelOptions]="{standalone: true}">
                     </mat-slide-toggle>
                   </td>

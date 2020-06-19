@@ -34,7 +34,6 @@
               "node_modules/select-pure/dist/bundle.min.js",
               "node_modules/docxtemplater/build/docxtemplater.min.js",
               "node_modules/pizzip/dist/pizzip.min.js"
-
             ]
           },
           "configurations": {

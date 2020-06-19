@@ -53,6 +53,7 @@ export class Session extends Entity {
   public filiere: Filiere = null;
   public _links: Links;
   public done: boolean;
+  annee_courante: number;
 
 }
 
@@ -112,6 +113,12 @@ export class Links extends Entity {
 export class Etudiant extends Entity {
   public id: number;
   public cin: string;
+  public date_naissance: Date;
+  public ville_naissance: string;
+  public cne:string ;
+  public infos:string ;
+  public email:string ;
+  public sexe:string ;
   public nom: string;
   public prenom: string;
   public password: string;

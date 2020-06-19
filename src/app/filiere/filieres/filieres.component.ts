@@ -27,33 +27,39 @@ export class FilieresComponent implements OnInit {
   async getList() {
     try {
       let data = await this.httpClient.get<Filiere>(this.common.url + '/filieres').toPromise();
-    this.filieresList = data['_embedded'].filieres;
-    for (const filiere of this.filieresList) {
-      filiere.diplome = <Diplome>  await this.httpClient.get(filiere._links['diplome']['href']).toPromise();
-    }
-    this.isLoaded = true;
-    }catch (e) {
+      this.filieresList = data['_embedded'].filieres;
+      for (const filiere of this.filieresList) {
+        filiere.diplome = <Diplome> await this.httpClient.get(filiere._links['diplome']['href']).toPromise();
+      }
+      this.isLoaded = true;
+    } catch (e) {
       this.isError = true;
-    this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
 
     }
 
   }
 
-  onDelete(filiere: Filiere) {
+  async onDelete(filiere: Filiere) {
     if (!confirm('Etes vous sure de vouloir supprimer ')) {
       return;
     }
-    console.log('deletion of ');
-    console.log(filiere);
-    this.httpClient.delete(this.common.url + '/filieres/' + filiere.id).subscribe(value => {
+    try {
+      let data = await this.httpClient.get(filiere._links['sessions']['href']).toPromise();
+      if (data['_embedded']['sessions'].length > 0) {
+        this.common.toastMessage('Erreur', 'Cette filiere est liée à des sessions.');
+        return;
+      }
+      await this.httpClient.delete(this.common.url + '/filieres/' + filiere.id).toPromise();
       this.common.toastMessage('Success', 'Suppression réussite.');
       this.getList();
 
-    }, error => {
-      this.common.toastMessage('Error', 'Une erreur s\'est produite lors de l\'opération de suppresison');
+    } catch (e) {
 
-    });
+      this.common.toastMessage('Error', 'Une erreur s\'est produite lors de l\'opération de suppresison');
+    }
+
+
   }
 
   onEdit(filiere: Filiere) {
