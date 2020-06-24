@@ -39,12 +39,10 @@ export class SessionActionsComponent implements OnInit {
     is_ratt: false,
     facteur: 1,
   };
-  activateDownload = false;
-  clickedEtudiant: Etudiant;
   public isAllDataGathered: boolean = false;
   public noteEtudiants: NoteEtudiant[];
   public file: any;
-  fileUrl: any;
+  isError: Boolean = false;
 
   constructor(private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
 
@@ -76,10 +74,12 @@ export class SessionActionsComponent implements OnInit {
         }
         this.isLoaded = true;
       }, error => {
+        this.isError = true;
         console.log(error);
-      this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+        this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
       });
     } catch (e) {
+        this.isError = true;
       this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
       console.log(e);
     }
@@ -162,26 +162,18 @@ export class SessionActionsComponent implements OnInit {
     this.httpClient.post(this.common.url + '/saveExamen', this.examDetail).subscribe(value1 => {
       console.log('Examen crée');
       this.common.toastMessage('Success', 'Examen crée');
+      $('#session-add-exam').slideDown().modal('hide');
     }, error => {
 
       this.common.toastMessage('Erreur', 'Erreur s\'est survenue lors de lenregistrement');
       console.log(error);
     });
-
-
-  }
-
-  async onClickEtudiant(etudiant: Etudiant) {
-    this.clickedEtudiant = etudiant;
-
-
   }
 
   fileChanged($event) {
     this.file = $event.target.files[0];
 
   }
-
 
   onChangeToggleAttestation($event: MatSlideToggleChange, etudiant: Etudiant) {
     etudiant['selectedAttestation'] = $event.checked;
@@ -201,31 +193,36 @@ export class SessionActionsComponent implements OnInit {
       return;
 
     }
-      try{
-         let fileReader = new FileReader();
-    fileReader.onload = async (e) => {
-      console.log(fileReader.result);
-      let etudiants: Etudiant[] = [];
-      for (const etudiant of this.etudiantsList) {
-        if (etudiant['selectedAttestation']) {
-          etudiants.push(etudiant);
+    try {
+      let fileReader = new FileReader();
+      fileReader.onload = async (e) => {
+        console.log(fileReader.result);
+        let etudiants: Etudiant[] = [];
+        for (const etudiant of this.etudiantsList) {
+          if (etudiant['selectedAttestation']) {
+            etudiants.push(etudiant);
+          }
         }
-      }
-        if(etudiants.length == 0){
-          this.common.toastMessage('Info','Choisir au moins un étudiant de la liste.');return;
+        if (etudiants.length == 0) {
+          this.common.toastMessage('Info', 'Choisir au moins un étudiant de la liste.');
+          return;
         }
-      let data = await this.attestationService.generateAS(this.session, etudiants, fileReader.result);
-      // let blob: Blob;
-      // blob = new Blob([data], {type: 'application/octet-stream'});
-      //
-      // this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-      // this.activateDownload = true;
-    };
-    fileReader.readAsBinaryString(this.file);
-      }catch (e) {
-        console.log(e);
-        this.common.toastMessage('Erreur','Une erreur est survenue lors de génération du document');
-      }
+        let data = await this.attestationService.generateAS(this.session, etudiants, fileReader.result);
+      };
+      fileReader.readAsBinaryString(this.file);
+    } catch (e) {
+      console.log(e);
+      this.common.toastMessage('Erreur', 'Une erreur est survenue lors de génération du document');
+    }
 
+  }
+
+  onAddExamChangeCheckAllStudents($event: MatSlideToggleChange) {
+    console.log($event);
+      for(let etudiant of this.etudiantsList){
+          if(!etudiant['etudiantSession']['is_dropped'])
+          etudiant['selected'] = $event.checked;
+        }
+    // $('#add-exam-table').DataTable().data();
   }
 }

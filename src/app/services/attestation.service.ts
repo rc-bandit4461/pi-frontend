@@ -86,6 +86,41 @@ export class AttestationService {
   }
 
 
+  async generateDocument(data, content) {
+    var PizZip = require('pizzip');
+    var Docxtemplater = require('docxtemplater');
+    var FileSaver = require('file-saver');
+    // var fs = require('fs');
+
+//Load the docx file as a binary
+
+    var zip = new PizZip(content);
+    try {
+      this.doc = new Docxtemplater(zip);
+    } catch (error) {
+      // Catch compilation errors (errors caused by the compilation of the template : misplaced tags)
+      this.errorHandler(error);
+    }
+
+
+//set the templateVariables
+    this.doc.setData(data);
+
+    try {
+      // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+      this.doc.render();
+    } catch (error) {
+      // Catch rendering errors (errors relating to the rendering of the template : angularParser throws an error)
+      this.errorHandler(error);
+    }
+
+    var out = this.doc.getZip().generate({
+      type: 'blob',
+      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    }); //Output the document using Data-URI
+    FileSaver.saveAs(out, 'output.docx');
+
+  }
 
 
 }

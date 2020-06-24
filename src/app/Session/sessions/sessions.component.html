@@ -4,7 +4,7 @@
       <h2>Sessions</h2>
     </div>
     <div class="card-body" *ngIf="isLoaded">
-      <table class="table table-hover">
+      <table datatable class="table table-hover">
         <thead>
         <tr>
           <td>ID</td>
@@ -22,13 +22,18 @@
           <td>{{session.annee}}</td>
           <td>{{session.createdAt| date:'medium'}}</td>
           <td>{{session.updatedAt | date:'medium'}}</td>
-          <td><button class="btn btn-danger mr-1" (click)="onDeleteSession(session)">delete</button> <button
-            class="btn btn-info">Edit
-          </button><a [routerLink]="'/admin/sessions/' + session.id" class="btn btn-primary mr-1">Actions</a></td>
+          <td>
+            <button class="btn btn-danger mr-1" (click)="onDeleteSession(session)">delete</button>
+            <button [routerLink]="'/admin/sessions/' + session.id + '/edit'"
+              class="btn btn-info">Edit
+            </button>
+            <a [routerLink]="'/admin/sessions/' + session.id" class="btn btn-primary mr-1">Actions</a></td>
         </tr>
         </tbody>
         <tbody>
-          <tr><td colspan="6" class="text-center" *ngIf="sessionsList?.length == 0">La liste est vide</td></tr>
+        <tr>
+          <td colspan="6" class="text-center" *ngIf="sessionsList?.length == 0">La liste est vide</td>
+        </tr>
         </tbody>
 
       </table>

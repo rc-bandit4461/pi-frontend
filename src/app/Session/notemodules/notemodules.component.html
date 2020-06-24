@@ -1,0 +1,119 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card" *ngIf="!isLoaded">
+        <div class="card-header">
+          Notes de module
+        </div>
+        <div class="card-body">
+              <span *ngIf="isError">
+                Une erreur s'est arrivé lors de chargement des données
+              </span>
+          <span *ngIf="!isLoaded">
+              Chargement en cours...
+          </span>
+        </div>
+      </div>
+      <div class="card" *ngIf="isLoaded">
+        <div class="card-header">
+          <h3>Note de module:    {{module.libelle}}</h3>
+        </div>
+        <div class="card-body">
+          <table class="table dataTable table-hover table-responsive-sm" id="notemodule-table">
+            <thead>
+            <tr>
+              <th>Etudiant</th>
+              <th>Etat</th>
+              <th>Element</th>
+              <th>Note Normale</th>
+              <th>Note Ratt</th>
+              <th>Note Deliberation</th>
+              <th>Consistence</th>
+              <th>#</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let etudiant of etudiantsList" (load)="onLoadTable($event)">
+              <tr *ngFor="let noteElementModule of etudiant.noteModule.noteElementModules;let i = index;"
+                  [ngClass]="{'table-danger':etudiant['is_dropped']}">
+                <td>{{etudiant.nom + ' ' + etudiant.prenom}}</td>
+                <td class="align-middle"
+                >{{etudiant['is_dropped'] ? 'Parti' : 'Enrollé'}}</td>
+
+                <td>{{noteElementModule.element.libelle}}</td>
+                <td>{{noteElementModule.noteNormale}}</td>
+                <td>{{noteElementModule.noteRatt}}</td>
+                <td>{{noteElementModule.noteDeliberation}}</td>
+                <td
+                  [ngClass]="{'text-success':noteElementModule.is_consistent,'text-danger':!noteElementModule.is_consistent}">{{noteElementModule.is_consistent ? 'Oui' : 'Non'}}</td>
+                <td>
+                  <button class="btn btn-warning btn-sm" (click)="onConsistNoteElementModule(noteElementModule)">Consist
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>{{etudiant.nom + ' ' + etudiant.prenom}}</td>
+                <td class="align-middle"
+                >{{etudiant['is_dropped'] ? 'Parti' : 'Enrollé'}}</td>
+                <td class="font-weight-bold">Résultat</td>
+                <td>
+                  {{etudiant.noteModule.noteNormale}}
+                </td>
+                <td>
+                  {{etudiant.noteModule.noteDeliberation}}
+
+                </td>
+                <td>
+                  {{etudiant.noteModule.noteDeliberation}}
+
+                </td>
+                <td
+                  [ngClass]="{'text-success':etudiant.noteModule.is_consistent,'text-danger':!etudiant.noteModule.is_consistent}">{{etudiant.noteModule.is_consistent ? 'Oui' : 'Non'}}</td>
+                <td>
+                  <button class="btn btn-warning btn-sm" (click)="onConsisteNoteModule(etudiant.noteModule)">Consist
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+            <tbody *ngIf="false">
+            <ng-container *ngFor="let etudiant of etudiantsList">
+              <tr *ngFor="let noteElementModule of etudiant.noteModule.noteElementModules;let i = index;"
+                  [ngClass]="{'table-danger':etudiant['is_dropped']}">
+                <td *ngIf="i == 0" class="align-middle" [rowSpan]="module.elements.length + 1">{{etudiant.nom}}
+                  {{etudiant.prenom}}</td>
+                <td *ngIf="i == 0" class="align-middle"
+                    [rowSpan]="module.elements.length + 1">{{etudiant['is_dropped'] ? 'Parti' : 'Enrollé'}}</td>
+
+                <td>{{noteElementModule.element.libelle}}</td>
+                <td>{{noteElementModule.noteNormale}}</td>
+                <td>{{noteElementModule.noteRatt}}</td>
+                <td>{{noteElementModule.noteDeliberation}}</td>
+                <!--                <td class="align-middle">-->
+                <!--                 -->
+                <!--                </td>-->
+              </tr>
+              <tr>
+                <td class="font-weight-bold">Résultat</td>
+                <td>
+                  {{etudiant.noteModule.noteNormale}}
+                </td>
+                <td>
+                  {{etudiant.noteModule.noteDeliberation}}
+
+                </td>
+                <td>
+                  {{etudiant.noteModule.noteDeliberation}}
+
+                </td>
+                <!--                <td></td>-->
+              </tr>
+            </ng-container>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

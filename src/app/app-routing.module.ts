@@ -9,6 +9,10 @@ import {CreateSessionComponent} from './session/create-session/create-session.co
 import {EditSessionComponent} from './session/edit-session/edit-session.component';
 import {SessionActionsComponent} from './session/session-actions/session-actions.component';
 import {SessionExamsComponent} from './session/session-exams/session-exams.component';
+import {EditExamenComponent} from './session/edit-examen/edit-examen.component';
+import {NotemoduleEditComponent} from './session/notemodule-edit/notemodule-edit.component';
+import {NotemodulesComponent} from './session/notemodules/notemodules.component';
+import {SemestreComponent} from './sessions/semestre/semestre.component';
 
 
 const routes: Routes = [
@@ -37,7 +41,7 @@ const routes: Routes = [
     component:CreateSessionComponent
   },
   {
-    path:'admin/sessions/edit/:url',
+    path:'admin/sessions/:id/edit',
     component:EditSessionComponent
   },
     {
@@ -45,9 +49,27 @@ const routes: Routes = [
     component:SessionActionsComponent
   },
   {
+    path:'admin/sessions/:idSession/modules/:idModule/edit',
+    component:NotemoduleEditComponent
+  },
+    {
+    path:'admin/sessions/:idSession/modules/:idModule/view',
+    component:NotemodulesComponent
+  },
+  {
+    path:'admin/sessions/:idSession/semestres/:idSemestre',
+    component:SemestreComponent
+  },
+  {
     path:'admin/sessions/:id/examens',
     component:SessionExamsComponent
   },
+  {
+    path:'admin/examens/:id/edit',
+    component:EditExamenComponent
+  },
+
+
 ];
 
 @NgModule({

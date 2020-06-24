@@ -3,7 +3,8 @@
     <div class="card-header" *ngIf="isLoaded">
       {{session.id}} | {{filiere.libelle}} | {{session.annee}}
     </div>
-    <div class="card-header" *ngIf="!isLoaded">Cette session est inexistante</div>
+    <div class="card-header" *ngIf="!isLoaded && isError">Une erreur s'est parvenue lors du chargement</div>
+    <div class="card-header" *ngIf="!isLoaded !isError">Chargment...</div>
   </div>
   <div class="card-body" *ngIf="isLoaded">
     <div class="row">
@@ -17,9 +18,19 @@
           <div class="card-body">
             <div *ngFor="let semestre of session.semestreFilieres">
               <span>Semestre {{semestre.numero}}</span>
+              <span><a [routerLink]="'/admin/sessions/' + session.id + '/semestres/' + semestre.id">Details</a></span>
               <div class="list-group">
-                <a *ngFor="let mod of semestre.modules" [routerLink]="'/admin/modules/' + mod.id"
-                   class="list-group-item">{{mod.libelle}}</a>
+                <ng-container *ngFor="let mod of semestre.modules">
+                  <div class="list-group-item">
+
+                    <a
+                      [routerLink]="'/admin/sessions/'+session.id +'/modules/' +mod.id + '/view'">{{mod.libelle}}</a>
+                    |<a
+                    [routerLink]="'/admin/sessions/'+session.id +'/modules/' +mod.id + '/edit'">Note
+                    Elements</a>
+                  </div>
+
+                </ng-container>
               </div>
             </div>
           </div>
@@ -32,7 +43,7 @@
           <div class="card">
             <div class="card-header">Liste des etudiants</div>
             <div class="card-body">
-              <table class="table table-hover">
+              <table datatable class="table table-hover">
                 <thead>
                 <tr>
                   <th>Id</th>
@@ -126,32 +137,40 @@
                      class="form-control">
             </div>
             <div class="form-group">
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <td>Etudiant</td>
-                  <td>Note</td>
-                  <td>Concerné</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let etudiant of etudiantsList">
-                  <td>{{etudiant.nom}} {{etudiant.prenom}}</td>
-                  <td class="p-1">
-                    <input type="number" [max]="20" [min]="0" class="form-control d-block"
-                           [(ngModel)]="etudiant['note']"
-                           [ngModelOptions]="{standalone: true}" [disabled]="etudiant['etudiantSession']['is_dropped']">
-                  </td>
-                  <td>
-                    <mat-slide-toggle [disabled]="etudiant['etudiantSession']['is_dropped']"
-                                      [checked]="etudiant['selected']"
-                                      [(ngModel)]="etudiant['selected']"
-                                      [ngModelOptions]="{standalone: true}">
-                    </mat-slide-toggle>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+              <fieldset class="border p-2">
+                <legend>Etudiants concernés</legend>
+                <table id="add-exam-table" class="table table-hover table-hover hover">
+                  <thead>
+                  <tr>
+                    <td>Etudiant</td>
+                    <td>Note</td>
+                    <td class="text-center">
+                      <mat-slide-toggle
+                        (change)="onAddExamChangeCheckAllStudents($event)"></mat-slide-toggle>
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let etudiant of etudiantsList">
+                    <td>{{etudiant.nom}} {{etudiant.prenom}}</td>
+                    <td class="p-1">
+                      <input type="number" [max]="20" [min]="0" class="form-control d-block"
+                             [(ngModel)]="etudiant['note']"
+                             [ngModelOptions]="{standalone: true}"
+                             [disabled]="etudiant['etudiantSession']['is_dropped']">
+                    </td>
+                    <td class="text-center">
+                      <mat-slide-toggle [disabled]="etudiant['etudiantSession']['is_dropped']"
+                                        [checked]="etudiant['selected']"
+                                        [(ngModel)]="etudiant['selected']"
+                                        [ngModelOptions]="{standalone: true}">
+                      </mat-slide-toggle>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </fieldset>
             </div>
           </form>
         </div>

@@ -5,7 +5,7 @@
         <H2><span>Examens</span> de la session {{filiere.libelle}}: {{session.annee}}</H2>
       </div>
       <div class="card-body" >
-        <table class="table table-hover table-responsive-sm">
+        <table datatable class="table table-hover table-responsive-sm">
           <thead>
           <tr>
             <th>Examen</th>
@@ -27,7 +27,7 @@
             <td>{{examen.element.libelle}}</td>
             <td>
               <button class="btn btn-danger" (click)="onDeleteExam(examen)">Supprimer</button>
-              <button class="btn btn-primary">Modifier</button>
+              <a class="btn btn-primary" [routerLink]="'/admin/examens/' + examen.id + '/edit'">Modifier</a>
             </td>
           </tr>
           </tbody>

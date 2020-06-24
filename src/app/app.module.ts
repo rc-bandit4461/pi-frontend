@@ -21,6 +21,12 @@ import { SessionActionsComponent } from './session/session-actions/session-actio
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatInputModule} from '@angular/material/input';
 import { SessionExamsComponent } from './session/session-exams/session-exams.component';
+import { EditExamenComponent } from './session/edit-examen/edit-examen.component';
+import {DataTablesModule} from 'angular-datatables';
+import { NotemoduleEditComponent } from './session/notemodule-edit/notemodule-edit.component';
+import { NotemodulesComponent } from './session/notemodules/notemodules.component';
+import { SemestreComponent } from './sessions/semestre/semestre.component';
+import { SessionEditComponent } from './sessions/session-edit/session-edit.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +40,12 @@ import { SessionExamsComponent } from './session/session-exams/session-exams.com
     EditSessionComponent,
     SessionsComponent,
     SessionActionsComponent,
-    SessionExamsComponent
+    SessionExamsComponent,
+    EditExamenComponent,
+    NotemoduleEditComponent,
+    NotemodulesComponent,
+    SemestreComponent,
+    SessionEditComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +58,7 @@ import { SessionExamsComponent } from './session/session-exams/session-exams.com
     MatListModule,
     MatSlideToggleModule,
     MatInputModule,
+    DataTablesModule,
 
 
   ],

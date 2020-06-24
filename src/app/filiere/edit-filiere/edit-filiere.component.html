@@ -1,12 +1,18 @@
 <div class="container mt-4 col-md-8 offset-md-2 col-sm-8 offse-sm-2">
-  <div class="card">
-    <div class="card-header">
-      <h3>Modificatino de filiere</h3>
-    </div>
-    <div class="card-body" *ngIf="!isLoaded">
+  <div class="card" *ngIf="!isLoaded">
+    <div class="card-header"></div>
+    <div class="card-body">
+    <div class="card-body">
       <span *ngIf="errorOccured">Une erreur s'est prevenu lors du chargement</span>
+      <span *ngIf="!errorOccured">Chargement...</span>
     </div>
-    <div class="card-body" *ngIf="isLoaded">
+    </div>
+  </div>
+  <div class="card" *ngIf="isLoaded">
+    <div class="card-header">
+      <h3>Modification de filiere {{libelleFiliere}}</h3>
+    </div>
+    <div class="card-body">
       <form #addFiliereForm="ngForm" (ngSubmit)="onSubmit(addFiliereForm.value)">
         <div class="form-group">
           <label>Libellé de la filière</label>

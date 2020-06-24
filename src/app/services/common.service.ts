@@ -1,7 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-
+export enum MessageType{
+    UPDATE,
+  DELETE,
+  CREATE,
+  GET
+}
 declare var $: any;
 
 
@@ -24,6 +29,7 @@ export class CommonService {
     success: {
       title:'Success',
       message:{
+      get: 'Opération de chargement réuissite',
       update: 'Operation de mise a jour réussite',
       delete: 'Operation de suppression réussite',
       create: 'Operation de création réussite',
@@ -33,7 +39,32 @@ export class CommonService {
 
   constructor(private httpClient: HttpClient) {
   }
-
+  public qToastMessage(type:MessageType,bool:boolean){
+      if(type == MessageType.CREATE){
+        if(bool == true)
+          this.toastMessage(this.messages.success.title,this.messages.success.message.create);
+        else
+          this.toastMessage(this.messages.error.title,this.messages.error.message.create);
+      }
+      else if(type == MessageType.UPDATE){
+        if(bool == true)
+          this.toastMessage(this.messages.success.title,this.messages.success.message.update);
+        else
+          this.toastMessage(this.messages.error.title,this.messages.error.message.update);
+      }
+      if(type == MessageType.DELETE){
+        if(bool == true)
+          this.toastMessage(this.messages.success.title,this.messages.success.message.delete);
+        else
+          this.toastMessage(this.messages.error.title,this.messages.error.message.delete);
+      }
+      if(type == MessageType.GET){
+        if(bool == true)
+          this.toastMessage(this.messages.success.title,this.messages.success.message.get);
+        else
+          this.toastMessage(this.messages.error.title,this.messages.error.message.get);
+      }
+  }
   public getPagesArray(noPages: number) {
     let array = [];
     for (let i = 0; i < noPages; i++) {
