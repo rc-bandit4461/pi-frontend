@@ -1,26 +1,38 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-sm-8 offset-sm-2">
-
-      <div class="card">
+      <div class="card" *ngIf="!isLoaded">
+        <div class="card-header">
+          Ajout de Session
+        </div>
+        <div class="card-body">
+          <span *ngIf="!isError">Chargement..</span>
+          <span *ngIf="isError">Une erreur s'est produite lors du chargement</span>
+        </div>
+      </div>
+      <div class="card" *ngIf="isLoaded">
         <div class="card-header">
           Ajout de session
         </div>
-        <div class="card-body" *ngIf="filieresList?.length > 0">
+        <div class="card-body linear-gradient-white-grey" *ngIf="filieresList?.length > 0">
           <form #addsession="ngForm" (ngSubmit)="onSubmit(addsession.value,addedStudents.selectedOptions.selected)">
             <div class="form-group">
               <label>Filiere</label>
-              <select name="filiere" id="select-filiere" class="form-control" [(ngModel)]="toCreateSession.filiere.id"
+              <select name="filiere" id="select-filiere" class="form-control" [(ngModel)]="selectedOption"
                       (change)="onFiliereSelectChange($event)">
                 <option *ngFor="let filiere of filieresList" [value]="filiere.id">{{filiere.libelle}}</option>
               </select>
+            </div>
+            <div class="form-group">
+              <label>Annee</label>
+              <input type="number" max="2030" min="2000" name="annee" [(ngModel)]="toCreateSession.annee" ngModel
+                     class="form-control">
             </div>
             <div class="form-group">
               <div class="row">
                 <div class="col-10">
                   Etudiants
                   <input class="form-control" type="text" name="searchCin" [(ngModel)]="searchCin" ngModel>
-
                 </div>
                 <div class="col-2">
                   <button type="button" (click)="onSearchCin($event)" class="btn btn-primary">
@@ -32,8 +44,9 @@
                 </div>
               </div>
             </div>
-            <fieldset class="border p-3">
-              <legend>Etudiants</legend>
+
+            <fieldset class="border border-dark p-3 pt-0 mt-2">
+              <legend><h4>Etudiants ajoutés</h4></legend>
               <div>
 
                 <mat-selection-list #addedStudents
@@ -52,12 +65,47 @@
 
               </div>
             </fieldset>
+            <fieldset class="border border-dark p-3 mt-2">
+              <legend><h4>Semestres</h4></legend>
+              <div class="card mt-2" *ngFor="let semestreFiliere of toCreateSession.filiere.semestreFilieres">
+                <div class="card-header bg-secondary text-white"><span class="mr-5">Semestre
+                  {{semestreFiliere.numero}}</span>
+                  <button class="btn btn-info" type="button"
+                          (click)="toggleShowSemestre(semestreFiliere)">{{semestreFiliere['show']? 'Hide':'Show'}}
+                  </button></div>
+                <div class="card-body" *ngIf="semestreFiliere['show']">
+                  <div class="card mt-2" *ngFor="let module of semestreFiliere.modules">
+                    <div class="card-header text-white bg-info">
+                      <h4>module {{module.libelle}}</h4>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-group">
+                        <label>Facteur</label>
+                        <input type="text" class="form-control" [(ngModel)]="module.facteur"
+                               [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <fieldset class="border border-dark p-3 pt-0">
+                        <legend><h3>Elements</h3></legend>
+                        <div class="form-group" *ngFor="let element of module.elements">
+                          <label>{{element.libelle}}</label>
+                          <input type="text" class="form-control" [(ngModel)]="element.facteur"
+                                 [ngModelOptions]="{standalone: true}">
+                        </div>
+                      </fieldset>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </fieldset>
             <hr>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
         <div class="card-body" *ngIf="!filieresList || filieresList.length == 0">
-          La liste des filieres est vide.
+          La liste des filieres est vide. Ajouter une filiere pour créer une session.
         </div>
       </div>
 

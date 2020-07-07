@@ -140,6 +140,30 @@ body {
   border-left: 4px #efefef solid;
 }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+td[rowspan] {
+  vertical-align: middle;
+}
+
+.linear-gradient-white-grey {
+  background-image: linear-gradient(to bottom, white, #e3e0e4);
+}
+
+.radial-gradient-white-gray {
+  background-image: radial-gradient(white, #f2eff3);
+
+}
+
 .row-striped {
   padding: 15px 0;
 }
+

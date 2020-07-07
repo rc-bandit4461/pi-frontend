@@ -6,6 +6,7 @@ import {element} from 'protractor';
 import * as $ from 'jquery';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Router} from '@angular/router';
+import {Diplome} from '../../entities/entities';
 
 declare var SelectPure: any;
 
@@ -27,8 +28,14 @@ export class CreateFiliereComponent implements OnInit {
   public semestresList: any[] = [];
   public libeleFiliere: any = '';
   public filiere: any;
+  isError: boolean = false;
 
-  constructor(private router:Router,private httpClient: HttpClient, private  common: CommonService) {
+  public diplomesList: Diplome[] = [];
+  descriptionFiliere: string = '';
+  filiereDiplome: Diplome = new Diplome();
+  isLoaded: boolean = false;
+
+  constructor(private router: Router, private httpClient: HttpClient, private  common: CommonService) {
   }
 
   initializeSemestresList() {
@@ -40,7 +47,14 @@ export class CreateFiliereComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeSemestresList();
-    this.generateElements();
+    this.loadData();
+
+  }
+
+  async loadData() {
+    await this.generateElements();
+    await this.getDiplomes();
+    this.isLoaded = true;
   }
 
   creatElementsSelect(array: any[]) {
@@ -82,10 +96,12 @@ export class CreateFiliereComponent implements OnInit {
         this.creatElementsSelect(this.elementsSelectList);
         ;
 
+      }, error => {
+
+        this.isError = true;
       }
     );
   }
-
 
 
   removeElement(str: any[]) {
@@ -109,6 +125,8 @@ export class CreateFiliereComponent implements OnInit {
   }
 
   //enables or disables elements in the elements list, we pass an array of element ids
+  filiereDiplomeId: string = '';
+
   alterSelectElements(str: string[], bool: boolean) {
     for (let j = 0; j < str.length; j++) {
       for (let i = 0; i < this.elementsSelectList.length; i++) {
@@ -218,6 +236,7 @@ export class CreateFiliereComponent implements OnInit {
     console.log(this.modules);
     console.log(this.semestresList);
   }
+
   existsEmptySemester() {
     console.log(this.semestresList);
     for (const smeestre of this.semestresList) {
@@ -231,7 +250,7 @@ export class CreateFiliereComponent implements OnInit {
 
   onSubmit(value: any) {
 
-   if(this.existsEmptySemester()){
+    if (this.existsEmptySemester()) {
       this.common.toastMessage('Erreur', 'Remplissez les semestres vides');
       return;
     }
@@ -239,24 +258,35 @@ export class CreateFiliereComponent implements OnInit {
       this.common.toastMessage('Erreur', 'Il existe des champs manquants');
       return;
     }
+    // console.log(this.filiere);
+    console.log(this.diplomesList);
     this.filiere = {};
     this.filiere['libelle'] = this.libeleFiliere;
+    this.filiere['nbr_semestres'] = this.semestresCount;
     this.filiere['semestreFilieres'] = [];
-    console.log(this.filiere);
+    for (let diplome of this.diplomesList) {
+      if (this.filiereDiplomeId == diplome.id + '') {
+        this.filiere.diplome = diplome;
+      }
+    }
+    this.filiere.description = this.descriptionFiliere;
+    console.log(value);
+    console.log(this.filiereDiplome);
+    ;
     this.semestresList.forEach(semestre => {
-      let currentSemestre= {modules:[]};
+      let currentSemestre = {modules: []};
 
       semestre.modules.forEach(mod => {
         console.log(mod);
-        let currentMod = {libelle:mod.libelle};
+        let currentMod = {libelle: mod.libelle};
         let currentElements = [];
-          mod.elements.forEach(element => {
-                currentElements.push({
-                  id:element
-                });
+        mod.elements.forEach(element => {
+          currentElements.push({
+            id: element
           });
-          currentMod['elements'] = currentElements;
-          currentSemestre.modules.push(currentMod);
+        });
+        currentMod['elements'] = currentElements;
+        currentSemestre.modules.push(currentMod);
       });
 
       this.filiere['semestreFilieres'].push(currentSemestre);
@@ -264,14 +294,27 @@ export class CreateFiliereComponent implements OnInit {
     console.log(this.filiere);
 
 
-    this.httpClient.post(`${this.common.url}/saveFiliere`,this.filiere).subscribe(value1 => {
-      this.common.toastMessage('Success','Filiere ajoutée.');
-        this.router.navigateByUrl('/admin/filieres');
+    this.httpClient.post(`${this.common.url}/saveFiliere`, this.filiere).subscribe(value1 => {
+      this.common.toastMessage('Success', 'Filiere ajoutée.');
+      this.router.navigateByUrl('/admin/filieres');
     }, error => {
-      this.common.toastMessage('Error','Une erreur s\'est produite lors de l\'ajout.');
+      this.common.toastMessage('Error', 'Une erreur s\'est produite lors de l\'ajout.');
       console.log(error);
     });
     //Insertion des modules tout d'abord?
 
+  }
+
+  private getDiplomes() {
+    this.httpClient.get(this.common.url + '/diplomes').subscribe(value => {
+      this.diplomesList = value['_embedded']['diplomes'];
+    }, error => {
+      console.log(error);
+      this.isError = true;
+    });
+  }
+
+  onSelectDiplomeChange($event: Diplome) {
+    console.log($event);
   }
 }

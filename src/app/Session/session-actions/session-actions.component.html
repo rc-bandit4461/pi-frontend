@@ -1,0 +1,259 @@
+<div class="container mt-4">
+  <div class="card" *ngIf="!isLoaded">
+    <div class="card-header">
+      <h3 class="text-center">Session Actions</h3>
+    </div>
+    <div class="card-body">
+      <div *ngIf="isError">Une erreur s'est parvenue lors du chargement</div>
+      <div *ngIf="!isLoaded !isError">Chargment...</div>
+    </div>
+  </div>
+  <div class="card" [hidden]="!isLoaded">
+    <div class="card-header">
+      <h3 *ngIf="isLoaded"> Session {{filiere.description}} ({{filiere.libelle}}) {{session.annee}}
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12" *ngIf="isLoaded">
+          <span class="font-weight-bold">Etat: </span> <span>{{session['is_done'] ? 'Terminé' : 'En cours'}}</span>
+        </div>
+        <hr>
+        <div class="col-12">
+          <fieldset class="border p-3 mt-3">
+            <legend><h2>Semestres</h2></legend>
+            <div>
+              <div class="row" *ngIf="isLoaded">
+                <div *ngFor="let semestre of session.semestreFilieres;let i=index;" class="col-md-5 mb-3"
+                     [ngClass]="{'offset-md-1':i%2==0}">
+                  <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                      <span class="mr-5 float-left">Semestre {{semestre.numero}}</span>
+                      <div class="float-right">
+                        <a class="btn btn-primary mr-1" [routerLink]="'/admin/sessions/' + session.id + '/semestres/'
+                         + semestre.id">Details</a>
+                        <button class="btn btn-light text-dark ml-1"
+                                (click)="onExpendSemestre(semestre)">{{semestre['show'] ? 'Hide' : 'Expand'}}</button>
+                      </div>
+                    </div>
+                    <div class="card-body pt-0 pb-0" [ngClass]="{'d-none':!semestre['show']}" style="background:
+                    #f2eff3">
+                      <div class="row p-2 pt-0 pb-0">
+                        <div class="col-12">
+                          <div class="list-group" *ngFor="let mod of semestre.modules">
+                            <div class="btn-group mt-2 row" role="group" aria-label="module buttons">
+                              <button
+                                class="btn btn-info col-6 text-dark bg-white text-small">{{mod.libelle}}</button>
+                              <a class="btn btn-light col-3 border-dark text-small"
+                                 [routerLink]="'/admin/sessions/'+session.id +'/modules/' +mod.id + '/view'">Details</a>
+                              <a class="btn btn-light col-3 border-dark text-small"
+                                 [routerLink]="'/admin/sessions/'+session.id +'/modules/' +mod.id + '/edit'">Note
+                                Elements</a>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </fieldset>
+          <div class="row">
+            <div class="col-md-6 col-12 offset-md-3 mt-1 mb-2">
+
+              <fieldset class="p-3 border">
+                <legend>Actions</legend>
+                <div class="row p-3" *ngIf="isLoaded">
+                  <div class="col-12 mb-1">
+                    <div class="list-group">
+                      <div class="btn-group row" role="group" aria-label="action buttons">
+                        <a [routerLink]="'/admin/sessions/' + session.id + '/examens'"
+                           class="btn btn-light border-secondary">Liste
+                          des
+                          examens</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" (click)="onAddExam()">
+                          Ajouter examen
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mb-1">
+                    <div class="list-group">
+                      <div class="btn-group row" role="group" aria-label="action buttons">
+                        <button type="button"
+                                class="btn btn-info col-3 text-dark bg-white">Session
+                        </button>
+                        <div class="col-9 btn-group row p-0 m-0">
+
+                        <a class="btn btn-primary col-6 text-white"
+                           (click)="onCloseSession()">{{!session.is_done ? 'Cloturer Session' : 'Reouvrir Session'}}</a>
+                        <a class="btn btn-primary col-6 text-white" (click)="onUpdateSessionNotes()">Mise a jour des
+                          notes</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="list-group">
+                      <div class="btn-group row" role="group" aria-label="action buttons">
+                        <button type="button"
+                                class="btn btn-info col-3 text-dark bg-white">Attestation
+                        </button>
+                        <div class="col-9 btn-group row p-0 m-0">
+
+                        <a class="btn btn-primary col-6 text-white"
+                           (click)="generateCertificates()">Scolarité</a>
+                        <a class="btn btn-primary col-6 text-white" (click)="generateSuccssCertificates()">Réussite</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="col-12">
+            <fieldset class="border p-2 linear-gradient-white-grey">
+              <legend>Etudiants</legend>
+              <div class="row">
+                <div class="col-12">
+
+                  <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table table-hover">
+                    <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Nom</th>
+                      <th>Prénom</th>
+                      <th>Date de naissance</th>
+                      <th>Ville de naissance</th>
+                      <th class="text-center">Etat</th>
+                      <th class="text-center">Note</th>
+                      <th class="text-center">Update</th>
+                      <th>
+                        <button class="btn btn-sm"
+                                [ngClass]="{'btn-success':toggleSelect == 1,'btn-warning':toggleSelect == 2,'btn-primary':toggleSelect == 0}"
+                                (click)="onToggleSelectEtudiants()">toggle
+                        </button>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="isLoaded">
+                    <tr *ngFor="let etudiant of etudiantsList">
+                      <td>{{etudiant.id}}</td>
+                      <td>{{etudiant.nom}}</td>
+                      <td>{{etudiant.prenom}}</td>
+                      <td>{{etudiant.date_naissance}}</td>
+                      <td>{{etudiant.ville_naissance}}</td>
+                      <td class="text-center"
+                          [ngClass]="{'text-success':etudiant.etudiantSession.is_passed,'text-danger':!etudiant.etudiantSession.is_passed,'font-weight-bold':!etudiant.etudiantSession.is_dropped}
+                    ">{{etudiant['etudiantSession'].is_dropped ? 'Abondonné' :
+                        etudiant['etudiantSession'].is_passed ? 'V' : 'NV'}}</td>
+                      <td>{{etudiant.etudiantSession.note}}</td>
+                      <td class="text-center">
+                        <button class="btn btn-success btn-sm" (click)="onUpdateEtudiantState(etudiant)">update</button>
+                      </td>
+                      <td class="text-center">
+                        <mat-slide-toggle [disabled]="etudiant['is_dropped']"
+                                          [checked]="etudiant['selectedAttestation']"
+                                          (change)="onChangeToggleAttestation($event,etudiant)"
+                        >
+                        </mat-slide-toggle>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="session-add-exam" tabindex="-1" role="dialog" aria-labelledby="session-add-exam"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Ajout d'examen</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #addExamForm="ngForm" (ngSubmit)="onSubmitAddExam(addExamForm.value)" id="session-add-exam-form">
+            <div class="form-group">
+              <label>description</label>
+              <input type="text" class="form-control" name="label" [(ngModel)]="examDetail.description" ngModel
+                     required>
+            </div>
+            <div class="form-group">
+              <label>Element</label>
+              <select name="element" id="element-select" class="form-control"
+                      required ngModel>
+                <optgroup *ngFor="let m of modulesList" [label]="m.libelle">
+                  <option *ngFor="let element of m.elements"
+                          [value]="element.id">{{element.libelle}}</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group">
+              <mat-slide-toggle name="is_ratt" [(ngModel)]="examDetail.is_ratt" ngModel>Rattrappage
+              </mat-slide-toggle>
+            </div>
+            <div class="form-group">
+              <label>Facteur</label>
+              <input type="number" name="facteur" [(ngModel)]="examDetail.facteur" ngModel
+                     class="form-control">
+            </div>
+            <div class="form-group" *ngIf="isLoaded">
+              <fieldset class="border p-2 linear-gradient-white-grey">
+                <legend>Etudiants concernés</legend>
+                <table id="add-exam-table" datatable [dtOptions]="examdtOptions" class="table table-hover w-100">
+                  <thead>
+                  <tr>
+                    <td>Etudiant</td>
+                    <td>Note</td>
+                    <td class="text-center">
+                      <mat-slide-toggle
+                        (change)="onAddExamChangeCheckAllStudents($event)"></mat-slide-toggle>
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody *ngIf="isLoaded">
+                  <tr *ngFor="let etudiant of etudiantsList">
+                    <td>{{etudiant.nom}} {{etudiant.prenom}}</td>
+                    <td class="p-1">
+                      <input type="number" [max]="20" [min]="0" class="form-control d-block"
+                             [(ngModel)]="etudiant['note']"
+                             [ngModelOptions]="{standalone: true}"
+                             [disabled]="etudiant['etudiantSession']['is_dropped']">
+                    </td>
+                    <td class="text-center">
+                      <mat-slide-toggle [disabled]="etudiant['etudiantSession']['is_dropped']"
+                                        [checked]="etudiant['selected']"
+                                        [(ngModel)]="etudiant['selected']"
+                                        [ngModelOptions]="{standalone: true}">
+                      </mat-slide-toggle>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" form="session-add-exam-form">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

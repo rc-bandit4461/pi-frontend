@@ -1,39 +1,53 @@
 <div class="container mt-4">
-  <div class="card">
+  <div class="card" *ngIf="!isLoaded">
     <div class="card-header">
-      <h3>Filieres</h3>
+      <h2 class="text-center">Liste de filieres</h2>
     </div>
-    <div class="card-body" *ngIf="filieresList?.length > 0">
-      <table class="table table-hover">
+    <div class="card-body">
+      <span *ngIf="!isError">Chargement...</span>
+      <span *ngIf="isError">Une erreur est rencontrée lors de chargement</span>
+    </div>
+  </div>
+  <div class="card" *ngIf="isLoaded">
+    <div class="card-header">
+      <h2 class="text-center">Liste de filieres</h2>
+    </div>
+    <div class="card-body linear-gradient-white-grey">
+      <table datatable [dtOptions]="dtOptions" class="table table-responsive-sm table-hover">
         <thead>
         <tr>
-          <td>Id</td>
-          <td>libelle</td>
-          <td>Date de creation</td>
-          <td>Date modification</td>
-          <td>Action</td>
+          <th>Id</th>
+          <th>libelle</th>
+          <th>Diplome</th>
+          <th>Description</th>
+          <th>semestres</th>
+          <th>Date creation</th>
+          <th>Date modification</th>
+          <th>Actions</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="filieresList.length > 0">
         <tr *ngFor="let filiere of filieresList">
           <td>{{filiere.id}}</td>
           <td>{{filiere.libelle}}</td>
+          <td>{{filiere.diplome.libelle}}</td>
+          <td>{{filiere.description}}</td>
+          <td>{{filiere.nbr_semestres}}</td>
           <td>{{filiere.createdAt | date:'medium'}}</td>
           <td>{{filiere.updatedAt | date:'medium'}}</td>
           <td>
-            <button class="btn btn-danger" (click)="onDelete(filiere)">Supprimer</button>
-            <button class="btn btn-warning" (click)="onEdit(filiere)">Modifier</button>
+            <button class="btn btn-danger float-left p-1 mr-1" (click)="onDelete(filiere)">del</button>
+            <button class="btn btn-warning btn-sm float-left p-1" (click)="onEdit(filiere)">Edit</button>
 
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
+        </tr>
+        </tbody>
+        <tbody *ngIf="filieresList.length == 0">
+        <tr>
+          <td colspan="8" class="text-center">La liste est vide</td>
         </tr>
         </tbody>
       </table>
-    </div>
-    <div class="card-body" *ngIf="!filieresList || filieresList.length == 0">
-      Liste est vide.
     </div>
   </div>
 </div>

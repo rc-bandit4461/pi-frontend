@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <div class="card" *ngIf="!isLoaded">
+    <div class="card-header">
+          Liste des examens
+    </div>
+    <div class="card-body">
+      <span *ngIf="!isError">Chargement...</span><span *ngIf="isError">Une erreur a empeché le chargement des
+      données</span>
+    </div>
+  </div>
+  <div class="card">
+    <ng-container *ngIf="isLoaded">
+      <div class="card-header">
+        <H2><span>Examens</span> de la session {{filiere.libelle}}: {{session.annee}}</H2>
+      </div>
+      <div class="card-body" >
+        <table datatable [dtOptions]="dtOptions" class="table table-hover table-responsive-sm">
+          <thead>
+          <tr>
+            <th>Examen</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Facteur</th>
+            <th>Module</th>
+            <th>Element</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="examensList.length > 0">
+          <tr *ngFor="let examen of examensList">
+            <td>{{examen.id}}</td>
+            <td>{{examen.description}}</td>
+            <td>{{!examen.is_ratt ? 'Normale' : 'Rattrappage'}}</td>
+            <td>{{examen.facteur}}</td>
+            <td>{{examen['module'].libelle}}</td>
+            <td>{{examen.element.libelle}}</td>
+            <td>
+              <button class="btn btn-danger mr-1" (click)="onDeleteExam(examen)">delete</button>
+              <a class="btn btn-primary" [routerLink]="'/admin/examens/' + examen.id + '/edit'">Edit</a>
+            </td>
+          </tr>
+          </tbody>
+          <tbody *ngIf="examensList.length == 0">
+                <tr>
+                  <td colspan="7" class="text-center">La liste est vide.</td>
+                </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</div>

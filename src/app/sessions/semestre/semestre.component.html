@@ -1,0 +1,90 @@
+<div class="container mt-4">
+  <div class="card" *ngIf="!isLoaded">
+    <div class="card-header">
+
+    </div>
+    <div class="card-body" *ngIf="!isError">
+      Chargement
+    </div>
+    <div class="card-body" *ngIf="isError">
+      Une erreur s'est produite.
+    </div>
+  </div>
+  <div class="card" [hidden]="!isLoaded">
+    <div class="card-header text-center">
+      <h4 class="m-auto" *ngIf="isLoaded">{{session.filiere.description}} {{session.filiere.libelle}} {{session.annee}}
+      Semestre {{sessionSemestre.numero}}</h4>
+    </div>
+    <div class="card-body linear-gradient-white-grey">
+      <div class="row position-relative" *ngIf="isLoaded">
+        <div class="col-md-6 col-12 offset-md-3">
+          <fieldset class="border border-info p-2">
+            <legend><h4>Actions</h4></legend>
+            <div class="btn-group w-100" role="group" aria-label="semestre buttons">
+              <button class="btn btn-secondary btn-sm" (click)="onUpdateSemestreNotes()"
+                      >
+                Mettre a jour
+                les
+                notes
+              </button>
+
+              <button class="btn btn-secondary btn-sm"
+                      (click)="onFinishSemestre()">{{sessionSemestre.done ? 'Reouvrir Semestre' : 'Cloturer semestre'}}</button>
+            <button  class="btn btn-secondary btn-sm"
+                            (click)="GenerateCertificates()"
+                            >Generer Releves
+                    </button>
+            </div>
+          </fieldset>
+
+        </div>
+
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <fieldset class="border border-info p-3">
+            <legend class="color"><h3>Liste etudiants</h3></legend>
+
+
+            <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table table-responsive-sm">
+              <thead>
+              <tr>
+                <th>Etudiant</th>
+                <th>Etat</th>
+                <th>Note</th>
+                <th>Date mise a jour</th>
+
+                <th class="text-center">Update</th>
+                <th class="text-center">
+                  <mat-slide-toggle (change)="onSelectAll($event)" name="selection">
+                  </mat-slide-toggle>
+                </th>
+              </tr>
+              </thead>
+              <tbody *ngIf="isLoaded">
+              <tr   *ngFor="let etudiant of etudiantsList"
+                  [ngClass]="{'table-danger':etudiant.etudiantSession.is_dropped}">
+                <td>{{etudiant.nom + ' ' + etudiant.prenom}}</td>
+                <td>{{etudiant.etudiantSession.is_dropped ? 'Quit' : 'Enrolled'}}</td>
+                <td>{{etudiant['semestreEtudiant']['note']}}</td>
+                <td>{{etudiant['semestreEtudiant']['updatedAt'] | date:'medium'}}</td>
+                <td class="text-center">
+                  <button [disabled]="etudiant.etudiantSession.is_dropped" class="btn btn-success btn-sm"
+                          (click)="onUpdateSemestreEtudiant(etudiant.semestreEtudiant)">Update</button>
+                </td>
+                <td class="text-center">
+                  <mat-slide-toggle (change)="onSelectEtudiant($event,etudiant)" name="selection"
+                                    [(ngModel)]="etudiant['selected']"
+                                    ngModel [disabled]="etudiant.etudiantSession.is_dropped">
+                  </mat-slide-toggle>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

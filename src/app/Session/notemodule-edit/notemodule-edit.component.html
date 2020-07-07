@@ -1,0 +1,122 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card" *ngIf="!isLoaded">
+        <div class="card-header">
+          Notes de module
+        </div>
+        <div class="card-body">
+              <span *ngIf="isError">
+                Une erreur s'est arrivé lors de chargement des données
+              </span>
+          <span *ngIf="!isLoaded">
+              Chargement en cours...
+          </span>
+        </div>
+      </div>
+      <div class="card" *ngIf="isLoaded">
+        <div class="card-header">
+          <h3>Note de module:    {{module.libelle}}</h3>
+        </div>
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" class="table table-hover table-responsive-sm" id="notemodule-table">
+            <thead>
+            <tr>
+              <th>Etudiant</th>
+              <th>Etat</th>
+              <th>Element</th>
+              <th>Note Normale</th>
+              <th>Ratt</th>
+              <th>Note Ratt</th>
+              <th>Note Deliberation</th>
+              <th class="align-middle">
+                <mat-slide-toggle [(ngModel)]="selectAll"
+                                  (change)="ontoggleAll($event)"
+                >
+                </mat-slide-toggle>
+              </th>
+            </tr>
+            </thead>
+            <tbody *ngIf="isLoaded">
+            <ng-container *ngFor="let etudiant of etudiantsList">
+              <tr *ngFor="let noteElementModule of etudiant.noteModule.noteElementModules;let i = index;"
+                  [ngClass]="{'table-danger':etudiant['is_dropped']}">
+                <td class="align-middle">{{etudiant.nom}}
+                  {{etudiant.prenom}}</td>
+                <td class="align-middle"
+                >{{etudiant['is_dropped'] ? 'Parti' : 'Enrollé'}}</td>
+
+                <td>{{noteElementModule.element.libelle}}</td>
+                <td><input [ngClass]="{'bg-warning':noteElementModule.is_ratt && noteElementModule.noteNormale >=12
+                || noteElementModule.is_ratt && noteElementModule.noteNormale < 5}" max="20" min="0"
+                           class="form-control" [disabled]="!noteElementModule['selected']" type="number"
+                           [(ngModel)]="noteElementModule.noteNormale"></td>
+                <td>
+                  <mat-slide-toggle
+                    [disabled]="!noteElementModule['selected']"
+                    [(ngModel)]="noteElementModule['is_ratt']"
+                    (change)="onToggleRatt($event,noteElementModule)"
+                  >
+                  </mat-slide-toggle>
+
+                <td><input
+                  [ngClass]="{'bg-warning':noteElementModule.is_ratt && noteElementModule.noteNormale >=12 || noteElementModule.is_ratt && noteElementModule.noteNormale < 5}"
+                  class="form-control" max="20" min="0"
+                  [disabled]="!noteElementModule['selected'] || !noteElementModule['is_ratt']"
+                  type="number"
+                  [(ngModel)]="noteElementModule.noteRatt"></td>
+                <td><input
+                  class="form-control" [disabled]="!noteElementModule['selected']" type="number" max="20" min="0"
+                  [(ngModel)]="noteElementModule.noteDeliberation"></td>
+                <td class="align-middle">
+                  <mat-slide-toggle
+                    [disabled]="etudiant['is_dropped']"
+                    [(ngModel)]="noteElementModule['selected']"
+                    (change)="onToggleUpdateStudent($event,etudiant)"
+                  >
+                  </mat-slide-toggle>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+            <tbody *ngIf="!isLoaded">
+            <ng-container *ngFor="let etudiant of etudiantsList">
+              <tr *ngFor="let noteElementModule of etudiant.noteModule.noteElementModules;let i = index;"
+                  [ngClass]="{'table-danger':etudiant['is_dropped']}">
+                <td *ngIf="i == 0" class="align-middle" [rowSpan]="module.elements.length">{{etudiant.nom}}
+                  {{etudiant.prenom}}</td>
+                <td *ngIf="i == 0" class="align-middle"
+                    [rowSpan]="module.elements.length">{{etudiant['is_dropped'] ? 'Parti' : 'Enrollé'}}</td>
+
+                <td>{{noteElementModule.element.libelle}}</td>
+                <td><input
+                  class="form-control"
+                  [disabled]="!noteElementModule['selected']"
+                  type="number" max="20" min="0"
+                  [(ngModel)]="noteElementModule.noteNormale"></td>
+                <td><input
+                  class="form-control" [disabled]="!noteElementModule['selected']" type="number" max="20"
+                  min="0"
+                  [(ngModel)]="noteElementModule.noteRatt"></td>
+                <td><input class="form-control" [disabled]="!noteElementModule['selected']" type="number" max="20"
+                           min="0"
+                           [(ngModel)]="noteElementModule.noteDeliberation"></td>
+                <td class="align-middle">
+                  <mat-slide-toggle
+                    [disabled]="etudiant['is_dropped']"
+                    [(ngModel)]="noteElementModule['selected']"
+                    (change)="onToggleUpdateStudent($event,etudiant)"
+                  >
+                  </mat-slide-toggle>
+                </td>
+              </tr>
+            </ng-container>
+
+            </tbody>
+          </table>
+          <button (click)="onClickSubmit()" class="btn btn-warning">UPDATE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
