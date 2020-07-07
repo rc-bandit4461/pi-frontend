@@ -1,0 +1,70 @@
+<div style="padding: 10px; margin: auto; width: 60%;">
+  <form
+    [formGroup]="roomForm"
+    class="form-horizontal"
+    (ngSubmit)="onSubmit()"
+    name="myform"
+  >
+    <h3 class="text-center">Add Room</h3>
+    <hr />
+    <div class="form-group row">
+      <div class="col-md-3">
+        <label class="required">Name :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="text"
+          ng-required="true"
+          class="form-control name"
+          formControlName="name"
+        />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Location :</label>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" formControlName="location" />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Seats :</label>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" formControlName="seats" />
+      </div>
+      <br /><br />
+      <br /><br />
+      <br /><br />
+      <div class="col-md-3">
+        <label>Pcs :</label>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" formControlName="pcs" />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Projectors :</label>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" formControlName="projector" />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Boards :</label>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" formControlName="board" />
+      </div>
+      <br /><br />
+    </div>
+    <input
+      type="submit"
+      [disabled]="!roomForm.valid"
+      value="submit"
+      class="btn btn-success"
+      style="float: right;"
+      routerLink="/rooms"
+    />
+  </form>
+</div>

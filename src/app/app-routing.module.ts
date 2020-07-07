@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import {ElementsComponent} from './element/elements/elements.component';
 import {FilieresComponent} from './filiere/filieres/filieres.component';
@@ -14,36 +15,73 @@ import {NotemoduleEditComponent} from './session/notemodule-edit/notemodule-edit
 import {NotemodulesComponent} from './session/notemodules/notemodules.component';
 import {SemestreComponent} from './sessions/semestre/semestre.component';
 import {DemandeReleveListComponent} from './demandes/demande-releve-list/demande-releve-list.component';
+import { RoomsComponent } from './Room/rooms/rooms.component';
+import { NewRoomComponent } from './Room/new-room/new-room.component';
+import { EditRoomComponent } from './Room/edit-room/edit-room.component';
+import { EditBookingComponent } from './Booking/edit-booking/edit-booking.component';
+import { BookingsComponent } from './Booking/bookings/bookings.component';
+import { NewBookingComponent } from './Booking/new-booking/new-booking.component';
 
 
 const routes: Routes = [
   {
-    path:'admin/elements',
-    component:ElementsComponent
+    path: 'admin/elements',
+    component: ElementsComponent,
   },
   {
-    path:'admin/filieres',
-    component:FilieresComponent
+    path: 'admin/filieres',
+    component: FilieresComponent,
   },
   {
-    path:'admin/filieres/create',
-    component:CreateFiliereComponent
+    path: 'admin/filieres/create',
+    component: CreateFiliereComponent,
   },
   {
-    path:'admin/filieres/edit/:url',
-    component:EditFiliereComponent
-  },
-    {
-    path:'admin/sessions',
-    component:SessionsComponent
+    path: 'admin/filieres/edit/:url',
+    component: EditFiliereComponent,
   },
   {
-    path:'admin/sessions/create',
-    component:CreateSessionComponent
+    path: 'admin/sessions',
+    component: SessionsComponent,
   },
   {
+    path: 'admin/sessions/create',
+    component: CreateSessionComponent,
+  },
+  {
+    path: 'admin/sessions/edit/:url',
+    component: EditSessionComponent,
+  },
+  {
+    path: 'admin/rooms',
+    component: RoomsComponent,
+  },
+  {
+    path: 'admin/newRoom',
+    component: NewRoomComponent,
+  },
+  {
+    path: 'admin/newBooking',
+    component: NewBookingComponent,
+  },
+  {
+    path: 'admin/editRoom/:id',
+    component: EditRoomComponent,
+  },
+  {
+    path: 'admin/editBooking/:id',
+    component: EditBookingComponent,
+  },
+  {
+
     path:'admin/sessions/:id/edit',
     component:EditSessionComponent
+
+  },
+  {
+    path: 'admin/bookings',
+    component: BookingsComponent,
+
   },
   {
     path:'admin/demandeReleves',
@@ -78,7 +116,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [CommonModule, RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

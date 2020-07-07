@@ -1,0 +1,146 @@
+<div style="padding: 10px; margin: auto; width: 60%;">
+  <form
+    [formGroup]="roomForm"
+    class="form-horizontal"
+    (ngSubmit)="onSubmit()"
+    name="myform"
+  >
+    <h3 class="text-center">Edit Room</h3>
+    <hr />
+    <div class="form-group row">
+      <div class="col-md-3">
+        <label>ID :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="number"
+          class="form-control"
+          disabled
+          [(ngModel)]="index"
+          formControlName="id"
+        />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label class="required">Name :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="text"
+          ng-required="true"
+          class="form-control name"
+          [(ngModel)]="rooms.name"
+          formControlName="name"
+        />
+        <!-- <span 
+        [displayError]="isFieldValid('name')" 
+        errorMsg="Please inform your name">
+        </span> -->
+        <!-- <div class="alert alert-danger" *ngIf="" th:errors="*{name}"></div> -->
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Location :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="rooms.location"
+          formControlName="location"
+        />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Seats :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="rooms.seats"
+          formControlName="seats"
+        />
+      </div>
+      <br /><br />
+      <br /><br />
+      <br /><br />
+      <div class="col-md-3">
+        <label>Pcs :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="rooms.pcs"
+          formControlName="pcs"
+        />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Projectors :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="rooms.projector"
+          formControlName="projector"
+        />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Boards :</label>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="rooms.board"
+          formControlName="board"
+        />
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>State :</label>
+      </div>
+      <div class="col-md-9">
+        <label class="tgl">
+          <input
+            type="checkbox"
+            class="form-control"
+            [(ngModel)]="rooms.state"
+            formControlName="state"
+          />
+          <span class="tgl_body">
+            <span class="tgl_switch"></span>
+            <span class="tgl_track">
+              <span class="tgl_bgd"></span>
+              <span class="tgl_bgd tgl_bgd-negative"></span>
+            </span>
+          </span>
+        </label>
+      </div>
+      <br /><br />
+      <div class="col-md-3">
+        <label>Detail :</label>
+      </div>
+      <div class="col-md-9">
+        <textarea
+          type="text"
+          class="form-control"
+          [(ngModel)]="rooms.detail"
+          formControlName="detail"
+        ></textarea>
+      </div>
+      <br /><br />
+    </div>
+    <input
+      type="submit"
+      [disabled]="!roomForm.valid"
+      value="submit"
+      class="btn btn-success"
+      style="float: right;"
+    />
+  </form>
+</div>
