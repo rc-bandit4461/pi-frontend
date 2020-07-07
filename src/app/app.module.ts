@@ -27,6 +27,7 @@ import { NotemoduleEditComponent } from './session/notemodule-edit/notemodule-ed
 import { NotemodulesComponent } from './session/notemodules/notemodules.component';
 import { SemestreComponent } from './sessions/semestre/semestre.component';
 import { SessionEditComponent } from './sessions/session-edit/session-edit.component';
+import { DemandeReleveListComponent } from './demandes/demande-releve-list/demande-releve-list.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { SessionEditComponent } from './sessions/session-edit/session-edit.compo
     NotemoduleEditComponent,
     NotemodulesComponent,
     SemestreComponent,
-    SessionEditComponent
+    SessionEditComponent,
+    DemandeReleveListComponent
   ],
   imports: [
     BrowserModule,

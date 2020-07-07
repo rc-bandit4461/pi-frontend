@@ -13,6 +13,7 @@ import {EditExamenComponent} from './session/edit-examen/edit-examen.component';
 import {NotemoduleEditComponent} from './session/notemodule-edit/notemodule-edit.component';
 import {NotemodulesComponent} from './session/notemodules/notemodules.component';
 import {SemestreComponent} from './sessions/semestre/semestre.component';
+import {DemandeReleveListComponent} from './demandes/demande-releve-list/demande-releve-list.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path:'admin/sessions/:id/edit',
     component:EditSessionComponent
+  },
+  {
+    path:'admin/demandeReleves',
+    component:DemandeReleveListComponent
   },
     {
     path:'admin/sessions/:id',

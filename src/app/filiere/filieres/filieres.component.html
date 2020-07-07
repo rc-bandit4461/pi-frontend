@@ -1,20 +1,29 @@
 <div class="container mt-4">
-  <div class="card">
+  <div class="card" *ngIf="!isLoaded">
     <div class="card-header">
-      <h3>Filieres</h3>
+      <h2 class="text-center">Liste de filieres</h2>
     </div>
-    <div  class="card-body" *ngIf="isLoaded">
-      <table datatable class="table table-hover">
+    <div class="card-body">
+      <span *ngIf="!isError">Chargement...</span>
+      <span *ngIf="isError">Une erreur est rencontrée lors de chargement</span>
+    </div>
+  </div>
+  <div class="card" *ngIf="isLoaded">
+    <div class="card-header">
+      <h2 class="text-center">Liste de filieres</h2>
+    </div>
+    <div class="card-body linear-gradient-white-grey">
+      <table datatable [dtOptions]="dtOptions" class="table table-responsive-sm table-hover">
         <thead>
         <tr>
           <th>Id</th>
           <th>libelle</th>
           <th>Diplome</th>
           <th>Description</th>
-          <th>Nombre de semestres</th>
-          <th>Date de creation</th>
+          <th>semestres</th>
+          <th>Date creation</th>
           <th>Date modification</th>
-          <th>Action</th>
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody *ngIf="filieresList.length > 0">
@@ -27,14 +36,16 @@
           <td>{{filiere.createdAt | date:'medium'}}</td>
           <td>{{filiere.updatedAt | date:'medium'}}</td>
           <td>
-            <button class="btn btn-danger btn-sm" (click)="onDelete(filiere)">delete</button>
-            <button class="btn btn-warning btn-sm" (click)="onEdit(filiere)">Edit</button>
+            <button class="btn btn-danger float-left p-1 mr-1" (click)="onDelete(filiere)">del</button>
+            <button class="btn btn-warning btn-sm float-left p-1" (click)="onEdit(filiere)">Edit</button>
 
           </td>
         </tr>
         </tbody>
         <tbody *ngIf="filieresList.length == 0">
-            <tr><td colspan="8" class="text-center">La liste est vide</td></tr>
+        <tr>
+          <td colspan="8" class="text-center">La liste est vide</td>
+        </tr>
         </tbody>
       </table>
     </div>

@@ -7,11 +7,21 @@ export class Entity {
 
 }
 
+export class Demande extends Entity {
+  done: boolean = false;
+}
+
+export class DemandeReleve extends Demande {
+  public id: Number;
+  semestreEtudiant: SemestreEtudiant;
+  public _links: Links;
+}
+
 export class Element extends Entity {
   public id: Number;
   public libelle: String;
   public _links: Links;
-
+  public facteur: number = 1;
 
   public constructor(libelle: String) {
     super();
@@ -32,6 +42,7 @@ export class Filiere extends Entity {
   public semestreFilieres: SemestreFiliere[];
   public diplome: Diplome;
   public _links: Links;
+  public modules: Module[];
 
 }
 
@@ -47,6 +58,7 @@ export class EtudiantSession extends Entity {
     etudiantId: null,
     sessionId: null
   };
+  note: number = 0;
   etudiant: Etudiant;
   is_dropped: boolean = false;
   is_passed: boolean = false;
@@ -58,7 +70,7 @@ export class NoteElementModule extends Entity {
   noteNormale: number;
   noteExamens: NoteExamen[];
   is_ratt: boolean;
-  is_passed:boolean = true;
+  is_passed: boolean = true;
   noteRatt: number;
   facteur: number = 1;
   noteDeliberation: number;
@@ -71,7 +83,7 @@ export class NoteModule extends Entity {
   id: Number;
   noteNormale: number;
   noteRatt: number;
-  is_ratt:boolean;
+  is_ratt: boolean;
   noteDeliberation: number;
   noteElementModules: NoteElementModule[] = [];
   is_consistent: boolean;
@@ -86,15 +98,15 @@ export class Session extends Entity {
   public semestreFilieres: SemestreFiliere[];
   public filiere: Filiere = null;
   public _links: Links;
-  public done: boolean;
+  public is_done: boolean;
   annee_courante: number;
 
 }
 
 export class SemestreEtudiant extends Entity {
   public id: Number;
-  public note:number;
-  public is_done:boolean;
+  public note: number;
+  public is_done: boolean;
   public etudiant: Etudiant;
   public session: Session;
   public _links: Links;
@@ -117,6 +129,7 @@ export class Examen extends Entity {
   session: Session;
   numero: number = 1;
   module: Module;
+
   facteur: number = 1;
   element: Element;
   description: string = '';
@@ -147,6 +160,7 @@ export class SemestreFiliere extends Entity {
 
 export class Module extends Entity {
   public id: Number;
+  public facteur: number = 1;
   public libelle: string;
   public elements: Element[];
   public _links: Links;
@@ -179,7 +193,7 @@ export class Etudiant extends Entity {
   public is_examined: boolean = false;
   disabled: any;
   noteModule: NoteModule;
-  public etudiantSession:EtudiantSession;
+  public etudiantSession: EtudiantSession;
   semestreEtudiant: SemestreEtudiant;
 
 }

@@ -14,6 +14,8 @@ export class SessionExamsComponent implements OnInit {
   examensList: Examen[] = [];
   session: Session;
   filiere: Filiere;
+  dtOptions: any;
+  isError: boolean = false;
 
   constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
@@ -26,7 +28,8 @@ export class SessionExamsComponent implements OnInit {
   }
 
   async getInitialData(sessionid: string) {
-    let data = await this.httpClient.get(this.common.url + '/sessions/' + sessionid).toPromise();
+    try {
+      let data = await this.httpClient.get(this.common.url + '/sessions/' + sessionid).toPromise();
     this.session = <Session> data;
     data = await this.httpClient.get(this.session._links['filiere']['href']).toPromise();
     this.filiere = <Filiere> data;
@@ -38,13 +41,20 @@ export class SessionExamsComponent implements OnInit {
       data = await this.httpClient.get(examen._links['element']['href']).toPromise();
       examen['element'] = <Element> data;
     }
-    console.log(this.session);
-    console.log(this.filiere);
-    console.log(this.examensList);
     this.isLoaded = true;
+    this.dtOptions = {
+      order: [[0, 'asc']],
+      'language': {
+        url: 'assets/French.json'
+      },
+
+    };
+    }catch (e) {
+        this.isError = true;
+    }
   }
 
-   onDeleteExam(examen: Examen) {
+  onDeleteExam(examen: Examen) {
     if (!confirm('Etes vous sur de vouloir supprimer')) {
       return;
     }

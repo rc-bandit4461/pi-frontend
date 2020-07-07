@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {ActivatedRoute} from '@angular/router';
@@ -17,16 +17,18 @@ import {
 } from '../../entities/entities';
 import {AttestationService} from '../../services/attestation.service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
-import {pipe} from 'rxjs';
+import {Subject} from 'rxjs';
 import {ReleveService} from '../../services/releve.service';
-import {element} from 'protractor';
+import {DataTableDirective} from 'angular-datatables';
 
 @Component({
   selector: 'app-semestre',
   templateUrl: './semestre.component.html',
   styleUrls: ['./semestre.component.css']
 })
-export class SemestreComponent implements OnInit {
+export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
+  @ViewChild(DataTableDirective)
+  dtElement: DataTableDirective;
   session: Session;
   filiere: Filiere;
   isLoaded: boolean = false;
@@ -36,7 +38,26 @@ export class SemestreComponent implements OnInit {
   idSession: number;
   idSemestre: number;
   sessionSemestre: SemestreFiliere;
-  file: any;
+  dtOptions: any;
+  dtTrigger: any = new Subject();
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
 
   constructor(private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
 
@@ -46,11 +67,56 @@ export class SemestreComponent implements OnInit {
   ngOnInit(): void {
     this.idSession = this.activatedRoute.snapshot.params.idSession;
     this.idSemestre = this.activatedRoute.snapshot.params.idSemestre;
+    this.dtOptions = {
+          order: [[0, 'asc']],
+          'language': {
+            url: 'assets/French.json'
+          },
+          'columnDefs': [
+            {
+              'targets': [-1, -2, -3, -4, -5],
+              'orderable': false
+            }
+          ]
+        };
     this.getInitialData(this.idSession, this.idSemestre);
   }
 
-  async getInitialData(idSession, idSemestre) {
 
+  async getEtudiantsData() {
+    this.isError = false;
+    this.isLoaded = false;
+    this.etudiantSessions = [];
+    this.etudiantsList = [];
+    try {
+      let data;
+      await this.httpClient.get<EtudiantSession>(this.session._links['etudiantSessions']['href']).subscribe(async value => {
+        data = value;
+        this.etudiantSessions = data['_embedded']['etudiantSessions'];
+        for (let etudSession of this.etudiantSessions) {
+          let etudiant = await this.httpClient.get<Etudiant>(this.common.url + '/etudiants/' + etudSession.id['etudiantId']).toPromise();
+          etudiant['etudiantSession'] = etudSession;
+          let semestre = await this.httpClient.get<SemestreEtudiant>(this.common.url + '/semestreEtudiants/search/query3?idSession=' + this.idSession + '&idEtudiant=' + etudiant.id + '&numero=' + this.sessionSemestre['numero']).toPromise();
+          etudiant['semestreEtudiant'] = semestre;
+          this.etudiantsList.push(etudiant);
+        }
+        this.isLoaded = true;
+        this.rerender();
+      }, error => {
+        console.log(error);
+        this.isError = true;
+        this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+
+      });
+    } catch (e) {
+      this.isError = true;
+      this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+      console.log(e);
+    }
+
+  }
+
+  async getInitialData(idSession, idSemestre) {
     try {
       this.session = await this.httpClient.get<Session>(this.common.url + '/sessions/' + idSession).toPromise();
       this.sessionSemestre = await this.httpClient.get<SemestreFiliere>(this.common.url + '/semestreFilieres/' + idSemestre).toPromise();
@@ -72,11 +138,12 @@ export class SemestreComponent implements OnInit {
         console.log(this.etudiantsList);
         this.isLoaded = true;
         console.log(this.sessionSemestre);
-
+        this.rerender();
       }, error => {
         console.log(error);
         this.isError = true;
         this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+
       });
     } catch (e) {
       this.isError = true;
@@ -91,22 +158,27 @@ export class SemestreComponent implements OnInit {
     console.log(etudiant);
   }
 
-  onUpdateSemestre() {
+  onUpdateSemestreNotes() {
+    let includeExams = false;
+    if (!confirm('Etes vous sure de vouloir continuer?')) {
+      return;
+    }
+    if (confirm('Inclure examens?')) {
+      includeExams = true;
+    }
 
-  }
+    let url = this.common.url + '/updateSemestreNotes/' + this.sessionSemestre.id + '/noConsist';
+    if (includeExams) {
+      url = this.common.url + '/updateSemestreNotes/' + this.sessionSemestre.id;
+    }
+    this.httpClient.get(url).subscribe(value => {
+      this.common.toastMessage(this.common.messages.success.title, this.common.messages.success.message.update);
+      // this.initVariables();
+      this.getEtudiantsData();
 
-
-  getNoteByNoteDeliberation(noteModule: NoteModule) {
-    return noteModule.noteDeliberation;
-  }
-
-  getNoteWithoutDeliberation(noteModule: NoteModule) {
-    return Math.max(noteModule.noteNormale, noteModule.noteRatt);
-
-  }
-
-  getBiggestNote(noteModule: NoteModule) {
-    return Math.max(noteModule.noteNormale, noteModule.noteDeliberation, noteModule.noteRatt);
+    }, error => {
+      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+    });
   }
 
   onFinishSemestre() {
@@ -120,32 +192,13 @@ export class SemestreComponent implements OnInit {
     });
   }
 
-  fileChanged($event) {
-    console.log("file changed");
-
-    this.file = $event.target.files[0];
-    console.log(this.file);
-  }
 
   async GenerateCertificates() {
-    if (!this.file) {
-      this.common.toastMessage('Info', 'Choisir un fichier template (docx)');
-      return;
-    }
-    if (this.file.name.lastIndexOf('.docx') == -1) {
-      this.common.toastMessage('Info', 'Choisir un fichier de type (docx)');
-      return;
-    }
-    if (this.file.size == 0) {
-      this.common.toastMessage('Info', 'Le fichier choisit est vide.');
-      return;
-    let count = 0;
-    for (const etudiant of this.etudiantsList) {
-          if(etudiant['selected']) count++;
-    }
-    }
     try {
       let fileReader = new FileReader();
+            let file = await this.common.getFileAsBlobObserable(this.common.url + '/download?fileName=releveNoteTemplate.docx').toPromise();
+
+      fileReader.readAsBinaryString(file);
       fileReader.onload = async (e) => {
         console.log(fileReader.result);
         let entries = [];
@@ -159,90 +212,76 @@ export class SemestreComponent implements OnInit {
           this.common.toastMessage('Info', 'Choisir au moins un étudiant de la liste.');
           return;
         }
-        // 'note': '11', //HERE
-        // 'isPassed': true,
-        //Getting data;
         for (const etudiant of etudiants) {
           let entry = {
             'semestreNumero': this.sessionSemestre.numero,
             'filiere': this.filiere,
             'session': this.session,
             'diplome': this.filiere.diplome,
-            'isPassed': false,
-            'note': 0,
+            'isPassed': true,
+            'note': etudiant.semestreEtudiant.note.toFixed(2),
             'modulesCount': 0,
-            'nonPassedCount':0,
+            'nonPassedCount': 0,
             'etudiant': {
-              'prenom': etudiant.prenom.charCodeAt(0).toString().toUpperCase() + etudiant.prenom.substring(1).toLocaleLowerCase(),
+              'prenom': this.common.capitalize(etudiant.prenom),
               'nom': etudiant.nom.toUpperCase(),
               'cne': etudiant.cne.toUpperCase(),
               'cin': etudiant.cin.toUpperCase(),
-              'date_naissance': etudiant.date_naissance,
+              'date_naissance': {
+                jour:new Date(etudiant.date_naissance).getDay(),
+                mois:this.common.monthToFrench(new Date(etudiant.date_naissance).getMonth()),
+                annee:new Date(etudiant.date_naissance).getFullYear(),
+              },
               'ville_naissance': etudiant.ville_naissance.toUpperCase(),
 
             },
             'modules': []
           };
-          entry.session.annee_courante = Math.ceil(this.sessionSemestre.numero/2) - 1  + entry.session.annee;
+          entry.session.annee_courante = Math.ceil(this.sessionSemestre.numero / 2) - 1 + entry.session.annee;
           entry['semestreNumero'] = this.sessionSemestre.numero;
           let data = await this.httpClient.get(etudiant.semestreEtudiant._links['noteModules']['href']).toPromise();
           etudiant.noteModules = data['_embedded']['noteModules'];
           for (const noteModule of etudiant.noteModules) {
-            entry.modulesCount++;
             let data = await this.httpClient.get(noteModule._links['noteElementModules']['href']).toPromise();
             noteModule.noteElementModules = data['_embedded']['noteElementModules'];
             noteModule.module = await this.httpClient.get<Module>(noteModule._links['module']['href']).toPromise();
-
-            let entryModule = noteModule;
-
-            entryModule['libelle'] = noteModule.module['libelle'];
-            // entryModule['description']= noteModule.module['description'];
-            entryModule['isRatt'] = entryModule.is_ratt;
-            entryModule.isPassed = true;
+            let entryModule = {
+              noteNormale: noteModule.noteNormale.toFixed(2),
+              noteRatt: noteModule.noteRatt.toFixed(2),
+              noteDeliberation: noteModule.noteDeliberation.toFixed(2),
+              isPassed: true,
+              elements: [],
+              libelle: noteModule.module.libelle
+            };
             let entryElements: any[] = [];
-            noteModule.noteRatt = noteModule.noteDeliberation = noteModule.noteNormale = 0;
-            let facteurSum = 0;
             for (const noteElementModule of noteModule.noteElementModules) {
-              noteModule.noteNormale += noteElementModule.noteNormale * noteElementModule.facteur;
-              noteModule.noteRatt += noteElementModule.noteRatt * noteElementModule.facteur;
-              noteModule.noteDeliberation += noteElementModule.noteDeliberation * noteElementModule.facteur;
-              facteurSum += noteElementModule.facteur;
               data = await this.httpClient.get<Element>(noteElementModule._links['element']['href']).toPromise();
               noteElementModule.element = <Element> data;
-              if (Math.max(noteElementModule.noteNormale, noteElementModule.noteDeliberation, noteElementModule.noteRatt) < 5) {
-                entryModule.isPassed = false;
-                noteElementModule.is_passed = false;
-                entry.nonPassedCount++;
-              }
               let entryElement = {
-                isPassed: noteElementModule.is_passed,
-                noteNormale: noteElementModule['noteNormale'],
-                noteDeliberation: noteElementModule['noteDeliberation'],
-                noteRatt: noteElementModule['noteRatt'],
-                isRatt: noteElementModule['is_ratt'],
+                isPassed: noteElementModule['noteDeliberation'] >= 12,
+                isPassed1S: noteElementModule.noteNormale >= 12,
+                s2Result: noteElementModule['noteDeliberation'] >= 12 ? 'V' : (noteModule.noteDeliberation >= 12 && noteElementModule.noteDeliberation >= 7 ? 'CMP' : 'NV'),
+                noteNormale: noteElementModule['noteNormale'].toFixed(2),
+                noteDeliberation: noteElementModule['noteDeliberation'].toFixed(2),
+                noteRatt: noteElementModule['noteRatt'].toFixed(2),
+                s1Result: noteElementModule['noteNormale'] >= 12 ? 'V' : (noteElementModule.noteNormale >= 5 ? 'Ratt' : 'NV'),
+                isRatt: noteElementModule.noteNormale < 12 && noteElementModule.noteNormale >= 5,
                 libelle: noteElementModule.element.libelle
               };
-
+              if (noteElementModule.noteDeliberation < 7) {
+                entryModule.isPassed = false;
+                entry.isPassed = false;
+              }
               entryElements.push(entryElement);
             }
-            noteModule.noteNormale /= facteurSum;
-            noteModule.noteDeliberation /= facteurSum;
-            noteModule.noteRatt /= facteurSum;
-            entryModule.noteRatt = noteModule.noteRatt;
-            entryModule.noteDeliberation = noteModule.noteDeliberation;
-            entryModule.noteNormale = noteModule.noteNormale;
-            // if (Math.max(noteModule.noteNormale, noteModule.noteDeliberation, noteModule.noteRatt) >= 12) {
-            //   entryModule.isPassed = true;
-            // }
-            entry.note += this.getBiggestNote(noteModule);
-
+             if (noteModule.noteDeliberation < 12) {
+                entryModule.isPassed = false;
+              }
             entryModule['elements'] = entryElements;
+            if (etudiant.semestreEtudiant.note < 12) {
+              entry.isPassed = false;
+            }
             entry.modules.push(entryModule);
-
-          }
-          entry.note /= entry.modulesCount;
-          if (entry.note >= 12 && entry.nonPassedCount < 2) {
-            entry.isPassed = true;
           }
           entries.push(entry);
         }
@@ -250,29 +289,48 @@ export class SemestreComponent implements OnInit {
 
         let data = await this.attestationService.generateDocument({'entries': entries}, fileReader.result);
       };
-      fileReader.readAsBinaryString(this.file);
     } catch (e) {
       console.log(e);
       this.common.toastMessage('Erreur', 'Une erreur est survenue lors de génération du document');
     }
 
   }
-
-  private getPassedWithoutDeliberation(noteModule: NoteModule): boolean {
-    if (noteModule.noteNormale >= 12 || noteModule.noteRatt >= 12) {
-      return true;
-    }
-    return false;
-  }
-
-  private getPassedByDeliberation(noteModule: NoteModule): boolean {
-    return noteModule.noteDeliberation >= 12;
-  }
-
   onSelectAll($event: MatSlideToggleChange) {
-            for (const etudiant of this.etudiantsList) {
-                if(etudiant.etudiantSession.is_dropped) continue;
-                etudiant['selected'] = $event.checked;
-            }
+    for (const etudiant of this.etudiantsList) {
+      if (etudiant.etudiantSession.is_dropped) {
+        continue;
+      }
+      etudiant['selected'] = $event.checked;
+    }
+  }
+
+  onUpdateSemestreEtudiant(semestreEtudiant: SemestreEtudiant) {
+    console.log(semestreEtudiant);
+    let includeExams = false;
+    // return;
+    if (!confirm('Etes vous sure de vouloir continuer?')) {
+      return;
+    }
+    if (confirm('Inclure examens?')) {
+      includeExams = true;
+    }
+
+    let url = this.common.url + '/updateSemestreEtudiantNotes/' + semestreEtudiant.id + '/noConsist';
+    if (includeExams) {
+      url = this.common.url + '/updateSemestreEtudiantNotes/' + semestreEtudiant.id;
+    }
+    this.httpClient.get(url).subscribe(value => {
+      this.common.toastMessage(this.common.messages.success.title, this.common.messages.success.message.update);
+      this.httpClient.get(semestreEtudiant._links.self.href).subscribe(data => {
+        semestreEtudiant = <SemestreEtudiant> data;
+        this.rerender();
+      }, error => {
+        this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+
+      });
+    }, error => {
+      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+    });
+
   }
 }

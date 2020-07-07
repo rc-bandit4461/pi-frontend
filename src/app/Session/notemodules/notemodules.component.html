@@ -47,7 +47,8 @@
                 <td
                   [ngClass]="{'text-success':noteElementModule.is_consistent,'text-danger':!noteElementModule.is_consistent}">{{noteElementModule.is_consistent ? 'Oui' : 'Non'}}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm" (click)="onConsistNoteElementModule(noteElementModule)">Consist
+                  <button disabled class="btn text-white btn-sm"
+                           (click)="onConsistNoteElementModule(noteElementModule)">Consist
                   </button>
                 </td>
               </tr>
@@ -60,7 +61,7 @@
                   {{etudiant.noteModule.noteNormale}}
                 </td>
                 <td>
-                  {{etudiant.noteModule.noteDeliberation}}
+                  {{etudiant.noteModule.noteRatt}}
 
                 </td>
                 <td>
@@ -70,7 +71,7 @@
                 <td
                   [ngClass]="{'text-success':etudiant.noteModule.is_consistent,'text-danger':!etudiant.noteModule.is_consistent}">{{etudiant.noteModule.is_consistent ? 'Oui' : 'Non'}}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm" (click)="onConsisteNoteModule(etudiant.noteModule)">Consist
+                  <button class="btn btn-success btn-sm" (click)="onConsisteNoteModule(etudiant.noteModule)">Consist
                   </button>
                 </td>
               </tr>

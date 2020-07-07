@@ -72,7 +72,22 @@ export class CommonService {
     }
     return array;
   }
-
+  public monthToFrench(nb:number){
+      switch (nb) {
+        case 1: return 'Janvier';
+        case 2: return 'Fevrier';
+        case 3: return 'Mars';
+        case 4: return 'Avril';
+        case 5: return 'Mai';
+        case 6: return 'Juin';
+        case 7: return 'Juillet';
+        case 8: return 'Août';
+        case 9: return 'Septembre';
+        case 10: return 'Octobre';
+        case 11: return 'Novembre';
+        case 12: return 'Decembre';
+      }
+  }
   public deleteResource<T>(url: string) {
     return this.httpClient.delete<T>(this.url);
   }
@@ -82,9 +97,22 @@ export class CommonService {
   }
 
   public getResource<T>(url: string): Observable<T> {
+
     return this.httpClient.get<T>(url);
+
+  }
+  public capitalize(str:String){
+        if(!str) return str;
+        let firstLetter = str.charAt(0).toUpperCase();
+        let rest = str.substr(1).toLowerCase();
+        return firstLetter + rest;
   }
 
+  public getFileAsBlobObserable(url): Observable<Blob> {
+//const options = { responseType: 'blob' }; there is no use of this
+    // this.http refers to HttpClient. Note here that you cannot use the generic get<Blob> as it does not compile: instead you "choose" the appropriate API in this way.
+    return this.httpClient.get(url, {responseType: 'blob'});
+  }
   public updateResource<T>(url, data): Observable<T> {
     return this.httpClient.put<T>(url, data);
   }

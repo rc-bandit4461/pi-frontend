@@ -16,6 +16,7 @@ export class FilieresComponent implements OnInit {
   isLoaded: boolean = false;
   isError: boolean = false;
   currentPage: Boolean;
+  dtOptions: any;
 
   constructor(private httpClient: HttpClient, private common: CommonService, private router: Router) {
   }
@@ -32,6 +33,14 @@ export class FilieresComponent implements OnInit {
         filiere.diplome = <Diplome> await this.httpClient.get(filiere._links['diplome']['href']).toPromise();
       }
       this.isLoaded = true;
+
+      this.dtOptions = {
+        order: [[0, 'asc']],
+        'language': {
+          url: 'assets/French.json'
+        },
+
+      };
     } catch (e) {
       this.isError = true;
       this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);

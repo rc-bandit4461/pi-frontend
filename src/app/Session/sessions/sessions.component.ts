@@ -35,8 +35,15 @@ export class SessionsComponent implements OnInit {
       this.sessionsList = data['_embedded']['sessions'];
       for (const session of this.sessionsList) {
         session.filiere = await this.httpClient.get<Filiere>(session._links['filiere'].href).toPromise();
-        this.isLoaded = true;
       }
+      this.dtOptions = {
+        order: [[0, 'asc']],
+        'language': {
+          url: 'assets/French.json'
+        },
+
+      };
+      this.isLoaded = true;
 
     } catch (e) {
       this.isError = true;
@@ -57,6 +64,6 @@ export class SessionsComponent implements OnInit {
         console.log(error);
 
       }
-    )
+    );
   }
 }

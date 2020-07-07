@@ -3,7 +3,7 @@
     <div class="card-header">
       <h3>Ajout de filiere</h3>
     </div>
-    <div class="card-body" *ngIf="isLoaded">
+    <div class="card-body linear-gradient-white-grey" *ngIf="isLoaded">
       <form #addFiliereForm="ngForm" (ngSubmit)="onSubmit(addFiliereForm.value)">
         <div class="form-group">
           <label>Libellé de la filière</label>
@@ -15,10 +15,11 @@
                  class="form-control" ngModel>
         </div>
         <div class="form-group">
+          <label>Diplome</label>
           <select class="form-control" name="diplome" id="diplomeSelect" [(ngModel)]="filiereDiplomeId"
                   matNativeControl ngModel>
             <option *ngFor="let diplome of diplomesList" [value]="diplome.id" >
-              {{diplome.libelle}}
+              {{diplome.description}}
             </option>
           </select>
         </div>
