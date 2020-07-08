@@ -44,7 +44,7 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
     is_ratt: false,
     facteur: 1,
   };
-  toggleSelect: number = 1;
+  toggleSelect: number = 0;
   public isAllDataGathered: boolean = false;
   public noteEtudiants: NoteEtudiant[];
   isError: Boolean = false;
@@ -106,8 +106,8 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
   async getInitialData(id) {
     this.isError = false;
     this.isLoaded = false;
-    this.etudiantsList = null;
-    this.etudiantSessions = null;
+    this.etudiantsList = [];
+    this.etudiantSessions = [];
     this.session = null;
     this.filiere = null;
     try {
@@ -330,20 +330,20 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   onToggleSelectEtudiants() {
-    if (this.toggleSelect == 2) {
+    if (this.toggleSelect == 1) {
       for (const etudiant of this.etudiantsList) {
         if (!etudiant['is_dropped']) {
           etudiant['selectedAttestation'] = true;
         }
       }
-      this.toggleSelect = 0;
-    } else if (this.toggleSelect == 1) {
+      this.toggleSelect = 2;
+    } else if (this.toggleSelect == 0) {
       for (const etudiant of this.etudiantsList) {
         if (!etudiant['is_dropped'] && etudiant.etudiantSession['is_passed']) {
           etudiant['selectedAttestation'] = true;
         }
       }
-      this.toggleSelect = 2;
+      this.toggleSelect = 1;
     } else {
 
       for (const etudiant of this.etudiantsList) {
@@ -351,7 +351,7 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
           etudiant['selectedAttestation'] = false;
         }
       }
-      this.toggleSelect = 1;
+      this.toggleSelect = 0;
     }
   }
 
@@ -368,6 +368,38 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   async onUpdateSessionNotes() {
+    let includeExams = false;
+    if (!confirm('Etes vous sure de vouloir continuer?')) {
+      return;
+    }
+    if (confirm('Inclure examens?')) {
+      includeExams = true;
+    }
+    let etudiants = [];
+    for (let etudiant of this.etudiantsList) {
+        if(etudiant['selectedAttestation']) etudiants.push({
+          id:etudiant.id
+        });
+    }
+    let url = this.common.url + '/updateSessionNotes/' + this.session.id + '/noConsist';
+    if (includeExams) {
+      url = this.common.url + '/updateSessionNotes/' + this.session.id + '/consist';
+    }
+    try {
+
+      await this.httpClient.post(url,etudiants).toPromise();
+      for (let etudiant of this.etudiantsList) {
+          let data = await this.httpClient.get<EtudiantSession>(this.common.url + '/etudiantSessions/search/bySessionAndEtudiant?idSession=' + this.session.id + '&idEtudiant=' + etudiant.id).toPromise();
+        etudiant.etudiantSession = <EtudiantSession>data;
+      }
+      this.rerender();
+    } catch (e) {
+      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+      console.log(e);
+    }
+
+  }
+    async onUpdateSessionAllNotes() {
     let includeExams = false;
     if (!confirm('Etes vous sure de vouloir continuer?')) {
       return;
