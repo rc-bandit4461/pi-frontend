@@ -25,7 +25,7 @@
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
-              "node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+              "node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
