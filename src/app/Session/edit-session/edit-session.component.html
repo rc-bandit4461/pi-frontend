@@ -10,19 +10,94 @@
       Une erreur est survenue lors de chargement.
     </div>
   </div>
-  <div class="card" *ngIf="isLoaded">
-    <div class="card-header">
-        Session {{session.filiere.libelle}} {{session.annee}}
+  <div class="card">
+    <div class="card-header"  *ngIf="isLoaded">
+      Session {{session.filiere.libelle}} {{session.annee}}
     </div>
     <div class="card-body">
       <form #editSession="ngForm" (ngSubmit)="onSubmit(editSession.value)">
-        <div class="form-group">
-          <label>Année</label><input type="text" class="form-control" name="annee"  [(ngModel)]="session.annee">
+        <div class="form-group"  *ngIf="isLoaded">
+          <label>Année</label><input type="text" class="form-control" name="annee" [(ngModel)]="session.annee">
         </div>
-        <div class="form-group">
-          <label>Année courante</label><input type="text" class="form-control" name="annee_courante"
+        <div class="form-group"  *ngIf="isLoaded">
+          <label>Année courante</label><input type="number" min="1" class="form-control" name="annee_courante"
                                               [(ngModel)]="session.annee_courante">
         </div>
+        <fieldset class="border p-1">
+          <legend><h5>Etudiants</h5></legend>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-10">
+                Etudiants
+                <input class="form-control" type="text" name="searchCin" [(ngModel)]="searchCin" ngModel>
+              </div>
+              <div class="col-2">
+                <button type="button" (click)="onSearchCin($event)" class="btn btn-primary">
+                  <mat-icon aria-hidden="false" aria-label="Search icon">
+                    search
+                  </mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-hover" datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" >
+                  <thead>
+                  <tr>
+                    <td>Id</td>
+                    <td>Cin</td>
+                    <td>CNE</td>
+                    <td>Nom</td>
+                    <td>Etat</td>
+                    <td>
+                      <mat-slide-toggle (change)="onSelectAll($event)" name="selection">
+                      </mat-slide-toggle>
+                    </td>
+                    <td>#</td>
+                  </tr>
+                  </thead>
+                  <tbody *ngIf="isLoaded">
+                  <ng-container *ngFor="let etudiant of etudiantsList">
+
+                    <tr [ngStyle]="{
+                    'background':etudiant.etudiantSession.is_dropped !=
+                    etudiant.etudiantSession['is_dropped_changed'] ?
+                    (etudiant.etudiantSession.is_dropped? 'lightgreen':'rgb(255, 182, 193)'):(
+                    etudiant.etudiantSession['is_new']
+                     ?'rgb(255, 182, 193)':'inherit')
+                    }"
+                    >
+                      <td >{{etudiant.etudiantSession.etudiant.id}}</td>
+                      <td >{{etudiant.etudiantSession.etudiant.cin}}</td>
+                      <td >{{etudiant.etudiantSession.etudiant.cne}}</td>
+                      <td >{{etudiant.etudiantSession.etudiant.nom.toUpperCase() + ' ' +
+                      common.capitalize(etudiant.etudiantSession.etudiant.prenom) }}</td>
+                      <td
+                        [ngClass]="{'font-weight-bold':etudiant.etudiantSession.is_dropped !=
+                        etudiant.etudiantSession['is_dropped_changed'] || etudiant.etudiantSession['is_new']
+                        ,'text-success':!etudiant.etudiantSession['is_dropped_changed'],'text-danger':etudiant.etudiantSession['is_dropped_changed']}">{{etudiant.etudiantSession['is_dropped_changed'] ?
+                        'Dropped out' : 'Enrolled'}}</td>
+                      <td >
+                        <mat-slide-toggle  [checked]="!etudiant.etudiantSession['is_dropped_changed']"
+                                          (change)="onToggleEtudiant($event,etudiant.etudiantSession)"
+                                          name="selection">
+                        </mat-slide-toggle>
+                      </td>
+                      <td >
+                        <button type="button" class="btn btn-sm btn-danger"
+                                (click)="onRemoveEtudiant($event,etudiant)">del
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </fieldset>
         <hr>
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>

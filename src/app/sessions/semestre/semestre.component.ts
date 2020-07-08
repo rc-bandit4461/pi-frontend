@@ -40,7 +40,6 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
   sessionSemestre: SemestreFiliere;
   dtOptions: any;
   dtTrigger: any = new Subject();
-
   ngAfterViewInit(): void {
     this.dtTrigger.next();
   }

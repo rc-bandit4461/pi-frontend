@@ -166,4 +166,26 @@ td[rowspan] {
 .row-striped {
   padding: 15px 0;
 }
+.opacity-25{
+  opacity: 0.25;
+}
+.opacity-50{
+  opacity: 0.50;
+}
+.opacity-75{
+  opacity: 0.75;
+}
+.bg-success-light{
+  background: rgb(144, 238, 144);
+}
+.bg-lightgreen{
+  background: lightgreen;
+}
+.bg-danger-light{
+  background: palevioletred;
+}
+.opacity-100{
+  opacity: 1;
+}
+
 

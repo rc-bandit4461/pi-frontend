@@ -195,5 +195,6 @@ export class Etudiant extends Entity {
   noteModule: NoteModule;
   public etudiantSession: EtudiantSession;
   semestreEtudiant: SemestreEtudiant;
+  is_dropped: boolean = false;
 
 }
