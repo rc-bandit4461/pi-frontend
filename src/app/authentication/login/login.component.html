@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-sm-6 offset-sm-3">
+      <div class="card">
+        <div class="card-header text-center">
+          <h1>Login</h1>
+          <span *ngIf="isFalseCredentials" class="text-danger">Wrong
+            credentials</span>
+        </div>
+        <div class="card-body">
+
+
+          <form #login="ngForm" (ngSubmit)="onSubmitLogin(login.value)">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" name="username" class="form-control" (change)="isFalseCredentials = false;"
+                     [(ngModel)]="username" ngModel
+                     required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="text" name="password" class="form-control" (change)="isFalseCredentials = false;" [(ngModel)]="password" ngModel required>
+            </div>
+            <div class="form-group">
+              <mat-slide-toggle [(ngModel)]="isAdmin"
+                                (change)="isStudent = false;isProfessor=false;isFalseCredentials =false;"
+                                name="isAdmin" ngModel>Admin
+              </mat-slide-toggle>
+              <mat-slide-toggle [(ngModel)]="isStudent" name="isStudent"
+                                (change)="isAdmin = false;isProfessor=false;isFalseCredentials = false;"
+                                ngModel>Etudiant
+              </mat-slide-toggle>
+              <mat-slide-toggle [(ngModel)]="isProfessor"  name="isProfessor"
+                                (change)="isAdmin = false;isStudent=false;isFalseCredentials = false;" ngModel>Prof
+              </mat-slide-toggle>
+            </div>
+            <div class="row  pl-2 pr-2">
+              <div class="col-12">
+                <div class="row">
+            <button class="btn btn-primary col-12" type="submit">Login</button>
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

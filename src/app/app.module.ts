@@ -47,6 +47,7 @@ import { NewRoomComponent } from './Room/new-room/new-room.component';
 import { EditRoomComponent } from './Room/edit-room/edit-room.component';
 import { NewBookingComponent } from './Booking/new-booking/new-booking.component';
 import { EditBookingComponent } from './Booking/edit-booking/edit-booking.component';
+import { LoginComponent } from './authentication/login/login.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -76,7 +77,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NotemodulesComponent,
     SemestreComponent,
     SessionEditComponent,
-    DemandeReleveListComponent
+    DemandeReleveListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

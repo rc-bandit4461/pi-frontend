@@ -19,6 +19,7 @@ import {AttestationService} from '../../services/attestation.service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {DataTableDirective} from 'angular-datatables';
 import {Observable, Subject} from 'rxjs';
+import {AuthenticationService} from '../../services/authentication.service';
 
 declare var $: any;
 
@@ -93,12 +94,13 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
     });
   }
 
-  constructor(private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
+  constructor(private auth:AuthenticationService,private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
 
 
   }
 
   ngOnInit(): void {
+    this.auth.authentication(false,'admin');
     this.idSession = this.activatedRoute.snapshot.params.id;
     this.getInitialData(this.idSession);
   }

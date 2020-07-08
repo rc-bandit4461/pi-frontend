@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {Filiere, Session} from '../../entities/entities';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-sessions',
@@ -13,13 +14,14 @@ export class SessionsComponent implements OnInit {
   public isLoaded: boolean = false;
   public isError: boolean = false;
 
-  constructor(private httpClient: HttpClient, private common: CommonService) {
+  constructor(public auth:AuthenticationService,private httpClient: HttpClient, private common: CommonService) {
   }
 
   dtOptions: DataTables.Settings = {};
 
 
   ngOnInit(): void {
+        this.auth.authentication(false,'admin');
     this.dtOptions = {
       pagingType: 'full_numbers'
     };

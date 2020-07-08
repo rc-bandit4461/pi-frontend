@@ -4,6 +4,7 @@ import { EditRoomService } from '../../services/edit-room.service';
 import { ActivatedRoute } from '@angular/router';
 import { Room } from '../../Models/Room';
 import { ToastrService } from 'ngx-toastr';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-edit-room',
@@ -17,6 +18,7 @@ export class EditRoomComponent implements OnInit {
   rooms: any;
 
   constructor(
+    public auth:AuthenticationService,
     private formBuilder: FormBuilder,
     private editRoomService: EditRoomService,
     private route: ActivatedRoute,
@@ -26,6 +28,7 @@ export class EditRoomComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.auth.authentication(false,'any');
     console.log('helooooo ' + this.index);
     this.onGetRoom(this.index);
     this.roomForm = this.formBuilder.group({

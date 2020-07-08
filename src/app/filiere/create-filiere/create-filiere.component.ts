@@ -7,6 +7,7 @@ import * as $ from 'jquery';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Router} from '@angular/router';
 import {Diplome} from '../../entities/entities';
+import {AuthenticationService} from '../../services/authentication.service';
 
 declare var SelectPure: any;
 
@@ -35,7 +36,7 @@ export class CreateFiliereComponent implements OnInit {
   filiereDiplome: Diplome = new Diplome();
   isLoaded: boolean = false;
 
-  constructor(private router: Router, private httpClient: HttpClient, private  common: CommonService) {
+  constructor(public auth:AuthenticationService,private router: Router, private httpClient: HttpClient, private  common: CommonService) {
   }
 
   initializeSemestresList() {
@@ -46,6 +47,7 @@ export class CreateFiliereComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.auth.authentication(false,'admin');
     this.initializeSemestresList();
     this.loadData();
 

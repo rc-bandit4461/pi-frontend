@@ -6,6 +6,7 @@ import {Diplome, Etudiant, EtudiantSession, Filiere, Session} from '../../entiti
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {DataTableDirective} from 'angular-datatables';
 import {Subject} from 'rxjs';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-edit-session',
@@ -46,11 +47,12 @@ export class EditSessionComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  constructor(private httpClient: HttpClient, public common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(public auth:AuthenticationService,private httpClient: HttpClient, public common: CommonService, private activatedRoute: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
+    this.auth.authentication(false,'admin');
     this.idSession = this.activatedRoute.snapshot.params.id;
 
     this.dtOptions = {

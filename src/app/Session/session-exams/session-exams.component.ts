@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {ActivatedRoute} from '@angular/router';
 import {Element, Examen, Filiere, Module, Session} from '../../entities/entities';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-session-exams',
@@ -17,12 +18,13 @@ export class SessionExamsComponent implements OnInit {
   dtOptions: any;
   isError: boolean = false;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(public auth:AuthenticationService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
 
   }
 
   ngOnInit(): void {
+        this.auth.authentication(false,'admin');
     let sessionId = this.activatedRoute.snapshot.params.id;
     this.getInitialData(sessionId);
   }

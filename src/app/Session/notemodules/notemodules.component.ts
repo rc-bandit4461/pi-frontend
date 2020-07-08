@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {ActivatedRoute} from '@angular/router';
 import {Etudiant, EtudiantSession, Element, NoteElementModule, NoteModule, Filiere, Module, Session} from '../../entities/entities';
+import {AuthenticationService} from '../../services/authentication.service';
 
 declare var $: any;
 
@@ -19,11 +20,12 @@ export class NotemodulesComponent implements OnInit {
   isError: boolean = false;
   etudiantSessions: EtudiantSession[];
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(public auth:AuthenticationService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
+        this.auth.authentication(false,'admin');
     let idSession = this.activatedRoute.snapshot.params.idSession;
     let idModule = this.activatedRoute.snapshot.params.idModule;
     this.loadData(idSession, idModule);

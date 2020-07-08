@@ -1,4 +1,5 @@
 import { Component,OnInit } from '@angular/core';
+import {AuthenticationService} from './services/authentication.service';
 declare var $:any;
 
 @Component({
@@ -8,8 +9,8 @@ declare var $:any;
 })
 export class AppComponent implements OnInit{
   title = 'FrontEnd';
-
+constructor(public auth:AuthenticationService) {
+}
  ngOnInit():void {
-   console.log('App component');
  }
 }

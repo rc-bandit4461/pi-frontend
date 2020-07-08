@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Element, Etudiant, EtudiantSession, Filiere, Module, NoteElementModule, NoteModule, Session} from '../../entities/entities';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {$e} from 'codelyzer/angular/styles/chars';
+import {AuthenticationService} from '../../services/authentication.service';
 
 declare var $: any;
 
@@ -23,11 +24,12 @@ export class NotemoduleEditComponent implements OnInit {
   selectAll: boolean = false;
   public dtOptions: any;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(public auth:AuthenticationService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
+        this.auth.authentication(false,'admin');
     let idSession = this.activatedRoute.snapshot.params.idSession;
     let idModule = this.activatedRoute.snapshot.params.idModule;
     this.loadData(idSession, idModule);

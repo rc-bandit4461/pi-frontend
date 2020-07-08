@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../../services/common.service';
 import {Element} from '../../entities/entities';
 import {HttpClient} from '@angular/common/http';
+import {AuthenticationService} from '../../services/authentication.service';
 
 declare var $: any;
 
@@ -20,18 +21,23 @@ export class ElementsComponent implements OnInit {
   public isAdd: boolean = false;
   public isModify: boolean = false;
   public searchString = '';
-  constructor(private common: CommonService, private httpClient: HttpClient) {
+
+  constructor(public auth: AuthenticationService, private common: CommonService, private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
+    this.auth.authentication(false, 'admin');
     this.getElements();
 
   }
 
   getElements() {
     let url;
-    if(!this.searchString) url =  this.common.url + '/elements?page=' + this.currentPage + '&size=' + this.pageSize;
-    else url = this.common.url + '/elements/search/byLibellePage?mc='+this.searchString +'&page=' + this.currentPage + '&size=' + this.pageSize
+    if (!this.searchString) {
+      url = this.common.url + '/elements?page=' + this.currentPage + '&size=' + this.pageSize;
+    } else {
+      url = this.common.url + '/elements/search/byLibellePage?mc=' + this.searchString + '&page=' + this.currentPage + '&size=' + this.pageSize;
+    }
     this.httpClient.get<Element>(url).subscribe(
       (data: Element) => {
         this.pagesArray = this.common.getPagesArray(data['page'].totalPages);
@@ -121,7 +127,7 @@ export class ElementsComponent implements OnInit {
   }
 
   onSearch(value: any) {
-      this.searchString = value.libelle;
-      this.getElements();
+    this.searchString = value.libelle;
+    this.getElements();
   }
 }

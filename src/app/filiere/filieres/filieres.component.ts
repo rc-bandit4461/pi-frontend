@@ -4,6 +4,7 @@ import {CommonService} from '../../services/common.service';
 import {Diplome, Filiere} from '../../entities/entities';
 import {Router} from '@angular/router';
 import {toBase64String} from '@angular/compiler/src/output/source_map';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-filieres',
@@ -18,10 +19,11 @@ export class FilieresComponent implements OnInit {
   currentPage: Boolean;
   dtOptions: any;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private router: Router) {
+  constructor(public auth:AuthenticationService,private httpClient: HttpClient, private common: CommonService, private router: Router) {
   }
 
   ngOnInit() {
+    this.auth.authentication(false,'admin');
     this.getList();
   }
 

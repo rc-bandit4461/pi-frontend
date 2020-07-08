@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { RoomsService } from '../../services/rooms.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import {Component, OnInit} from '@angular/core';
+import {RoomsService} from '../../services/rooms.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {ToastrService} from 'ngx-toastr';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-rooms',
@@ -16,14 +17,18 @@ export class RoomsComponent implements OnInit {
   closeResult: string;
 
   constructor(
+    public auth: AuthenticationService,
     private roomservice: RoomsService,
     private modalService: NgbModal,
     private toastr: ToastrService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
+    this.auth.authentication(false, 'any');
     this.onGetRooms();
   }
+
   onGetRooms() {
     this.roomservice.getRooms().subscribe(
       (data) => {
@@ -34,6 +39,7 @@ export class RoomsComponent implements OnInit {
       }
     );
   }
+
   onDeleteRoom(id: number): void {
     this.roomservice.deleteRoom(id).subscribe(
       (data) => {
@@ -46,17 +52,18 @@ export class RoomsComponent implements OnInit {
       }
     );
   }
+
   open(content) {
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .open(content, {ariaLabelledBy: 'modal-basic-title'})
       .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
   }
 
   private getDismissReason(reason: any): string {

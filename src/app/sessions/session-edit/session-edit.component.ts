@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-session-edit',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./session-edit.component.css']
 })
 export class SessionEditComponent implements OnInit {
-
-  constructor() { }
+  constructor(public auth:AuthenticationService) { }
 
   ngOnInit(): void {
+    this.auth.authentication(false,'admin');
   }
 
 }

@@ -21,6 +21,7 @@ import { EditRoomComponent } from './Room/edit-room/edit-room.component';
 import { EditBookingComponent } from './Booking/edit-booking/edit-booking.component';
 import { BookingsComponent } from './Booking/bookings/bookings.component';
 import { NewBookingComponent } from './Booking/new-booking/new-booking.component';
+import {LoginComponent} from './authentication/login/login.component';
 
 
 const routes: Routes = [
@@ -111,7 +112,11 @@ const routes: Routes = [
     path:'admin/examens/:id/edit',
     component:EditExamenComponent
   },
-
+//Authentication
+  {
+    path:'login',
+    component:LoginComponent
+  }
 
 ];
 

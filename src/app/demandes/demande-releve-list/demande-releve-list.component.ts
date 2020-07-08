@@ -5,6 +5,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {CommonService} from '../../services/common.service';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-demande-releve-list',
@@ -17,12 +18,13 @@ export class DemandeReleveListComponent implements OnInit {
   demandeReleves: DemandeReleve[] = [];
   dtOptions: any;
 
-  constructor(private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(public auth:AuthenticationService,private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
 
   }
 
   ngOnInit(): void {
+    this.auth.authentication(false,'admin');
     this.loadInitialData();
   }
 
