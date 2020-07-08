@@ -51,7 +51,7 @@ export class AuthenticationService implements OnInit {
   }
    authenticationByRole(role:string):void {
     if (this.isAuthenticated) {
-      if(this.role != role){
+      if(this.role != role && role != 'any'){
         this.router.navigateByUrl('/');
         this.common.toastMessage('Error','Unauthorized Access');
       }
