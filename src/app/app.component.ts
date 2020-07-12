@@ -1,5 +1,7 @@
 import { Component,OnInit } from '@angular/core';
-import {AuthenticationService} from './services/authentication.service';
+import {EtudiantServiceService} from './services/etudiant-service.service';
+import {DemandeRelevesComponent} from './etudiant/demande-releves/demande-releves.component';
+import {AuthService} from './services/auth.service';
 declare var $:any;
 
 @Component({
@@ -9,8 +11,12 @@ declare var $:any;
 })
 export class AppComponent implements OnInit{
   title = 'FrontEnd';
-constructor(public auth:AuthenticationService) {
+  constructor(public authService:AuthService,public etudiantService:EtudiantServiceService) {
 }
  ngOnInit():void {
+    if(this.authService.isStudent){
+      this.etudiantService.initData();
+    }
  }
+
 }

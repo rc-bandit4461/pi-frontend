@@ -5,7 +5,6 @@ import {CommonService} from '../../services/common.service';
 import {MatListOption, MatSelectionList} from '@angular/material/list';
 import {Router} from '@angular/router';
 import {element} from 'protractor';
-import {AuthenticationService} from '../../services/authentication.service';
 
 declare var $: any;
 
@@ -24,11 +23,10 @@ export class CreateSessionComponent implements OnInit {
   public isLoaded: boolean = false;
   public isError:boolean = false;
   selectedOption:any;
-  constructor(public auth:AuthenticationService,private httpClient: HttpClient, private common: CommonService,private router:Router) {
+  constructor(private httpClient: HttpClient, private common: CommonService,private router:Router) {
   }
 
   ngOnInit(): void {
-    this.auth.authentication(false,'admin');
     this.toCreateSession = new Session();
     this.toCreateSession.filiere = new Filiere();
     this.getFilieres();

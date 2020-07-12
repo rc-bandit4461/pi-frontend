@@ -4,7 +4,6 @@ import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {Element, Etudiant, EtudiantSession, Examen, Filiere, Module, NoteExamen, SemestreFiliere, Session} from '../../entities/entities';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
-import {AuthenticationService} from '../../services/authentication.service';
 
 declare var $: any;
 
@@ -29,13 +28,12 @@ export class EditExamenComponent implements OnInit {
   curentElementId: any;
   private etudiantSessions: EtudiantSession[];
 
-  constructor(public auth:AuthenticationService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
 
   }
 
   ngOnInit(): void {
-    this.auth.authentication(false,'admin');
     let idExamen = this.activatedRoute.snapshot.params.id;
     this.loadData(idExamen);
 

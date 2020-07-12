@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10 offset-md-1 col-12">
+      <div class="card">
+        <div class="card-header" *ngIf="!isLoaded && isError">
+          Une erreur s'est arrivée lors de chargement de la page.
+        </div>
+        <div class="card-header" *ngIf="!isLoaded && !isError">
+          Chargement...
+        </div>
+        <div class="card-header" *ngIf="isLoaded">
+          Mes sessions
+        </div>
+        <div class="card-body">
+          <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table table-hover">
+            <thead>
+            <tr>
+              <th>Semestre</th>
+              <th>Etat</th>
+              <th>Note</th>
+              <th>Derniere Mise a jour</th>
+              <th>Relevé</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="isLoaded">
+            <tr *ngFor="let semestreEtudiant of semestreEtudiants">
+              <td>{{semestreEtudiant.numero}}</td>
+              <td>{{semestreEtudiant.done}}</td>
+              <td>{{semestreEtudiant.note}}</td>
+              <td>{{semestreEtudiant.updatedAt | date:'medium'}}</td>
+              <td>
+                <button [disabled]="!semestreEtudiant.done" (click)="onDemandeReleve(semestreEtudiant)"
+                        class="btn btn-sm btn-secondary"
+                        >
+                  Demander
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

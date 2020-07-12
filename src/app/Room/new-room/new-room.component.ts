@@ -10,7 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 import { State } from '../../Models/State';
 import { LayoutCapacity } from '../../Models/LayoutCapacity';
 import { Observable } from 'rxjs';
-import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-new-room',
@@ -22,14 +21,12 @@ export class NewRoomComponent implements OnInit {
   showHide: boolean;
 
   constructor(
-    public auth:AuthenticationService,
     private formBuilder: FormBuilder,
     private newRoomService: NewRoomService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-        this.auth.authentication(false,'any');
     this.roomForm = this.formBuilder.group({
       name: ['', Validators.required],
       location: [''],

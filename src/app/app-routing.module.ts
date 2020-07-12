@@ -22,6 +22,9 @@ import { EditBookingComponent } from './Booking/edit-booking/edit-booking.compon
 import { BookingsComponent } from './Booking/bookings/bookings.component';
 import { NewBookingComponent } from './Booking/new-booking/new-booking.component';
 import {LoginComponent} from './authentication/login/login.component';
+import {EtudiantSessionsComponent} from './etudiant/etudiant-sessions/etudiant-sessions.component';
+import {CerificatesComponent} from './demandes/cerificates/cerificates.component';
+import {EtudiantSessionSemestresComponent} from './etudiant/etudiant-session-semestres/etudiant-session-semestres.component';
 
 
 const routes: Routes = [
@@ -112,12 +115,25 @@ const routes: Routes = [
     path:'admin/examens/:id/edit',
     component:EditExamenComponent
   },
+  {
+    path:'admin/demandes',
+    component:CerificatesComponent
+  },
+
 //Authentication
   {
     path:'login',
     component:LoginComponent
+  },
+//Students
+  {
+    path:'etudiant/sessions',
+    component:EtudiantSessionsComponent
+  },
+  {
+    path:'etudiant/sessions/:id/semestres',
+    component:EtudiantSessionSemestresComponent
   }
-
 ];
 
 @NgModule({

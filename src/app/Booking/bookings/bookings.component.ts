@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { BookingsService } from '../../services/bookings.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-bookings',
@@ -17,12 +16,11 @@ export class BookingsComponent implements OnInit {
   bookings: any;
   bookingForm: FormGroup;
   formBuilder: FormBuilder;
-  constructor(public auth:AuthenticationService,
+  constructor(
     private boukingService: BookingsService,
     private toastr: ToastrService
   ) {}
   ngOnInit(): void {
-    this.auth.authentication(false,'any');
     this.onGetBookings();
     // this.bookingForm = this.formBuilder.group({
     //   datee: '',

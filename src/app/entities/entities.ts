@@ -8,7 +8,43 @@ export class Entity {
 }
 
 export class Demande extends Entity {
+  public static TYPE_CERTIF_SCOLARITE: string = 'scolarite';
+  public static TYPE_CERTIF_GRADUATION: string = 'graduation';
+  public static TYPE_RECLAMATION: string = 'reclamation';
+  public static TYPE_RELEVE: string = 'releve';
   done: boolean = false;
+  libelle: string;
+  seen: boolean = false;
+  detail: string;
+  rejected: boolean = false;
+  type: string;
+  etudiant: Etudiant;
+  session: Session;
+  id: Number;
+
+}
+
+export class DemandeAttestation extends Demande {
+
+}
+
+export class User extends Entity {
+
+  public static ROLE_STUDENT: string = 'student';
+
+  public static ROLE_PROF: string = 'prof';
+
+  public static ROLE_ADMIN: string = 'admin';
+  public id: number;
+  public email: string;
+  public password: string;
+  public role: string = User.ROLE_STUDENT;
+
+  public infos: string;
+  public sexe: string;
+  public nom: string;
+  public prenom: string;
+
 }
 
 export class DemandeReleve extends Demande {
@@ -32,6 +68,7 @@ export class Element extends Entity {
 
 export class Self extends Entity {
   public href: string;
+
 }
 
 export class Filiere extends Entity {
@@ -60,8 +97,15 @@ export class EtudiantSession extends Entity {
   };
   note: number = 0;
   etudiant: Etudiant;
+  session: Session;
   is_dropped: boolean = false;
   is_passed: boolean = false;
+  canRequestGraduation: boolean = true;
+  canRequestScolarite: boolean = true;
+  hasRequestedGraduation: boolean = false;
+  hasRequestedScolarite: boolean = false;
+  nbrGraduationRequests = 0;
+  nbrScolariteRequests = 0;
 
 }
 
@@ -110,6 +154,12 @@ export class SemestreEtudiant extends Entity {
   public etudiant: Etudiant;
   public session: Session;
   public _links: Links;
+  canRequestReleve: boolean = true;
+  hasRequestedReleve: boolean = false;
+  nbrReleveRequests: number = 0;
+  numero: number;
+  done: boolean = false;
+
 
 }
 
@@ -171,8 +221,7 @@ export class Links extends Entity {
 
 }
 
-export class Etudiant extends Entity {
-  public id: number;
+export class Etudiant extends User {
   // noteExamens:NoteExamen[] = [];
   // currentNoteExamen:NoteExamen =<NoteExamen> <unknown> {
   //   note: 10,
@@ -183,12 +232,7 @@ export class Etudiant extends Entity {
   public date_naissance: Date;
   public ville_naissance: string;
   public cne: string;
-  public infos: string;
-  public email: string;
-  public sexe: string;
-  public nom: string;
-  public prenom: string;
-  public password: string;
+
   public _links: Links;
   public is_examined: boolean = false;
   disabled: any;

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../../services/common.service';
 import {Element} from '../../entities/entities';
 import {HttpClient} from '@angular/common/http';
-import {AuthenticationService} from '../../services/authentication.service';
 
 declare var $: any;
 
@@ -22,11 +21,10 @@ export class ElementsComponent implements OnInit {
   public isModify: boolean = false;
   public searchString = '';
 
-  constructor(public auth: AuthenticationService, private common: CommonService, private httpClient: HttpClient) {
+  constructor( private common: CommonService, private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
-    this.auth.authentication(false, 'admin');
     this.getElements();
 
   }

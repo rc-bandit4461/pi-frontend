@@ -35,7 +35,6 @@ import {DataTablesModule} from 'angular-datatables';
 import { NotemoduleEditComponent } from './session/notemodule-edit/notemodule-edit.component';
 import { NotemodulesComponent } from './session/notemodules/notemodules.component';
 import { SemestreComponent } from './sessions/semestre/semestre.component';
-import { SessionEditComponent } from './sessions/session-edit/session-edit.component';
 import { DemandeReleveListComponent } from './demandes/demande-releve-list/demande-releve-list.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -48,6 +47,13 @@ import { EditRoomComponent } from './Room/edit-room/edit-room.component';
 import { NewBookingComponent } from './Booking/new-booking/new-booking.component';
 import { EditBookingComponent } from './Booking/edit-booking/edit-booking.component';
 import { LoginComponent } from './authentication/login/login.component';
+import { EtudiantSessionsComponent } from './etudiant/etudiant-sessions/etudiant-sessions.component';
+import { CerificatesComponent } from './demandes/cerificates/cerificates.component';
+import { EtudiantSessionSemestresComponent } from './etudiant/etudiant-session-semestres/etudiant-session-semestres.component';
+import { DemandesComponent } from './etudiant/demandes/demandes.component';
+import { DemandeRelevesComponent } from './etudiant/demande-releves/demande-releves.component';
+import { CreateReclamationComponent } from './reclamations/create-reclamation/create-reclamation.component';
+import { ReclamationsListComponent } from './reclamations/reclamations-list/reclamations-list.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -76,9 +82,15 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NotemoduleEditComponent,
     NotemodulesComponent,
     SemestreComponent,
-    SessionEditComponent,
     DemandeReleveListComponent,
-    LoginComponent
+    LoginComponent,
+    EtudiantSessionsComponent,
+    CerificatesComponent,
+    EtudiantSessionSemestresComponent,
+    DemandesComponent,
+    DemandeRelevesComponent,
+    CreateReclamationComponent,
+    ReclamationsListComponent
   ],
   imports: [
     BrowserModule,

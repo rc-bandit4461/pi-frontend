@@ -27,7 +27,6 @@ export class EditBookingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('helooooo' + this.index);
 
     this.bookingForm = this.formBuilder.group({
       id: [null, Validators.required],

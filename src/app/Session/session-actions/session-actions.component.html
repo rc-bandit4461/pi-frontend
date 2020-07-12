@@ -214,7 +214,8 @@
             <div class="form-group" *ngIf="isLoaded">
               <fieldset class="border p-2 linear-gradient-white-grey">
                 <legend>Etudiants concernés</legend>
-                <table id="add-exam-table" datatable [dtOptions]="examdtOptions" class="table table-hover w-100">
+                <table id="add-exam-table" datatable [dtTrigger]="dtTrigger" [dtOptions]="examdtOptions"
+                       class="table table-hover w-100">
                   <thead>
                   <tr>
                     <td>Etudiant</td>

@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10 offset-md-1 col-12">
+      <div class="card">
+        <div class="card-header text-center">
+          <h2>Demandes</h2>
+          <p *ngIf="isError">
+            Une erreur s'est produit lors de chargement
+          </p>
+          <p *ngIf="!isError && !isLoaded">
+            Chargement...
+          </p>
+        </div>
+        <div class="card-body">
+          <table datatable class="table w-100" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+            <tr>
+              <td>Id</td>
+              <td>Etudiant</td>
+              <td>Session</td>
+              <td>Etat</td>
+              <td>Objet</td>
+              <td>Date</td>
+              <td>#</td>
+            </tr>
+            </thead>
+            <tbody *ngIf="isLoaded">
+            <tr *ngFor="let demande of demandes">
+              <td>{{demande.id}}</td>
+              <td>{{demande.etudiant.nom + ' ' + demande.etudiant.prenom}}</td>
+              <td><a class="btn btn-secondary btn-sm" [routerLink]="'/admin/sessions/' + demande.session.id">
+
+                {{demande.session.filiere.libelle + ' ' + demande.session.annee}}
+              </a>
+              </td>
+                <td>{{demande.done ? (demande.rejected? 'Denied':'Resolved'):'not Processed'}}</td>
+              <td>{{demande.libelle}}</td>
+              <td>{{demande.createdAt | date}}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" (click)="onResolve(demande)">Resolve</button>
+                <button class="btn btn-warning btn-sm" (click)="onDeny(demande)">Deny</button>
+                <button class="btn btn-danger btn-sm" (click)="onDelete(demande)">Delete</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

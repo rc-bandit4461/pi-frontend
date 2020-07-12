@@ -1,0 +1,57 @@
+<div class="row" *ngIf="isLoaded && demandes.length == 0">
+  <div class="col-12">
+    Vous n'avez aucune demande prête.
+  </div>
+</div>
+<div class="row" *ngIf="isError">
+  <div class="col-12">
+    Une erreur a empeché le chargement des demandes
+  </div>
+</div>
+<div class="row" *ngIf="isLoaded && demandes.length > 0">
+
+  <div class="col-12 mb-2" *ngFor="let demande of demandes">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="float-left">
+          <span class="font-weight-bold mr-1">  {{demande.session.filiere.libelle}}{{demande.session.annee}}
+          </span>
+                 <span> {{demande.updatedAt | date:'medium'}}</span>
+
+        </div>
+        <div class="float-right">
+                <button class="btn btn-success"
+                        (click)="onClearRequest(demande)">{{!demande.seen ? 'Clear':'Cleared'}}</button>
+        </div>
+
+      </div>
+      <div class="card-body">
+   <span *ngIf="demande.done && demande.rejected">
+     Votre demande d'attestation de {{demande.type == 'scolarite' ?
+     'Scolarité' : 'Réussite'}} pour la session {{demande.session.filiere.libelle + ' ' + demande.session.annee}} a été
+     rejetée.
+   </span>
+        <span *ngIf="!demande.rejected">
+          Votre demande d'attestation de {{demande.type == 'scolarite' ?
+          'Scolarité' : 'Réussite'}} pour la session
+          {{demande.session.filiere.libelle + ' ' + demande.session.annee}} est pret à être retirée.
+        </span>
+      </div>
+    </div>
+
+  </div>
+  <div class="row" *ngIf="isError">
+
+    <div class="col-12">
+
+      <div class="card">
+        <div class="card-haeder">
+          Mes demandes Relevés
+        </div>
+        <div class="card-body"></div>
+        Erreur lors du chargemnt
+      </div>
+    </div>
+  </div>
+</div>

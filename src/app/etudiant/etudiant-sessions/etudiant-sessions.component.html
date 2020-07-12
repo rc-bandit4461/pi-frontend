@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10 offset-md-1 col-12">
+      <div class="card">
+        <div class="card-header" *ngIf="!isLoaded && isError">
+          Une erreur s'est arrivée lors de chargement de la page.
+        </div>
+        <div class="card-header" *ngIf="!isLoaded && !isError">
+          Chargement...
+        </div>
+        <div class="card-header" *ngIf="isLoaded">
+          Mes sessions
+        </div>
+        <div class="card-body">
+          <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table table-hover">
+            <thead>
+            <tr>
+              <th>Session</th>
+              <th>Annee</th>
+              <th>Etat</th>
+              <th>State</th>
+              <th>Notes</th>
+              <th>Demandes</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="isLoaded">
+            <tr *ngFor="let etudiantSession of etudiantSessions">
+              <td>{{etudiantSession.session.filiere.libelle}}</td>
+              <td>{{etudiantSession.session.annee}}</td>
+              <td>{{etudiantSession.session.is_done ? 'Terminé' : 'En cours'}}</td>
+              <td
+                [ngClass]="{'text-danger':etudiantSession.is_dropped}">{{etudiantSession.is_dropped ?
+                'Dropped out' : (!etudiantSession.session.is_done ? 'Pas encore' :
+                  (etudiantSession.is_passed ? 'V' : 'NV'))}}</td>
+              <td>Notes</td>
+              <td>
+                <button
+                  [ngClass]="{'btn-danger':etudiantSession.is_dropped,'btn-success':!etudiantSession.session.is_done}"
+                        class="btn btn-secondary btn-sm"
+                        (click)="onDemandeAttestationScolarite(etudiantSession)">
+                  scolarité
+                </button>
+                <button
+                  [ngClass]="{'btn-warning':etudiantSession.session.is_done,'btn-danger':!etudiantSession.is_passed,'btn-success':etudiantSession.is_passed}"
+                          class="btn btn-sm"
+                        (click)="onDemandeAttestationReussite(etudiantSession)">
+                  Réussite
+                </button>
+                <a [routerLink]="'/etudiant/sessions/' + etudiantSession.session.id + '/semestres'"
+                   class="btn btn-sm btn-dark">Semestres</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

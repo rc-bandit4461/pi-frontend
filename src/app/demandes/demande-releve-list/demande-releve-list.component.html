@@ -1,45 +1,57 @@
 <div class="container mt-4">
-  <div class="card" *ngIf="!isLoaded">
-    <div class="card-header">
-      Liste des dernieres demandes
-    </div>
-    <div class="card-body">
-      <span *ngIf="isError">Une erreur est survenue lors de chargement de données</span><span *ngIf="!isError">Chargement..
-      .</span>
-    </div>
-  </div>
-  <div class="card" *ngIf="isLoaded">
-    <div class="card-header">
-      Liste des dernieres demandes
-    </div>
-    <div class="card-body">
-      <table datatable [dtOptions]="dtOptions" class="table table-hover table-striped">
-        <thead>
-        <tr>
-          <th>Id</th>
-          <th>Etudiant</th>
-          <th>Date</th>
-          <th>Session</th>
-          <th>Filiere</th>
-          <th>Semestre</th>
-          <th>#</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let demande of demandeReleves">
-          <td>{{demande.id}}</td>
-          <td>{{demande.semestreEtudiant.etudiant.nom + ' ' + demande.semestreEtudiant.etudiant.prenom}}</td>
-          <td>{{demande.updatedAt | date:'medium'}}</td>
-          <td>{{demande.semestreEtudiant.session.annee}}</td>
-          <td>{{demande.semestreEtudiant.session.filiere.libelle}}</td>
-          <td>{{demande.semestreEtudiant['numero']}}</td>
-          <td>
-            <button class="btn btn-success mr-1">Resolve</button>
-            <button class="btn btn-warning">Deny</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+  <div class="row">
+    <div class="col-md-10 offset-md-1 col-12">
+
+      <div class="card-header text-center">
+        <h2>Demandes Releves</h2>
+        <p *ngIf="isError">
+          Une erreur s'est produit lors de chargement
+        </p>
+        <p *ngIf="!isError && !isLoaded">
+          Chargement...
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          Liste des dernieres demandes
+        </div>
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover w-100">
+            <thead>
+            <tr>
+              <th>Id</th>
+              <th>Etudiant</th>
+              <th>Date</th>
+              <th>Session</th>
+              <th>Filiere</th>
+              <th>Semestre</th>
+              <td>Etat</td>
+
+              <th>#</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="isLoaded">
+            <tr *ngFor="let demande of demandeReleves">
+              <td>{{demande.id}}</td>
+              <td>{{demande.semestreEtudiant.etudiant.nom + ' ' + demande.semestreEtudiant.etudiant.prenom}}</td>
+              <td>{{demande.updatedAt | date:'medium'}}</td>
+              <td>{{demande.semestreEtudiant.session.annee}}</td>
+              <td>{{demande.semestreEtudiant.session.filiere.libelle}}</td>
+              <td>{{demande.semestreEtudiant['numero']}}</td>
+              <td>{{demande.done ? (demande.rejected ? 'Denied' : 'Resolved') : 'not Processed'}}</td>
+
+              <td>
+                <button class="btn btn-success mr-1 btn-sm" (click)="onResolve(demande)">Resolve</button>
+                <button class="btn btn-warning btn-sm mr-1" (click)="onDeny(demande)">Deny</button>
+                <button class="btn btn-danger btn-sm" (click)="onDelete(demande)">Delete</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

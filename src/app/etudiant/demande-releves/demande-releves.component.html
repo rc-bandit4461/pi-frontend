@@ -1,0 +1,58 @@
+<div class="row" *ngIf="isLoaded && demandes.length == 0">
+  <div class="col-12">
+    Vous n'avez aucune demande prête.
+  </div>
+</div>
+<div class="row" *ngIf="isError">
+  <div class="col-12">
+    Une erreur a empeché le chargement des demandes
+  </div>
+</div>
+<div class="row" *ngIf="isLoaded && demandes.length > 0">
+
+  <div class="col-12 mb-2" *ngFor="let demande of demandes">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="float-left">
+          <span class="font-weight-bold mr-1">
+            {{demande.semestreEtudiant.session.filiere.libelle}}{{demande.semestreEtudiant.session.annee}}
+          -S{{demande.semestreEtudiant.numero}} </span>
+          <span>{{demande.updatedAt | date:'medium'}} </span>
+
+        </div>
+        <div class="float-right">
+                <button class="btn btn-success"
+                        (click)="onClearRequest(demande)">{{!demande.seen ? 'Clear':'Cleared'}}</button>
+        </div>
+
+      </div>
+      <div class="card-body">
+   <span *ngIf="demande.done && !demande.rejected">Vote demande de relevé  de note pour le semestre
+     {{demande.semestreEtudiant.numero}} de
+     {{demande.semestreEtudiant.session.filiere.libelle}} {{demande.semestreEtudiant.session.annee}} est
+                  pret a etre retiré.
+                </span>
+        <span *ngIf="demande.rejected">Vote demande de relevé  de note pour le semestre
+          {{demande.semestreEtudiant.numero}} de
+          {{demande.semestreEtudiant.session.filiere.libelle}} {{demande.semestreEtudiant.session.annee}} a
+                été rejeté.
+                </span>
+      </div>
+    </div>
+
+  </div>
+  <div class="row" *ngIf="isError">
+
+    <div class="col-12">
+
+      <div class="card">
+        <div class="card-haeder">
+          Mes demandes Relevés
+        </div>
+        <div class="card-body"></div>
+        Erreur lors du chargemnt
+      </div>
+    </div>
+  </div>
+</div>

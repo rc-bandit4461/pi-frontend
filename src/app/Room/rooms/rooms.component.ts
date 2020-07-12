@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {RoomsService} from '../../services/rooms.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
-import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-rooms',
@@ -17,7 +16,6 @@ export class RoomsComponent implements OnInit {
   closeResult: string;
 
   constructor(
-    public auth: AuthenticationService,
     private roomservice: RoomsService,
     private modalService: NgbModal,
     private toastr: ToastrService
@@ -25,7 +23,6 @@ export class RoomsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.auth.authentication(false, 'any');
     this.onGetRooms();
   }
 

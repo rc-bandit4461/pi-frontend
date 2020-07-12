@@ -8,7 +8,6 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {ActivatedRoute, Router} from '@angular/router';
 import {Filiere, Module, SemestreFiliere} from '../../entities/entities';
 import {forEachComment} from 'tslint';
-import {AuthenticationService} from '../../services/authentication.service';
 
 declare var SelectPure: any;
 
@@ -32,7 +31,7 @@ export class EditFiliereComponent implements OnInit {
   public filiere: any;
   public isLoaded:boolean = false;
   public errorOccured:boolean = false;
-  constructor(public auth:AuthenticationService,private router: Router, private httpClient: HttpClient, private  common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router, private httpClient: HttpClient, private  common: CommonService, private activatedRoute: ActivatedRoute) {
   }
 
 
@@ -87,7 +86,6 @@ export class EditFiliereComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.auth.authentication(false,'admin');
     this.loadData();
   }
 

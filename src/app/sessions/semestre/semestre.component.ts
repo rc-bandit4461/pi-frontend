@@ -20,7 +20,6 @@ import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {Subject} from 'rxjs';
 import {ReleveService} from '../../services/releve.service';
 import {DataTableDirective} from 'angular-datatables';
-import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-semestre',
@@ -59,13 +58,12 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  constructor(public auth:AuthenticationService,private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
+  constructor(private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
 
 
   }
 
   ngOnInit(): void {
-    this.auth.authentication(false,'admin');
     this.idSession = this.activatedRoute.snapshot.params.idSession;
     this.idSemestre = this.activatedRoute.snapshot.params.idSemestre;
     this.dtOptions = {
