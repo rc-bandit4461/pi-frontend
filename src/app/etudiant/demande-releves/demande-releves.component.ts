@@ -35,10 +35,6 @@ export class DemandeRelevesComponent implements OnInit {
   }
 
   public async getData() {
-    console.log('AAAAAAAAAAAAAAAAAAAA');
-    console.log('AAAAAAAAAAAAAAAAAAAA');
-    console.log('AAAAAAAAAAAAAAAAAAAA');
-    console.log('AAAAAAAAAAAAAAAAAAAA');
     try {
       if (!this.etudiantService.etudiant) {
         this.etudiantService.etudiant = await this.httpClient.get<Etudiant>(this.common.url + '/etudiants/2').toPromise();

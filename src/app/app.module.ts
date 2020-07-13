@@ -54,6 +54,10 @@ import { DemandesComponent } from './etudiant/demandes/demandes.component';
 import { DemandeRelevesComponent } from './etudiant/demande-releves/demande-releves.component';
 import { CreateReclamationComponent } from './reclamations/create-reclamation/create-reclamation.component';
 import { ReclamationsListComponent } from './reclamations/reclamations-list/reclamations-list.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { DemandeReclamationComponent } from './reclamations/demande-reclamation/demande-reclamation.component';
+import { HomeComponent } from './home/home.component';
+import { UserReclamationsComponent } from './users/user-reclamations/user-reclamations.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -90,7 +94,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DemandesComponent,
     DemandeRelevesComponent,
     CreateReclamationComponent,
-    ReclamationsListComponent
+    ReclamationsListComponent,
+    SidebarComponent,
+    DemandeReclamationComponent,
+    HomeComponent,
+    UserReclamationsComponent
   ],
   imports: [
     BrowserModule,

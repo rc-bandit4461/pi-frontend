@@ -4,6 +4,7 @@ export class Entity {
   public _links: Links;
   public created_at: Date;
   public updated_at: Date;
+  public deleted:boolean = false;
 
 }
 
@@ -23,7 +24,10 @@ export class Demande extends Entity {
   id: Number;
 
 }
-
+export class Reclamation extends Demande{
+  public user:User;
+  public feedback:string;
+}
 export class DemandeAttestation extends Demande {
 
 }

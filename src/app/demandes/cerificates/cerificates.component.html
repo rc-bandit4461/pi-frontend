@@ -33,7 +33,12 @@
                 {{demande.session.filiere.libelle + ' ' + demande.session.annee}}
               </a>
               </td>
-                <td>{{demande.done ? (demande.rejected? 'Denied':'Resolved'):'not Processed'}}</td>
+              <td class="font-weight-bold"
+                  [ngClass]="{'text-danger':demande.deleted,'text-warning': !demande.deleted&&
+                demande.rejected,'text-success':!demande.rejected && !demande.deleted}">{{ demande.deleted ? 'deleted'
+                : (demande.done ? (demande.rejected ? 'Denied' : 'Resolved') : 'not Processed')}}</td>
+
+              <td>
               <td>{{demande.libelle}}</td>
               <td>{{demande.createdAt | date}}</td>
               <td>

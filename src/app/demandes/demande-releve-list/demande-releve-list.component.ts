@@ -125,10 +125,11 @@ export class DemandeReleveListComponent implements AfterViewInit, OnDestroy, OnI
       return;
     }
     this.httpClient.delete(this.common.url + '/deleteReleveRequest/' + demande.id).subscribe(async value => {
-      const index: number = this.demandeReleves.indexOf(demande);
-      if (index != -1) {
-        this.demandeReleves.splice(index, 1);
-      }
+      // const index: number = this.demandeReleves.indexOf(demande);
+      // if (index != -1) {
+      //   this.demandeReleves.splice(index, 1);
+      // }
+      demande.deleted = true;
       this.rerender();
     }, error => {
       this.common.toastMessage('Errror', 'resolveRequest');

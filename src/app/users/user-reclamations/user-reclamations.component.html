@@ -1,0 +1,106 @@
+<div class="row" *ngIf="isLoaded && reclamations.length == 0">
+  <div class="col-12">
+    Cette liste est vide
+  </div>
+</div>
+<div class="row" *ngIf="isError">
+  <div class="col-12">
+    Une erreur a empeché le chargement des reclamations
+  </div>
+</div>
+<div class="row" *ngIf="isLoaded && reclamations.length > 0">
+
+  <div class="col-12 mb-2" *ngFor="let demande of reclamations">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="float-left">
+          <span class="mr-1">
+            Votre demande d'objet : <span class="font-weight-bold">{{demande.libelle}}</span>
+          </span>
+        </div>
+        <div class="float-right">
+          <button class="btn btn-success"
+                  (click)="onClearRequest(demande)">{{!demande.seen ? 'Clear' : 'Cleared'}}</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Date <span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                {{demande.createdAt | date :'medium' }}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Objet<span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                {{demande.libelle}}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Description<span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                {{demande.detail}}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Résultat<span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                <span class="font-weight-bold"
+                  [ngClass]="{'text-warning':demande.rejected,'text-success':!demande.rejected}">{{demande.rejected? 'Rejeté':'Résolu.'}}</span>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Feedback<span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                <span *ngIf="!demande.feedback">
+                      {{demande.feedback}}
+                </span>
+                <span *ngIf="demande.feedback == undefined || demande.feedback == null || demande.feedback == ''">
+                  Aucun
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row" *ngIf="isError">
+
+    <div class="col-12">
+
+      <div class="card">
+        <div class="card-header">
+          Mes reclamations
+        </div>
+        <div class="card-body"></div>
+        Erreur lors du chargemnt
+      </div>
+    </div>
+  </div>
+</div>

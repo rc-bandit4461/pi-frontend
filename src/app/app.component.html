@@ -1,114 +1,36 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark w-100">
+<div class="page-wrapper" [ngClass]="{'toggled' : getSideBarState()}">
+  <app-sidebar></app-sidebar>
+  <main class="page-content">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark w-100">
 
-  <!-- Brand -->
-  <a class="navbar-brand" href="#">🐀</a>
-
-  <!-- Links -->
-  <ul class="navbar-nav w-100">
-    <li class="nav-item">
-      <a class="nav-link" href="#">Floyd</a>
-    </li>
-    <ng-container *ngIf="authService.isLoggedIn()">
-
-      <!-- Dropdown -->
-      <ng-container *ngIf="authService.isAdmin">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Filiere
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" routerLink="/admin/filieres">Liste</a>
-            <a class="dropdown-item" routerLink="/admin/filieres/create"
-            >Nouvelle</a
-            >
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Session
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" routerLink="/admin/sessions">Liste</a>
-            <a class="dropdown-item" routerLink="/admin/sessions/create"
-            >Nouvelle</a
-            >
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Elements
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" routerLink="/admin/elements">Liste</a>
-            <a class="dropdown-item" href="#">Nouvelle</a>
-          </div>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Demandes
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" routerLink="/admin/demandeReleves">Relevés</a>
-            <a class="dropdown-item" routerLink="/admin/demandes">Attestations</a>
-          </div>
-        </li>
-      </ng-container>
-      <ng-container *ngIf="authService.isStudent">
+      <!-- Brand -->
+      <a class="navbar-brand" href="#">
+        <img src="assets/enset-logo-monochrome.png" alt="enset-logo-monochrome" width="100" height="auto" alt="">
+      </a>
+      <!-- Links -->
+      <ul class="navbar-nav w-100">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/etudiant/sessions">Mes sessions</a>
+          <a href="#" class="btn btn-outline-secondary mr-1 mb-1" (click)="toggleSidebar($event)">Toggle Sidebar</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Mes demandes
-            <span *ngIf="etudiantService.existDemandeNotSeen"
-                  class="badge badge-danger">{{(etudiantService.demandeAttestationCount.valueOf() + etudiantService.demandeReleveCount.valueOf())}}</span>
-          </a>
-          <div class="dropdown-menu">
-            <button class="dropdown-item"
-                    (click)="etudiantService.showAttestationModal = !etudiantService.showAttestationModal">Attestations
-              <span class="badge badge-dark" *ngIf="etudiantService.demandeAttestationCount > 0"
-              >{{ etudiantService.demandeAttestationCount}}</span></button>
-            <button (click)="etudiantService.showRelevesModal = !etudiantService.showRelevesModal"
-                    class="dropdown-item">Relevés
-              <span *ngIf="etudiantService.demandeReleveCount > 0"
-                    class="badge badge-dark">{{etudiantService.demandeReleveCount}} </span></button>
-          </div>
-        </li>
-      </ng-container>
-      <ng-container>
+      </ul>
+    </nav>
 
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/admin/bookings">Bookings</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/admin/rooms">Rooms</a>
-        </li>
-      </ng-container>
+    <div class="container-fluid p-3">
 
-      <li class="nav-item w-100">
-        <div class="dropdown float-right">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            {{authService.isAdmin ? 'Admin' : (authService.isStudent ? authService.user.nom.toUpperCase() :
-            'Prof')}}
-          </a>
-          <div class="dropdown-menu">
-            <button class="dropdown-item" (click)="authService.logout()">Logout</button>
-            <a class="dropdown-item" href="#">Profile</a>
-          </div>
-        </div>
-      </li>
-    </ng-container>
-    <ng-container *ngIf="!(authService.loggedIn.getValue())">
-      <li class="nav-item w-100">
-        <a class="nav-link float-right" routerLink="/login">Login</a>
-      </li>
-    </ng-container>
-  </ul>
-</nav>
-<div class="container-fluid">
-  <router-outlet></router-outlet>
+
+      <router-outlet></router-outlet>
+
+    </div>
+    <img src="assets/enset-logo-monochrome.png" alt="enset-logo-monochrome"
+         style="max-width: 200px;max-height: 50px;position:absolute;bottom: 0;left:50%;z-index: -5;
+     opacity: 0.1;transform:
+     translate(-50%,0)">
+    <div class="overlay" (click)="toggleSidebar()" [ngClass]="{'show' : !getSideBarState()}"></div>
+  </main>
+
+  <!-- <a href="https://github.com/azouaoui-med/angular-pro-sidebar"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a> -->
 </div>
+
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="toast-header">
     <span class="glyphicon glyphicon-info-sign"></span>
@@ -131,37 +53,64 @@
 <div id="toasts-div" style="position: fixed; top: 0; right: 5px;"></div>
 <!--</div>-->
 <!--ENSET IMAGE-->
-<img src="assets/enset-logo-monochrome.png" alt="enset-logo-monochrome"
-     style="max-width: 200px;max-height: 50px;position:absolute;bottom: 0;left:50%;z-index: -5;
-     opacity: 0.1;transform:
-     translate(-50%,0)">
 
-<div class="modal fade attestationsModal"  tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLongTitle"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">
-            <span *ngIf="etudiantService.showRelevesModal">Mes demandes de relevés</span>
-            <span *ngIf="etudiantService.showAttestationModal">Mes demandes</span>
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<ng-container *ngIf="authService.isLoggedIn()">
+  <ng-container *ngIf="authService.isStudent">
+
+    <div class="modal fade attestationsModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLongTitle"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">
+              <span *ngIf="etudiantService.showRelevesModal">Mes demandes de relevés</span>
+              <span *ngIf="etudiantService.showAttestationModal">Mes demandes</span>
+            </h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body pt-3 pb-3 pl-4 pr-4">
+
+            <demandes-attestation *ngIf="etudiantService.showAttestationModal"></demandes-attestation>
+            <app-demande-releves *ngIf="etudiantService.showRelevesModal"></app-demande-releves>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              >Close
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-
-        <demandes-attestation *ngIf="etudiantService.showAttestationModal"></demandes-attestation>
-        <app-demande-releves *ngIf="etudiantService.showRelevesModal"></app-demande-releves>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"
-          >Close
+    </div>
+  </ng-container>
+  <div class="modal fade userReclamationModal" tabindex="-1" role="dialog"
+       aria-labelledby="exampleModalLongTitle"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">
+            <span *ngIf="userService.showUserReclmationModal">Mes réclamations</span>
+          </h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+        <div class="modal-body pt-3 pb-3 pl-4 pr-4">
+
+          <app-user-reclamations *ngIf="userService.showUserReclmationModal"></app-user-reclamations>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+            >Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
+  <app-demande-reclamation></app-demande-reclamation>
+</ng-container>

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Etudiant, Session} from '../entities/entities';
+import {CommonService} from './common.service';
 
 
 @Injectable({
@@ -8,7 +9,7 @@ import {Etudiant, Session} from '../entities/entities';
 export class AttestationService {
   doc: any;
 
-  constructor() {
+  constructor(private common:CommonService) {
   }
 
   //Attestation de scholarité
@@ -53,7 +54,7 @@ export class AttestationService {
     }
     let data = {
       annee: session.annee,
-      annee_courante: session.annee_courante,
+      annee_courante: new Date().getFullYear(),
       filiere: session.filiere.description + '(' + session.filiere.libelle  + ')',
       etudiants:[]
     }
@@ -61,7 +62,11 @@ export class AttestationService {
       data.etudiants.push({
            nom: etudiant.nom,
       prenom: etudiant.prenom,
-      date_naissance: etudiant.date_naissance,
+      date_naissance: {
+          day:new Date(etudiant.date_naissance).getDay(),
+        month:this.common.monthToFrench(new Date(etudiant.date_naissance).getMonth()),
+        year:new Date(etudiant.date_naissance).getFullYear()
+      },
       ville_naissance: etudiant.ville_naissance,
       })
     })

@@ -101,7 +101,7 @@ export class CommonService {
     return this.httpClient.get<T>(url);
 
   }
-  public capitalize(str:String){
+  public capitalize(str:string):string{
         if(!str) return str;
         let firstLetter = str.charAt(0).toUpperCase();
         let rest = str.substr(1).toLowerCase();
@@ -124,5 +124,12 @@ export class CommonService {
 
     }).delay(5000).slideUp(
     );
+  }
+  onSendReclamation(){
+
+  }
+  showReclamationModal($event:MouseEvent) {
+    $event.preventDefault();
+    $('.reclamation-modal').modal('show');
   }
 }

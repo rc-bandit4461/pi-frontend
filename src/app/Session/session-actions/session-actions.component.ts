@@ -215,11 +215,17 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
   onChangeToggleAttestation($event: MatSlideToggleChange, etudiant: Etudiant) {
     etudiant['selectedAttestation'] = $event.checked;
   }
+  async generateSuccessCertificates(){
+    await this.generateCertificate("attestationReussiteTemplate.docx");
+  }
+  async generateScolariteCertificates(){
+    await this.generateCertificate("attestationScolariteTemplate.docx");
 
-  async generateSuccssCertificates() {
+  }
+  async generateCertificate(fileName:string) {
     try {
       let fileReader = new FileReader();
-      let file = await this.common.getFileAsBlobObserable(this.common.url + '/download?fileName=attestationReussiteTemplate.docx').toPromise();
+      let file = await this.common.getFileAsBlobObserable(this.common.url + '/download?fileName='+fileName).toPromise();
       fileReader.readAsBinaryString(file);
       fileReader.onload = async (e) => {
         let etudiants: Etudiant[] = [];
@@ -236,6 +242,7 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
         let entries = [];
         for (let etudiant of this.etudiantsList) {
           let entry = {
+            annee_courante:new Date().getFullYear() + '-' + (new Date().getFullYear() + 1),
             diplomeDescription: this.filiere.diplome.description,
             filiereDescription: this.filiere.description,
             etudiant: {

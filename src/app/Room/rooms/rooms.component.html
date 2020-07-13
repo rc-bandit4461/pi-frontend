@@ -1,33 +1,26 @@
 <div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">Rooms List</div>
-    <div class="panel-body">
-      <button
-        class="btn btn-success"
-        routerLink="/admin/newRoom"
-        style="float: right;"
-      >
-        Add Room
-      </button>
-    </div>
-    <div class="panel-body">
-      <form #f="ngForm">
-        <div style="width: -10%;">
-          <br />
-          <input
-            type="text"
-            placeholder="Chercher"
-            class="form-control col-4"
-            style="float: right;"
-            name="keyword"
-            [(ngModel)]="keyword"
-          />
-          <br />
-          <br />
-        </div>
-        <br />
-      </form>
-      <table *ngIf="rooms" class="table table-striped">
+  <div class="card">
+    <div class="card-header">Rooms List</div>
+    <div class="card-body">
+<!--      <form #f="ngForm">-->
+<!--        <div style="width: -10%;">-->
+<!--          <br/>-->
+<!--          <input-->
+<!--            type="text"-->
+<!--            placeholder="Chercher"-->
+<!--            class="form-control col-4"-->
+<!--            style="float: right;"-->
+<!--            name="keyword"-->
+<!--            [(ngModel)]="keyword"-->
+<!--          />-->
+<!--          <br/>-->
+<!--          <br/>-->
+<!--        </div>-->
+<!--        <br/>-->
+<!--      </form>-->
+
+      <table datatable *ngIf="rooms" class="table table-striped">
+        <thead>
         <tr>
           <th>Name</th>
           <th>Location</th>
@@ -35,7 +28,10 @@
           <th>State</th>
           <th></th>
         </tr>
-        <tr *ngFor="let r of rooms | filter: keyword">
+        </thead>
+        <tbody>
+<!--        <tr *ngFor="let r of rooms | filter: keyword">-->
+        <tr *ngFor="let r of rooms">
           <td>{{ r.name }}</td>
           <td>{{ r.location }}</td>
           <td>{{ r.seats }}</td>
@@ -44,13 +40,13 @@
               *ngIf="!r.state.states"
               class="badge badge-pill badge-danger"
               style="color: rgb(255, 255, 255);"
-              >Problem</a
+            >Problem</a
             ><a
-              *ngIf="r.state.states"
-              class="badge badge-pill badge-success"
-              style="color: rgb(255, 255, 255);"
-              >Parfait</a
-            >
+            *ngIf="r.state.states"
+            class="badge badge-pill badge-success"
+            style="color: rgb(255, 255, 255);"
+          >Parfait</a
+          >
           </td>
           <td>
             <button
@@ -85,24 +81,24 @@
                     *ngIf="!r.state.states"
                     class="badge badge-pill badge-danger"
                     style="color: rgb(255, 255, 255);"
-                    >Problem</a
+                  >Problem</a
                   ><a
-                    *ngIf="r.state.states"
-                    class="badge badge-pill badge-success"
-                    style="color: rgb(255, 255, 255);"
-                    >Parfait</a
-                  >
+                  *ngIf="r.state.states"
+                  class="badge badge-pill badge-success"
+                  style="color: rgb(255, 255, 255);"
+                >Parfait</a
+                >
                 </div>
                 <div class="w-100"></div>
                 <div class="col"><b>Detail :</b></div>
                 <div class="col">{{ r.state.detail }}</div>
                 <div class="w-100"></div>
-                <br /><br /><br />
-                <hr />
+                <br/><br/><br/>
+                <hr/>
                 <h5>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b
-                    >This room contains:</b
-                  >
+                >This room contains:</b
+                >
                 </h5>
                 <div class="w-100"></div>
                 <div *ngFor="let ri of r.layoutCapacities">
@@ -142,6 +138,8 @@
             </button>
           </td>
         </tr>
+
+        </tbody>
       </table>
 
       <!-- <ul *ngIf="users" class="nav nav-pills">

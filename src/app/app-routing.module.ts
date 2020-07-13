@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Routes, RouterModule} from '@angular/router';
 import {ElementsComponent} from './element/elements/elements.component';
 import {FilieresComponent} from './filiere/filieres/filieres.component';
 import {CreateFiliereComponent} from './filiere/create-filiere/create-filiere.component';
@@ -15,16 +15,17 @@ import {NotemoduleEditComponent} from './session/notemodule-edit/notemodule-edit
 import {NotemodulesComponent} from './session/notemodules/notemodules.component';
 import {SemestreComponent} from './sessions/semestre/semestre.component';
 import {DemandeReleveListComponent} from './demandes/demande-releve-list/demande-releve-list.component';
-import { RoomsComponent } from './Room/rooms/rooms.component';
-import { NewRoomComponent } from './Room/new-room/new-room.component';
-import { EditRoomComponent } from './Room/edit-room/edit-room.component';
-import { EditBookingComponent } from './Booking/edit-booking/edit-booking.component';
-import { BookingsComponent } from './Booking/bookings/bookings.component';
-import { NewBookingComponent } from './Booking/new-booking/new-booking.component';
+import {RoomsComponent} from './Room/rooms/rooms.component';
+import {NewRoomComponent} from './Room/new-room/new-room.component';
+import {EditRoomComponent} from './Room/edit-room/edit-room.component';
+import {EditBookingComponent} from './Booking/edit-booking/edit-booking.component';
+import {BookingsComponent} from './Booking/bookings/bookings.component';
+import {NewBookingComponent} from './Booking/new-booking/new-booking.component';
 import {LoginComponent} from './authentication/login/login.component';
 import {EtudiantSessionsComponent} from './etudiant/etudiant-sessions/etudiant-sessions.component';
 import {CerificatesComponent} from './demandes/cerificates/cerificates.component';
 import {EtudiantSessionSemestresComponent} from './etudiant/etudiant-session-semestres/etudiant-session-semestres.component';
+import {ReclamationsListComponent} from './reclamations/reclamations-list/reclamations-list.component';
 
 
 const routes: Routes = [
@@ -78,8 +79,8 @@ const routes: Routes = [
   },
   {
 
-    path:'admin/sessions/:id/edit',
-    component:EditSessionComponent
+    path: 'admin/sessions/:id/edit',
+    component: EditSessionComponent
 
   },
   {
@@ -88,56 +89,63 @@ const routes: Routes = [
 
   },
   {
-    path:'admin/demandeReleves',
-    component:DemandeReleveListComponent
-  },
-    {
-    path:'admin/sessions/:id',
-    component:SessionActionsComponent
+    path: 'admin/demandeReleves',
+    component: DemandeReleveListComponent
   },
   {
-    path:'admin/sessions/:idSession/modules/:idModule/edit',
-    component:NotemoduleEditComponent
+    path: 'admin/sessions/:id',
+    component: SessionActionsComponent
   },
-    {
-    path:'admin/sessions/:idSession/modules/:idModule/view',
-    component:NotemodulesComponent
+  //Reclmations
+  {
+    path: 'admin/reclamations',
+    component: ReclamationsListComponent
   },
   {
-    path:'admin/sessions/:idSession/semestres/:idSemestre',
-    component:SemestreComponent
+    path: 'admin/sessions/:idSession/modules/:idModule/edit',
+    component: NotemoduleEditComponent
   },
   {
-    path:'admin/sessions/:id/examens',
-    component:SessionExamsComponent
+    path: 'admin/sessions/:idSession/modules/:idModule/view',
+    component: NotemodulesComponent
   },
   {
-    path:'admin/examens/:id/edit',
-    component:EditExamenComponent
+    path: 'admin/sessions/:idSession/semestres/:idSemestre',
+    component: SemestreComponent
   },
   {
-    path:'admin/demandes',
-    component:CerificatesComponent
+    path: 'admin/sessions/:id/examens',
+    component: SessionExamsComponent
+  },
+  {
+    path: 'admin/examens/:id/edit',
+    component: EditExamenComponent
+  },
+  {
+    path: 'admin/demandes',
+    component: CerificatesComponent
   },
 
 //Authentication
   {
-    path:'login',
-    component:LoginComponent
+    path: 'login',
+    component: LoginComponent
   },
 //Students
   {
-    path:'etudiant/sessions',
-    component:EtudiantSessionsComponent
+    path: 'etudiant/sessions',
+    component: EtudiantSessionsComponent
   },
   {
-    path:'etudiant/sessions/:id/semestres',
-    component:EtudiantSessionSemestresComponent
-  }
+    path: 'etudiant/sessions/:id/semestres',
+    component: EtudiantSessionSemestresComponent
+  },
+
 ];
 
 @NgModule({
   imports: [CommonModule, RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

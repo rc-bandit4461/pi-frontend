@@ -121,10 +121,11 @@ export class CerificatesComponent implements AfterViewInit, OnDestroy, OnInit {
       return;
     }
     this.httpClient.delete(this.common.url + '/deleteRequest/' + demande.id).subscribe(async value => {
-      const index: number = this.demandes.indexOf(demande);
-      if (index != -1) {
-        this.demandes.splice(index, 1);
-      }
+      // const index: number = this.demandes.indexOf(demande);
+      // if (index != -1) {
+      //   this.demandes.splice(index, 1);
+      // }
+      demande.deleted
       this.rerender();
     }, error => {
       this.common.toastMessage('Errror', 'resolveRequest');

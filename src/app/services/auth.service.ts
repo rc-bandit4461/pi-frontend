@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {CommonService} from './common.service';
 import {User} from '../entities/entities';
 import {EtudiantServiceService} from './etudiant-service.service';
+import {SidebarService} from './sidebar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -53,11 +54,16 @@ export class AuthService {
       const user = JSON.parse(userData);
       this.token = user.token;
       this.user = user.user;
+      this.capitalizeName();
       this.setUserRole();
       this.server.setLoggedIn(true, this.token);
       this.loggedIn.next(true);
-
     }
+  }
+
+  capitalizeName() {
+    this.user.nom = this.common.capitalize(this.user.nom);
+    this.user.prenom = this.common.capitalize(this.user.prenom);
   }
 
   async login(user) {
@@ -65,9 +71,9 @@ export class AuthService {
     try {
       let data = await this.httpClient.post(this.common.url + '/authenticate', user).toPromise();
       if (data['token'] != undefined && data['auth'] == true) {
-
         this.token = <string> data['token'];
         this.user = <User> await this.httpClient.get(this.common.url + '/users/search/byEmail?email=' + user.userName).toPromise();
+        this.capitalizeName();
         this.setUserRole();
         this.server.setLoggedIn(true, this.token);
         this.loggedIn.next(true);
@@ -96,6 +102,6 @@ export class AuthService {
     this.resetRoles();
     this.loggedIn.next(false);
     localStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigateByUrl('/login');
   }
 }
