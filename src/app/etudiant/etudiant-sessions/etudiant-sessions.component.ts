@@ -8,6 +8,7 @@ import {DataTableDirective} from 'angular-datatables';
 import {EtudiantServiceService} from '../../services/etudiant-service.service';
 import {ServerService} from '../../services/server.service';
 import {AuthService} from '../../services/auth.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-etudiant-sessions',
@@ -58,7 +59,7 @@ export class EtudiantSessionsComponent implements AfterViewInit, OnDestroy, OnIn
     }
   }
 
-  constructor(public etudiantService: EtudiantServiceService, public authService: AuthService, public server: ServerService, public httpClient: HttpClient, public common: CommonService) {
+  constructor(private toastr:ToastrService,public etudiantService: EtudiantServiceService, public authService: AuthService, public server: ServerService, public httpClient: HttpClient, public common: CommonService) {
   }
 
   ngOnInit(): void {
@@ -93,20 +94,20 @@ export class EtudiantSessionsComponent implements AfterViewInit, OnDestroy, OnIn
   onDemandeAttestationScolarite(etudiantSession: EtudiantSession) {
     console.log('SCOLARITE');
     if (etudiantSession.is_dropped) {
-      this.common.toastMessage('Erreur', 'Vous ne pouvez pas demander une attestation pour cette session.');
+      this.toastr.error( 'Vous ne pouvez pas demander une attestation pour cette session.');
       return;
 
     }
     if (!etudiantSession.canRequestScolarite) {
-      this.common.toastMessage('Erreur', 'Cette fonctionnalité est desactivé temportairement');
+      this.toastr.error( 'Cette fonctionnalité est desactivé temportairement');
       return;
     }
     if (etudiantSession.hasRequestedScolarite) {
-      this.common.toastMessage('Erreur', 'Vous avez deja effectué une demande.');
+      this.toastr.error( 'Vous avez deja effectué une demande.');
       return;
     }
     this.httpClient.get(this.common.url + '/requestScolariteCertif/' + etudiantSession.session.id + '/' + this.etudiant.id).subscribe(value => {
-      this.common.toastMessage('Info', 'Votre demande a ete enregistré.');
+      this.toastr.success( 'Votre demande a ete enregistré.');
       this.httpClient.get(this.common.url + '/etudiantSessions/search/bySessionAndEtudiant?idEtudiant=' + etudiantSession.id.etudiantId + '&idSession=' + etudiantSession.id.sessionId).subscribe(value1 => {
         console.log('HEEEEEEEEEEERE');
         let session = etudiantSession.session;
@@ -116,10 +117,10 @@ export class EtudiantSessionsComponent implements AfterViewInit, OnDestroy, OnIn
         this.rerender();
       }, error => {
         console.log(error);
-        this.common.toastMessage('Error', 'Error loading data');
+        this.toastr.error( 'Erreur lors du chargement de données');
       });
     }, error => {
-      this.common.toastMessage('Erreur', 'Erreur lors de lenregistrement de votre demande');
+      this.toastr.error( 'Erreur lors de lenregistrement de votre demande');
 
     });
 
@@ -127,21 +128,21 @@ export class EtudiantSessionsComponent implements AfterViewInit, OnDestroy, OnIn
 
   onDemandeAttestationReussite(etudiantSession: EtudiantSession) {
     if (!etudiantSession.session.is_done) {
-      this.common.toastMessage('Erreur', 'Vous netes pas autorisé à demander une attestation. Ressayez plus tard ou contacter' +
+      this.toastr.warning( 'Vous netes pas autorisé à demander une attestation. Ressayez plus tard ou contacter' +
         ' l\'administration');
       return;
 
     }
     if (!etudiantSession.canRequestGraduation) {
-      this.common.toastMessage('Erreur', 'Cette fonctionnalité est desactivé temportairement');
+      this.toastr.warning( 'Cette fonctionnalité est desactivé temportairement');
       return;
     }
     if (etudiantSession.hasRequestedGraduation) {
-      this.common.toastMessage('Erreur', 'Vous avez deja effectué une demande.');
+      this.toastr.warning( 'Vous avez deja effectué une demande.');
       return;
     }
     this.httpClient.get(this.common.url + '/requestGradCertif/' + etudiantSession.session.id + '/' + this.etudiant.id).subscribe(value => {
-      this.common.toastMessage('Info', 'Votre demande a ete enregistré.');
+      this.toastr.success( 'Votre demande a ete enregistré.');
       this.httpClient.get(this.common.url + '/etudiantSessions/search/bySessionAndEtudiant?idEtudiant=' + etudiantSession.id.etudiantId + '&idSession=' + etudiantSession.id.sessionId).subscribe(value1 => {
         let session = etudiantSession.session;
         etudiantSession = <EtudiantSession> value1;
@@ -149,11 +150,11 @@ export class EtudiantSessionsComponent implements AfterViewInit, OnDestroy, OnIn
         this.rerender();
       }, error => {
         console.log(error);
-        this.common.toastMessage('Error', 'Error loading data');
+        this.toastr.error( 'Erreur lors du chargement de données chargement de données.');
       });
     }, error => {
       console.log(error);
-      this.common.toastMessage('Erreur', 'Erreur lors de lenregistrement de votre demande');
+      this.toastr.error( 'Erreur lors de lenregistrement de votre demande');
 
     });
 

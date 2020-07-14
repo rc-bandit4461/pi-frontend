@@ -70,7 +70,7 @@ export class Element extends Entity {
 
 }
 
-export class Self extends Entity {
+export class Link {
   public href: string;
 
 }
@@ -221,7 +221,7 @@ export class Module extends Entity {
 }
 
 export class Links extends Entity {
-  public self: Self;
+  public self: Link;
 
 }
 

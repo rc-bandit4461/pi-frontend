@@ -4,6 +4,7 @@ import {Demande, DemandeAttestation, Etudiant, Filiere, Session} from '../../ent
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-cerificates',
@@ -55,7 +56,7 @@ export class CerificatesComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  constructor(private httpClient: HttpClient, private common: CommonService) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient, private common: CommonService) {
   }
 
   ngOnInit(): void {
@@ -91,7 +92,7 @@ export class CerificatesComponent implements AfterViewInit, OnDestroy, OnInit {
       this.updateDemande(demande);
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'resolveRequest');
+      this.toastr.error( 'Erreur lors de l\'execution de cette commande.');
       throw error;
     });
   }
@@ -111,7 +112,7 @@ export class CerificatesComponent implements AfterViewInit, OnDestroy, OnInit {
       this.updateDemande(demande);
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'resolveRequest');
+      this.toastr.error( 'Erreur lors de l\'execution de cette commande.');
       throw error;
     });
   }
@@ -128,7 +129,7 @@ export class CerificatesComponent implements AfterViewInit, OnDestroy, OnInit {
       demande.deleted
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'resolveRequest');
+      this.toastr.error( 'Erreur lors de l\'execution de cette commande.');
       throw error;
     });
   }

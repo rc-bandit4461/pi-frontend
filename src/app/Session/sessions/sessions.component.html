@@ -18,7 +18,7 @@
         </thead>
         <tbody *ngIf="sessionsList?.length > 0">
         <tr *ngFor="let session of sessionsList">
-          <td><a [routerLink]="'/admin/sessions/' + session.id">{{session.id}}</a></td>
+          <td><a [routerLink]="'/admin/sessions/' + session.id + '/actions'">{{session.id}}</a></td>
           <td>{{session.filiere['libelle']}}</td>
           <td>{{session.annee}}</td>
           <td>{{session['is_done']? 'Terminée':'En cours'}}</td>
@@ -29,7 +29,7 @@
             <button [routerLink]="'/admin/sessions/' + session.id + '/edit'"
               class="btn btn-info mr-1">Edit
             </button>
-            <a [routerLink]="'/admin/sessions/' + session.id" class="btn btn-primary mr-1">Actions</a></td>
+            <a [routerLink]="'/admin/sessions/' + session.id + '/actions'" class="btn btn-primary mr-1">Actions</a></td>
         </tr>
         </tbody>
         <tbody>

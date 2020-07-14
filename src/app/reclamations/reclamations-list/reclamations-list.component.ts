@@ -7,6 +7,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {ActivatedRoute} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 
@@ -54,7 +55,7 @@ export class ReclamationsListComponent implements AfterViewInit, OnDestroy, OnIn
   }
 
 
-  constructor(private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, public common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr: ToastrService,private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, public common: CommonService, private activatedRoute: ActivatedRoute) {
 
   }
 
@@ -91,7 +92,7 @@ export class ReclamationsListComponent implements AfterViewInit, OnDestroy, OnIn
       this.updateDemande(demande);
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'resolveRequest');
+      this.toastr.error('Une erreur s\'est arrivée lors de l\'execution de cette commande.');
       throw error;
     });
   }
@@ -112,7 +113,7 @@ export class ReclamationsListComponent implements AfterViewInit, OnDestroy, OnIn
       this.updateDemande(demande);
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'Couldn\t execute query');
+      this.toastr.error('Une erreur s\'est arrivée lors de l\'execution de cette commande.');
       throw error;
     });
   }
@@ -125,7 +126,7 @@ export class ReclamationsListComponent implements AfterViewInit, OnDestroy, OnIn
       demande.deleted = true;
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'Couldn\t execute query');
+      this.toastr.error('Une erreur s\'est arrivée lors de l\'execution de cette commande.');
       throw error;
     });
   }

@@ -8,6 +8,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {ActivatedRoute, Router} from '@angular/router';
 import {Filiere, Module, SemestreFiliere} from '../../entities/entities';
 import {forEachComment} from 'tslint';
+import {ToastrService} from 'ngx-toastr';
 
 declare var SelectPure: any;
 
@@ -31,7 +32,7 @@ export class EditFiliereComponent implements OnInit {
   public filiere: any;
   public isLoaded:boolean = false;
   public errorOccured:boolean = false;
-  constructor(private router: Router, private httpClient: HttpClient, private  common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr:ToastrService,private router: Router, private httpClient: HttpClient, private  common: CommonService, private activatedRoute: ActivatedRoute) {
   }
 
 
@@ -78,7 +79,7 @@ export class EditFiliereComponent implements OnInit {
       console.log(this.selectedElements);
       this.isLoaded = true;
     } catch (e) {
-      this.common.toastMessage('Error', 'une erreur est rencontré lors de chargement des données');
+      this.toastr.error( 'une erreur est rencontré lors de chargement des données');
       this.errorOccured = true;
       console.log(e);
     }
@@ -238,7 +239,7 @@ export class EditFiliereComponent implements OnInit {
     }
 
     if (this.semestresList[this.semestresList.length - 1].modules.length > 0) {
-      this.common.toastMessage('Error', 'Supprimez dabord les modules depuis le dernier semestre');
+      this.toastr.error( 'Supprimez dabord les modules depuis le dernier semestre');
       this.semestresCount = this.semestresList.length;
 
     } else {
@@ -286,11 +287,11 @@ export class EditFiliereComponent implements OnInit {
   onSubmit(value: any) {
     console.log('SUBMIT CALLED');
     if(this.existsEmptySemester()){
-      this.common.toastMessage('Erreur', 'Remplissez les semestres vides');
+      this.toastr.warning( 'Remplissez les semestres vides');
       return;
     }
     if (!this.libelleFiliere) {
-      this.common.toastMessage('Erreur', 'Il existe des champs manquants');
+      this.toastr.warning( 'Il existe des champs manquants');
       return;
     }
     //IL faut Verifier qu'il ya au moins un module dans chaqye semestre
@@ -320,16 +321,16 @@ export class EditFiliereComponent implements OnInit {
 
 
     this.httpClient.put(`${this.common.url}/editFiliere/` + this.filiere.id, this.filiere).subscribe(value1 => {
-      this.common.toastMessage('Success', 'Filiere modifié.');
+      this.toastr.success( 'Filiere modifié.');
       this.router.navigateByUrl('/admin/filieres');
     }, error => {
-      this.common.toastMessage('Error', 'Une erreur s\'est produite lors de l\'ajout.');
+      this.toastr.error( 'Une erreur s\'est produite lors de l\'ajout.');
       console.log(error);
     });
 
   }
 
   onDeleteModuleSemestre(mod: any) {
-    this.common.toastMessage('Erreur', 'Deplacer le module depuis le semestre pour pouvoir le supprimer.');
+    this.toastr.warning( 'Deplacer le module depuis le semestre pour pouvoir le supprimer.');
   }
 }

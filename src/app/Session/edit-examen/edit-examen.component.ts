@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {Element, Etudiant, EtudiantSession, Examen, Filiere, Module, NoteExamen, SemestreFiliere, Session} from '../../entities/entities';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import {ToastrModule, ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 
@@ -28,7 +29,7 @@ export class EditExamenComponent implements OnInit {
   curentElementId: any;
   private etudiantSessions: EtudiantSession[];
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
 
   }
@@ -100,7 +101,7 @@ export class EditExamenComponent implements OnInit {
       console.log(this.etudiantsList);
     } catch (e) {
       this.isError = true;
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+      this.toastr.error( this.common.messages.error.message.get);
     }
   }
 
@@ -178,20 +179,20 @@ export class EditExamenComponent implements OnInit {
     // console.log(updatedExam);
     // return;
     if (!this.verifyNotes()) {
-      this.common.toastMessage('Info', 'Verififer les informations des étudiants.');
+      this.toastr.warning( 'Verififer les informations des étudiants.');
       return;
     }
     if (!this.examDetail.description || !this.examDetail.facteur) {
-      this.common.toastMessage('Info', 'Un ou plusieur champs et manquants');
+      this.toastr.warning( 'Un ou plusieur champs et manquants');
       return;
 
     }
     this.httpClient.put(this.common.url + '/saveExamen', updatedExam).subscribe(value1 => {
-      this.common.toastMessage(this.common.messages.success.title, this.common.messages.success.message.update);
+      this.toastr.success( this.common.messages.success.message.update);
 
     }, error => {
       console.log(error);
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+      this.toastr.error( this.common.messages.error.message.update);
     });
   }
 

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 export enum MessageType{
     UPDATE,
   DELETE,
@@ -37,32 +38,32 @@ export class CommonService {
     }
   };
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient) {
   }
   public qToastMessage(type:MessageType,bool:boolean){
       if(type == MessageType.CREATE){
         if(bool == true)
-          this.toastMessage(this.messages.success.title,this.messages.success.message.create);
+          this.toastr.success(this.messages.success.message.create);
         else
-          this.toastMessage(this.messages.error.title,this.messages.error.message.create);
+          this.toastr.error(this.messages.error.message.create);
       }
       else if(type == MessageType.UPDATE){
         if(bool == true)
-          this.toastMessage(this.messages.success.title,this.messages.success.message.update);
+          this.toastr.success(this.messages.success.message.update);
         else
-          this.toastMessage(this.messages.error.title,this.messages.error.message.update);
+          this.toastr.error(this.messages.error.message.update);
       }
       if(type == MessageType.DELETE){
         if(bool == true)
-          this.toastMessage(this.messages.success.title,this.messages.success.message.delete);
+          this.toastr.success(this.messages.success.message.delete);
         else
-          this.toastMessage(this.messages.error.title,this.messages.error.message.delete);
+          this.toastr.error(this.messages.error.message.delete);
       }
       if(type == MessageType.GET){
         if(bool == true)
-          this.toastMessage(this.messages.success.title,this.messages.success.message.get);
+          this.toastr.success(this.messages.success.message.get);
         else
-          this.toastMessage(this.messages.error.title,this.messages.error.message.get);
+          this.toastr.error(this.messages.error.message.get);
       }
   }
   public getPagesArray(noPages: number) {

@@ -7,6 +7,7 @@ import {ActivatedRoute} from '@angular/router';
 import {CommonService} from '../../services/common.service';
 import {DataTableDirective} from 'angular-datatables';
 import {Subject} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-demande-releve-list',
@@ -57,7 +58,7 @@ export class DemandeReleveListComponent implements AfterViewInit, OnDestroy, OnI
   }
 
 
-  constructor(private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr:ToastrService,private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
 
   }
@@ -95,7 +96,7 @@ export class DemandeReleveListComponent implements AfterViewInit, OnDestroy, OnI
       this.updateDemande(demande);
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'resolveRequest');
+      this.toastr.error( 'erreur lors de l\'exécution de cette commande.');
       throw error;
     });
   }
@@ -115,7 +116,7 @@ export class DemandeReleveListComponent implements AfterViewInit, OnDestroy, OnI
       this.updateDemande(demande);
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'resolveRequest');
+      this.toastr.error( 'erreur lors de l\'exécution de cette commande.');
       throw error;
     });
   }
@@ -132,7 +133,7 @@ export class DemandeReleveListComponent implements AfterViewInit, OnDestroy, OnI
       demande.deleted = true;
       this.rerender();
     }, error => {
-      this.common.toastMessage('Errror', 'resolveRequest');
+      this.toastr.error( 'erreur lors de l\'exécution de cette commande.');
       throw error;
     });
   }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {Filiere, Session} from '../../entities/entities';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-sessions',
@@ -13,7 +14,7 @@ export class SessionsComponent implements OnInit {
   public isLoaded: boolean = false;
   public isError: boolean = false;
 
-  constructor(private httpClient: HttpClient, private common: CommonService) {
+  constructor(private httpClient: HttpClient, private common: CommonService,private toastr:ToastrService) {
   }
 
   dtOptions: DataTables.Settings = {};
@@ -34,7 +35,10 @@ export class SessionsComponent implements OnInit {
       }
       this.sessionsList = data['_embedded']['sessions'];
       for (const session of this.sessionsList) {
-        session.filiere = await this.httpClient.get<Filiere>(session._links['filiere'].href).toPromise();
+
+        let url = this.common.url + '/sessions/'+session.id +  '/filiere';
+        console.log(url);
+        session.filiere = await this.httpClient.get<Filiere>(url).toPromise();
       }
       this.dtOptions = {
         order: [[0, 'asc']],
@@ -57,10 +61,10 @@ export class SessionsComponent implements OnInit {
       return;
     }
     this.httpClient.delete(session._links.self.href).subscribe(value => {
-        this.common.toastMessage('Success,', 'Session supprimé');
+        this.toastr.success( 'Session supprimé');
         this.sessionsList.splice(this.sessionsList.indexOf(session), 1);
       }, error => {
-        this.common.toastMessage('Erreur,', 'Une erreur est rencontré lors de la procédure de suppression');
+        this.toastr.error( 'Une erreur est rencontré lors de la procédure de suppression');
         console.log(error);
 
       }

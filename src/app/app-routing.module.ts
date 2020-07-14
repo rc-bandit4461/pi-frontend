@@ -93,7 +93,7 @@ const routes: Routes = [
     component: DemandeReleveListComponent
   },
   {
-    path: 'admin/sessions/:id',
+    path: 'admin/sessions/:id/actions',
     component: SessionActionsComponent
   },
   //Reclmations

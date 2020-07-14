@@ -4,6 +4,7 @@ import {CommonService} from '../../services/common.service';
 import {Diplome, Filiere} from '../../entities/entities';
 import {Router} from '@angular/router';
 import {toBase64String} from '@angular/compiler/src/output/source_map';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-filieres',
@@ -18,7 +19,7 @@ export class FilieresComponent implements OnInit {
   currentPage: Boolean;
   dtOptions: any;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private router: Router) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient, private common: CommonService, private router: Router) {
   }
 
   ngOnInit() {
@@ -43,7 +44,7 @@ export class FilieresComponent implements OnInit {
       };
     } catch (e) {
       this.isError = true;
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+      this.toastr.error('Une erreur s\'est arrivée lors de l\'execution de cette commande.');
 
     }
 
@@ -56,16 +57,17 @@ export class FilieresComponent implements OnInit {
     try {
       let data = await this.httpClient.get(filiere._links['sessions']['href']).toPromise();
       if (data['_embedded']['sessions'].length > 0) {
-        this.common.toastMessage('Erreur', 'Cette filiere est liée à des sessions.');
+      this.toastr.error('Cette filiere est liée à des sessions.');
+
         return;
       }
       await this.httpClient.delete(this.common.url + '/filieres/' + filiere.id).toPromise();
-      this.common.toastMessage('Success', 'Suppression réussite.');
+      this.toastr.success('\'Opération réussite.');
       this.getList();
 
     } catch (e) {
 
-      this.common.toastMessage('Error', 'Une erreur s\'est produite lors de l\'opération de suppresison');
+      this.toastr.error('Une erreur s\'est arrivée lors de l\'execution de cette commande.');
     }
 
 

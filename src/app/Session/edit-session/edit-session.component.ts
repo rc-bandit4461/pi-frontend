@@ -6,6 +6,7 @@ import {Diplome, Etudiant, EtudiantSession, Filiere, Session} from '../../entiti
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {DataTableDirective} from 'angular-datatables';
 import {Subject} from 'rxjs';
+import {ToastrModule, ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-session',
@@ -46,7 +47,7 @@ export class EditSessionComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  constructor(private httpClient: HttpClient, public common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient, public common: CommonService, private activatedRoute: ActivatedRoute) {
 
   }
 
@@ -113,7 +114,7 @@ export class EditSessionComponent implements AfterViewInit, OnDestroy, OnInit {
       }
     }
     this.httpClient.put(this.common.url + '/saveSession',session).subscribe(value1 => {
-      this.common.toastMessage(this.common.messages.success.title,this.common.messages.success.message.update);
+      this.toastr.success(this.common.messages.success.message.update);
 
     for (let etudiant of this.etudiantsList ) {
       if(etudiant.etudiantSession['is_new'] || etudiant.etudiantSession.is_dropped != etudiant.etudiantSession['is_dropped_changed']){
@@ -123,7 +124,7 @@ export class EditSessionComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     },error => {
       console.log(error);
-      this.common.toastMessage(this.common.messages.error.title,this.common.messages.error.message.update);
+      this.toastr.error(this.common.messages.error.message.update);
     });
   }
 
@@ -143,17 +144,17 @@ export class EditSessionComponent implements AfterViewInit, OnDestroy, OnInit {
       if(!confirm("Etes vous sure de vouloir continuer?")) return;
 
       this.httpClient.delete(this.common.url + '/deleteEtudiantSession/' + this.session.id + '/' + etudiant.id).subscribe(value => {
-      this.common.toastMessage(this.common.messages.success.title,this.common.messages.success.message.delete);
+      this.toastr.success(this.common.messages.success.message.delete);
 
       },error => {
 
-      this.common.toastMessage(this.common.messages.error.title,this.common.messages.error.message.delete);
+      this.toastr.error(this.common.messages.error.message.delete);
       });
   }
 
   onSearchCin($event: Event) {
     if (!this.searchCin) {
-      this.common.toastMessage('Erreur', 'Inserer un CIN dabord');
+      this.toastr.warning( 'Inserer un CIN dabord');
       return;
     }
     console.log(this.searchCin);
@@ -162,7 +163,7 @@ export class EditSessionComponent implements AfterViewInit, OnDestroy, OnInit {
         this.searchedStudent = value['_embedded']['etudiants'][0];
         for (let etudiant of this.etudiantsList) {
           if (etudiant.cin.toUpperCase() == this.searchedStudent.cin.toUpperCase()) {
-            this.common.toastMessage('Erreur', 'Cet étudiant est déja dans la liste.');
+            this.toastr.info( 'Cet étudiant est déja dans la liste.');
             return;
           }
         }

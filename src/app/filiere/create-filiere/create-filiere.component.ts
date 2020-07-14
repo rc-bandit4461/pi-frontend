@@ -7,6 +7,7 @@ import * as $ from 'jquery';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Router} from '@angular/router';
 import {Diplome} from '../../entities/entities';
+import {ToastrService} from 'ngx-toastr';
 
 declare var SelectPure: any;
 
@@ -35,7 +36,7 @@ export class CreateFiliereComponent implements OnInit {
   filiereDiplome: Diplome = new Diplome();
   isLoaded: boolean = false;
 
-  constructor(private router: Router, private httpClient: HttpClient, private  common: CommonService) {
+  constructor(private toastr:ToastrService,private router: Router, private httpClient: HttpClient, private  common: CommonService) {
   }
 
   initializeSemestresList() {
@@ -192,7 +193,7 @@ export class CreateFiliereComponent implements OnInit {
     }
 
     if (this.semestresList[this.semestresList.length - 1].modules.length > 0) {
-      this.common.toastMessage('Error', 'Supprimez dabord les modules depuis le dernier semestre');
+      this.toastr.error( 'Supprimez dabord les modules depuis le dernier semestre');
       this.semestresCount = this.semestresList.length;
 
     } else {
@@ -251,11 +252,11 @@ export class CreateFiliereComponent implements OnInit {
   onSubmit(value: any) {
 
     if (this.existsEmptySemester()) {
-      this.common.toastMessage('Erreur', 'Remplissez les semestres vides');
+      this.toastr.warning( 'Remplissez les semestres vides');
       return;
     }
     if (!this.libeleFiliere) {
-      this.common.toastMessage('Erreur', 'Il existe des champs manquants');
+      this.toastr.warning( 'Il existe des champs manquants');
       return;
     }
     // console.log(this.filiere);
@@ -295,10 +296,10 @@ export class CreateFiliereComponent implements OnInit {
 
 
     this.httpClient.post(`${this.common.url}/saveFiliere`, this.filiere).subscribe(value1 => {
-      this.common.toastMessage('Success', 'Filiere ajoutée.');
+      this.toastr.success( 'Filiere ajoutée.');
       this.router.navigateByUrl('/admin/filieres');
     }, error => {
-      this.common.toastMessage('Error', 'Une erreur s\'est produite lors de l\'ajout.');
+      this.toastr.error( 'Une erreur s\'est produite lors de l\'ajout.');
       console.log(error);
     });
     //Insertion des modules tout d'abord?

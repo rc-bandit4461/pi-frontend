@@ -7,6 +7,7 @@ import {Etudiant, EtudiantSession, Filiere, SemestreEtudiant, Session} from '../
 import {Subject} from 'rxjs';
 import {EtudiantServiceService} from '../../services/etudiant-service.service';
 import {AuthService} from '../../services/auth.service';
+import {Toast, ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-etudiant-session-semestres',
@@ -61,7 +62,7 @@ export class EtudiantSessionSemestresComponent implements AfterViewInit, OnDestr
     }
   }
 
-  constructor(private httpClient: HttpClient,private authService:AuthService, private common: CommonService, private activatedRoute: ActivatedRoute,public etudiantService:EtudiantServiceService) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient,private authService:AuthService, private common: CommonService, private activatedRoute: ActivatedRoute,public etudiantService:EtudiantServiceService) {
 
 
   }
@@ -94,15 +95,15 @@ export class EtudiantSessionSemestresComponent implements AfterViewInit, OnDestr
 
   onDemandeReleve(semestreEtudiant: SemestreEtudiant) {
     if (semestreEtudiant.hasRequestedReleve) {
-      this.common.toastMessage('Erreur', 'Vous avez deja effectué une demande.');
+      this.toastr.warning( 'Vous avez deja effectué une demande.');
       return;
     }
     if (!semestreEtudiant.canRequestReleve) {
-      this.common.toastMessage('Erreur', 'Cette fonctionnalité est desactivé temportairement');
+      this.toastr.warning( 'Cette fonctionnalité est desactivé temportairement');
       return;
     }
     this.httpClient.get(this.common.url + '/requestReleve/' + semestreEtudiant.id).subscribe(value => {
-      this.common.toastMessage('Info', 'Votre demande a ete enregistré.');
+      this.toastr.success( 'Votre demande a ete enregistré.');
       this.httpClient.get(semestreEtudiant._links['self']['href']).subscribe(value1 => {
        let newSemestreEtudiant = <SemestreEtudiant> value1;
         semestreEtudiant.hasRequestedReleve = newSemestreEtudiant.hasRequestedReleve;
@@ -113,11 +114,11 @@ export class EtudiantSessionSemestresComponent implements AfterViewInit, OnDestr
         this.rerender();
       }, error => {
         console.log(error);
-        this.common.toastMessage('Error', 'Error loading data');
+        this.toastr.error( 'Error loading data');
       });
     }, error => {
       console.log(error);
-      this.common.toastMessage('Erreur', 'Erreur lors de lenregistrement de votre demande');
+      this.toastr.error( 'Erreur lors de lenregistrement de votre demande');
 
     });
 

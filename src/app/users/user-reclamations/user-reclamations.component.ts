@@ -4,7 +4,8 @@ import {Reclamation} from '../../entities/entities';
 import {AuthService} from '../../services/auth.service';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
-
+import {ToastrService} from 'ngx-toastr';
+declare var $:any;
 @Component({
   selector: 'app-user-reclamations',
   templateUrl: './user-reclamations.component.html',
@@ -15,7 +16,7 @@ reclamations: Reclamation[] = [];
   public isLoaded: boolean = false;
   public isError: boolean = false;
 
-  constructor(public userService:UserService,public authService:AuthService, public httpClient: HttpClient, public common: CommonService) {
+  constructor(private toastr:ToastrService,public userService:UserService,public authService:AuthService, public httpClient: HttpClient, public common: CommonService) {
   }
 
   ngOnInit(): void {
@@ -51,7 +52,7 @@ reclamations: Reclamation[] = [];
       demande.seen = true;
       this.userService.reclamationsCount--;
     }, error => {
-      this.common.toastMessage('Erreur', 'Une erreure a empeché la mise a jour des données ');
+      this.toastr.error( 'Une erreure a empeché la mise a jour des données ');
       console.log(error);
 
     });

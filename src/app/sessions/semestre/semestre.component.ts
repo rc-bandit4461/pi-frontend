@@ -20,6 +20,7 @@ import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {Subject} from 'rxjs';
 import {ReleveService} from '../../services/releve.service';
 import {DataTableDirective} from 'angular-datatables';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-semestre',
@@ -58,7 +59,7 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  constructor(private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
+  constructor(private toastr:ToastrService,private releveService: ReleveService, private sanitizer: DomSanitizer, private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute, private attestationService: AttestationService) {
 
 
   }
@@ -104,12 +105,12 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
       }, error => {
         console.log(error);
         this.isError = true;
-        this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+        this.toastr.error( 'Une erreur est survenue lors de limportation de donnees');
 
       });
     } catch (e) {
       this.isError = true;
-      this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+      this.toastr.error( 'Une erreur est survenue lors de limportation de donnees');
       console.log(e);
     }
 
@@ -141,12 +142,12 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
       }, error => {
         console.log(error);
         this.isError = true;
-        this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+        this.toastr.error( 'Une erreur est survenue lors de limportation de donnees');
 
       });
     } catch (e) {
       this.isError = true;
-      this.common.toastMessage('Erreur', 'Une erreur est survenue lors de limportation de donnees');
+      this.toastr.error( 'Une erreur est survenue lors de limportation de donnees');
       console.log(e);
     }
   }
@@ -171,12 +172,12 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
       url = this.common.url + '/updateSemestreNotes/' + this.sessionSemestre.id;
     }
     this.httpClient.get(url).subscribe(value => {
-      this.common.toastMessage(this.common.messages.success.title, this.common.messages.success.message.update);
+      this.toastr.success( this.common.messages.success.message.update);
       // this.initVariables();
       this.getEtudiantsData();
 
     }, error => {
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+      this.toastr.error(this.common.messages.error.message.update);
     });
   }
 
@@ -208,7 +209,7 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
           }
         }
         if (etudiants.length == 0) {
-          this.common.toastMessage('Info', 'Choisir au moins un étudiant de la liste.');
+          this.toastr.info( 'Choisir au moins un étudiant de la liste.');
           return;
         }
         for (const etudiant of etudiants) {
@@ -290,7 +291,7 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
       };
     } catch (e) {
       console.log(e);
-      this.common.toastMessage('Erreur', 'Une erreur est survenue lors de génération du document');
+      this.toastr.error( 'Une erreur est survenue lors de génération du document');
     }
 
   }
@@ -319,16 +320,16 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
       url = this.common.url + '/updateSemestreEtudiantNotes/' + semestreEtudiant.id;
     }
     this.httpClient.get(url).subscribe(value => {
-      this.common.toastMessage(this.common.messages.success.title, this.common.messages.success.message.update);
+      this.toastr.success( this.common.messages.success.message.update);
       this.httpClient.get(semestreEtudiant._links.self.href).subscribe(data => {
         semestreEtudiant = <SemestreEtudiant> data;
         this.rerender();
       }, error => {
-        this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+        this.toastr.error( this.common.messages.error.message.update);
 
       });
     }, error => {
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.update);
+      this.toastr.error( this.common.messages.error.message.update);
     });
 
   }

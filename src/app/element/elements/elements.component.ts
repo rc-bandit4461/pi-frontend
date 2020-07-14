@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../../services/common.service';
 import {Element} from '../../entities/entities';
 import {HttpClient} from '@angular/common/http';
+import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 
@@ -21,7 +22,7 @@ export class ElementsComponent implements OnInit {
   public isModify: boolean = false;
   public searchString = '';
 
-  constructor( private common: CommonService, private httpClient: HttpClient) {
+  constructor(private toastr:ToastrService,private common: CommonService, private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -57,11 +58,11 @@ export class ElementsComponent implements OnInit {
 
       this.httpClient.post<Element>(this.common.url + '/listElements', this.newElement).subscribe(
         data => {
-          this.common.toastMessage('Success', 'Added');
+          this.toastr.success( 'Added');
           this.newElement = data;
           this.getElements();
         }, error => {
-          this.common.toastMessage('Error', 'Error while saving the element');
+          this.toastr.error( 'Error while saving the element');
           console.log('Error while saving the element');
         }, () => {
           this.isAdd = false;
@@ -71,7 +72,7 @@ export class ElementsComponent implements OnInit {
       );
     } else {
       this.currentElement.libelle = value.libelle;
-      this.common.toastMessage('Success', 'Modified');
+      this.toastr.success( 'Modified');
       console.log(this.currentElement);
 
       this.httpClient.put<Element>(this.currentElement._links.self.href, this.currentElement).subscribe(
@@ -79,7 +80,7 @@ export class ElementsComponent implements OnInit {
           this.currentElement = data;
           this.getElements();
         }, error => {
-          this.common.toastMessage('Error', 'Error while saving the element');
+          this.toastr.error( 'Error while saving the element');
           console.log('Error while saving the element');
 
         }, () => {
@@ -109,11 +110,11 @@ export class ElementsComponent implements OnInit {
     if (confirm('Supprimer')) {
       this.httpClient.delete(element._links.self.href).subscribe(
         value => {
-          this.common.toastMessage('Success,', 'Element supprimé');
+          this.toastr.success( 'Element supprimé');
           this.getElements();
         }, error => {
 
-          this.common.toastMessage('Erreur,', 'Erreur rencontré');
+          this.toastr.error( 'Erreur rencontré');
         }
       );
     }

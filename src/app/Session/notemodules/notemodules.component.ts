@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {ActivatedRoute} from '@angular/router';
 import {Etudiant, EtudiantSession, Element, NoteElementModule, NoteModule, Filiere, Module, Session} from '../../entities/entities';
+import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 
@@ -19,7 +20,7 @@ export class NotemodulesComponent implements OnInit {
   isError: boolean = false;
   etudiantSessions: EtudiantSession[];
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
   }
 
@@ -79,7 +80,7 @@ export class NotemodulesComponent implements OnInit {
       this.isLoaded = true;
     } catch (e) {
       this.isError = true;
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+      this.toastr.error( this.common.messages.error.message.get);
       console.log(e);
     }
   }
@@ -92,10 +93,10 @@ export class NotemodulesComponent implements OnInit {
   onConsistNoteElementModule(noteElementModule: NoteElementModule) {
       if(!confirm("Etes vous sure de vouloir continuer?")) return;
       this.httpClient.get(this.common.url + '/consisteNoteElementModule/' + noteElementModule.id).subscribe(value => {
-      this.common.toastMessage(this.common.messages.success.title, this.common.messages.success.message.update);
+      this.toastr.success( this.common.messages.success.message.update);
 
       },error => {
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+      this.toastr.error(this.common.messages.error.message.get);
 
       });
   }
@@ -103,10 +104,10 @@ export class NotemodulesComponent implements OnInit {
   onConsisteNoteModule(noteModule: NoteModule) {
        if(!confirm("Etes vous sure de vouloir continuer?")) return;
       this.httpClient.get(this.common.url + '/consisteNoteModule/' + noteModule.id).subscribe(value => {
-      this.common.toastMessage(this.common.messages.success.title, this.common.messages.success.message.update);
+      this.toastr.success( this.common.messages.success.message.update);
 
       },error => {
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+      this.toastr.error(this.common.messages.error.message.get);
 
       });
   }

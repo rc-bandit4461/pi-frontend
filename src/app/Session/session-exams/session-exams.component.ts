@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {ActivatedRoute} from '@angular/router';
 import {Element, Examen, Filiere, Module, Session} from '../../entities/entities';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-session-exams',
@@ -17,7 +18,7 @@ export class SessionExamsComponent implements OnInit {
   dtOptions: any;
   isError: boolean = false;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
 
   }
@@ -60,9 +61,9 @@ export class SessionExamsComponent implements OnInit {
     }
     this.examensList.splice(this.examensList.indexOf(examen), 1);
     this.httpClient.delete(examen._links['self']['href']).subscribe(value => {
-      this.common.toastMessage('Success', 'Examen Supprimé');
+      this.toastr.success( 'Examen Supprimé');
     }, error => {
-      this.common.toastMessage('Erreur', 'Une erreur a empeché la suppression.');
+      this.toastr.error( 'Une erreur a empeché la suppression.');
       console.log(error);
     });
   }

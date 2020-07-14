@@ -92,7 +92,7 @@ export class NotemoduleEditComponent implements OnInit {
       this.isLoaded = true;
     } catch (e) {
       this.isError = true;
-      this.common.toastMessage(this.common.messages.error.title, this.common.messages.error.message.get);
+      this.toastr.error( this.common.messages.error.message.get);
       console.log(e);
     }
   }
@@ -121,7 +121,7 @@ export class NotemoduleEditComponent implements OnInit {
     let toUpdateNoteElementModules = [];
     let updatedNoteElementModules = [];
     if (!this.verifyConsistency()) {
-      this.common.toastMessage('Erreur', 'Il existe des données qui sont inconsistentes.');
+      this.toastr.warning( 'Il existe des données qui sont inconsistentes.');
       return;
     }
     for (const etudiant of this.etudiantsList) {

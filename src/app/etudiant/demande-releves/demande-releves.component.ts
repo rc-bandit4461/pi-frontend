@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../../services/common.service';
 import {DemandeReleve, Etudiant, Filiere, SemestreEtudiant, Session} from '../../entities/entities';
 import {AuthService} from '../../services/auth.service';
+import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 
@@ -17,7 +18,7 @@ export class DemandeRelevesComponent implements OnInit {
   public isLoaded: boolean = false;
   public isError: boolean = false;
 
-  constructor(public etudiantService: EtudiantServiceService,public authService:AuthService, public httpClient: HttpClient, public common: CommonService) {
+  constructor(private toastr:ToastrService,public etudiantService: EtudiantServiceService,public authService:AuthService, public httpClient: HttpClient, public common: CommonService) {
   }
 
   ngOnInit(): void {
@@ -65,7 +66,7 @@ export class DemandeRelevesComponent implements OnInit {
       this.etudiantService.demandeReleveCount--;
       this.etudiantService.verifyCountPositive();
     }, error => {
-      this.common.toastMessage('Erreur', 'Une erreure a empeché la mise a jour des données ');
+      this.toastr.error( 'Une erreure a empeché la mise a jour des données ');
       console.log(error);
 
     });
