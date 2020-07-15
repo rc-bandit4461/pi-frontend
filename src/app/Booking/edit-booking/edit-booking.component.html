@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div *ngIf="rooms" class="row">
+    <div *ngIf="rooms" class="row" >
       <div class="form-group col-5">
         <label for="room">Room</label>
         <select
@@ -64,7 +64,7 @@
         </select>
       </div>
     </div>
-    <div *ngIf="users" class="row">
+    <div *ngIf="users" class="row" [ngClass]="{'d-none':!authService.isAdmin}">
       <div class="form-group col-5">
         <label for="user">User</label>
         <select

@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FlatpickrModule } from 'angularx-flatpickr';
@@ -58,6 +59,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { DemandeReclamationComponent } from './reclamations/demande-reclamation/demande-reclamation.component';
 import { HomeComponent } from './home/home.component';
 import { UserReclamationsComponent } from './users/user-reclamations/user-reclamations.component';
+import { EtudiantAttestationComponent } from './etudiant/etudiant-attestation/etudiant-attestation.component';
+import { AttestReclamationListComponent } from './attest-reclamation-list/attest-reclamation-list.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -98,9 +101,12 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent,
     DemandeReclamationComponent,
     HomeComponent,
-    UserReclamationsComponent
+    UserReclamationsComponent,
+    EtudiantAttestationComponent,
+    AttestReclamationListComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

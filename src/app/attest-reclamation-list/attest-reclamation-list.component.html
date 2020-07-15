@@ -1,0 +1,130 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+
+      <div class="card-header text-center">
+        <h2>Réclamations des attestations</h2>
+        <p *ngIf="isError">
+          Une erreur s'est produit lors de chargement
+        </p>
+        <p *ngIf="!isError && !isLoaded">
+          Chargement...
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          Liste des dernieres demandes
+        </div>
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover w-100">
+            <thead>
+            <tr>
+              <th>Id</th>
+              <th>Date</th>
+              <th>User</th>
+              <th>Role</th>
+              <th>libelle</th>
+              <th>Etat</th>
+              <th>#</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="isLoaded">
+            <tr *ngFor="let reclamation of this.reclamations">
+              <td>{{reclamation.id}}</td>
+              <td>{{reclamation.updatedAt | date:'medium'}}</td>
+              <td>{{(reclamation.etudiant.nom | uppercase) + ' ' + (reclamation.etudiant.prenom | titlecase)}}</td>
+              <td>{{reclamation.etudiant.role.toUpperCase()}}</td>
+              <td class="font-weight-bold"
+                [ngClass]="{'text-danger':reclamation.deleted && reclamation.done,'text-warning': !reclamation.deleted&&
+                reclamation.rejected && reclamation.done,'text-success':!reclamation.rejected && reclamation.done &&
+                 !reclamation.deleted}">{{
+                reclamation.done? (reclamation.deleted? 'deleted':(reclamation.rejected?
+                'Denied':'Fixed')) : 'Not processed'
+                }}</td>
+              <td>{{reclamation.libelle}}</td>
+              <td>
+                <div class="btn-group">
+
+                <button class="btn btn-success btn-sm" (click)="onResolve(reclamation)">Resolve</button>
+                <button class="btn btn-warning btn-sm " (click)="onDeny(reclamation)">Deny</button>
+                <button class="btn btn-danger btn-sm" (click)="onDelete(reclamation)">Delete</button>
+                <button class="btn btn-primary btn-sm" (click)="onDetails(reclamation)">Details</button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade showReclamAttestaionModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          Réclamtion
+        </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pl-2 pr-2 pt-4 pb-4" *ngIf="currentReclamation !== undefined">
+        <div class="row">
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Utilisateur <span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                <strong>{{currentReclamation.etudiant.nom | uppercase}}</strong> {{currentReclamation.etudiant.prenom |
+                titlecase}}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Date <span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                {{currentReclamation.createdAt | date :'medium' }}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Objet<span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                {{currentReclamation.libelle}}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-3 font-weight-bold">
+                Description<span class="float-right">:</span>
+              </div>
+              <div class="col-9">
+                {{currentReclamation.detail}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          >Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

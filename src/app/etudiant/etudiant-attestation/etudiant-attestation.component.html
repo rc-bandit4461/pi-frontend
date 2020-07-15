@@ -1,0 +1,86 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Attestation de Scolarité</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+
+<div class="container mt-5">
+  <div class="alert alert-danger alert-dismissible fade show" [hidden]="!StateCompletionAlertClosed" role="alert">
+    <div class="text-center">
+      Vous avez atteint le nombre <strong>maximale</strong> de téléchargement pour cette session
+    </div>
+  </div>
+  <div class="alert alert-danger alert-dismissible fade show" [hidden]="!NullDataAlertClosed" role="alert">
+    <div class="text-center">
+      <strong>Le code d'étudiant</strong> que vous avez entrer <strong>n'existe pas</strong> dans notre système !
+    </div>
+  </div>
+  <div class="alert alert-success alert-dismissible fade show" [hidden]="!activated" role="alert">
+    <div class="text-center">
+      <strong>Félicitation !</strong> votre réclamation a été bien envoyée !
+    </div>
+  </div>
+  <button class="btn btn-success btn-block" [disabled]="!showStartBotton" (click)="isOkey=true">Demander une attestation</button><br>
+  <div [hidden]="!isOkey">
+    <label>Veuillez saisir votre code d'étudiant : </label>
+    <input type="text" class="form-control" [(ngModel)]="code"><br>
+    <button class="btn btn-dark btn-block" (click)="onGetAttestation(code)">Charger l'attestation</button>
+  </div>
+</div>
+<div class="container mt-5 mb-5" style="border-style: solid; width: 880px;overflow-y: scroll;max-height: 400px;" *ngIf="showAttest">
+    <div id="pdfTogenerate">
+      <img src="assets/images/header-attestation.PNG" width="100%"><br><br><br><br>
+      <div class="text-center">
+          <h2><b>ATTESTATION D'INSCRIPTION</b></h2><br><br><br>
+      </div>
+      <div class="card-body ml-5 mr-5">
+        <p>Le Directeur de l'Ecole Normale Supérieure de l'Enseignement Technique Mohammedia atteste que l'étudiant :</p>
+        <p>Monsieur <b>{{ currentAttestation.nomComplet }}</b></p><br> <!-- stud.nom + " " + stud.prenom -->
+        <div class="text-left ml-5">
+          <p>Numéro de la carte d'identité nationale : {{ currentAttestation.cin }}</p>
+          <p>Code national de l'étudiant : {{ currentAttestation.cne }}</p>
+          <p>né le {{ currentAttestation.date_naissance | date:'mediumDate':'+0200':'fr' }} à {{ currentAttestation.ville_naissance }} ( MAROC )</p>
+        </div><br>
+        <p>est régulièrement inscrit à la Ecole Normale Superieure de l'Enseignement Technique - Mohammedia pour l'année universitaire {{ currentAttestation.annee_session }}.</p>
+        <p><b>Diplôme : </b> <i>{{ currentAttestation.type_diplome }}</i></p>
+        <p><b>Année :	</b> {{ currentAttestation.annee_univers }}</p><br>
+        <div  class="text-right">
+          <p>Fait à Mohammedia, le {{ todayDate | date:'mediumDate':'+0200':'fr'}}</p>
+        </div>
+        <div class="text-center mt-2">
+          <img src="assets/images/stamp.png" height="175px" width="200px">
+        </div>
+          <p class="text-right">{{ currentAttestation.codeEtudiant }}</p>
+      </div>
+
+        <img src="assets/images/footer-attestation.PNG" width="100%">
+    </div>
+  </div>
+
+<div class="container mt-5 mb-5" [hidden]="!showAttest">
+    <div class="ml-5 mb-2" *ngIf="clicked" style="width: 1000px;">
+      <form #f="ngForm" (ngSubmit)="sendReclamation(f.value)">
+        <div class="form-group">
+          <label for="reclamSujet">Sujet de Réclamation</label>
+          <textarea class="form-control" id="reclamSujet" rows="3" name="detail" ngModel></textarea>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Envoyer</button>
+      </form>
+    </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="col">
+        <button class="btn btn-outline-primary btn-block" (click)="openPDF()">Voir l'attestation (PDF)</button>
+        <button class="btn btn-outline-success btn-block" (click)="downloadPDF()">Télécharger l'attestation (PDF)</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="col">
+        <button class="btn btn-outline-warning btn-block" style="height: 84px;" (click)="clicked=true">Réclamer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

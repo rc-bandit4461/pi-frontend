@@ -1,14 +1,19 @@
-<div class="row" *ngIf="isLoaded && demandes.length == 0">
+<ng-container *ngIf="isLoaded && demandes.length == 0">
+  <div class="row" >
   <div class="col-12">
     Vous n'avez aucune demande prête.
   </div>
 </div>
-<div class="row" *ngIf="isError">
+</ng-container>
+<ng-container *ngIf="isError">
+  <div class="row">
   <div class="col-12">
     Une erreur a empeché le chargement des demandes
   </div>
 </div>
-<div class="row" *ngIf="isLoaded && demandes.length > 0">
+</ng-container>
+<ng-container *ngIf="isLoaded && demandes.length > 0">
+  <div class="row" >
 
   <div class="col-12 mb-2" *ngFor="let demande of demandes">
 
@@ -41,7 +46,8 @@
     </div>
 
   </div>
-  <div class="row" *ngIf="isError">
+  <ng-container *ngIf="isError">
+    <div class="row">
 
     <div class="col-12">
 
@@ -54,4 +60,7 @@
       </div>
     </div>
   </div>
+  </ng-container>
 </div>
+
+</ng-container>

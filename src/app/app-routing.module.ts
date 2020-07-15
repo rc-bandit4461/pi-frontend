@@ -26,6 +26,8 @@ import {EtudiantSessionsComponent} from './etudiant/etudiant-sessions/etudiant-s
 import {CerificatesComponent} from './demandes/cerificates/cerificates.component';
 import {EtudiantSessionSemestresComponent} from './etudiant/etudiant-session-semestres/etudiant-session-semestres.component';
 import {ReclamationsListComponent} from './reclamations/reclamations-list/reclamations-list.component';
+import {EtudiantAttestationComponent} from './etudiant/etudiant-attestation/etudiant-attestation.component';
+import {AttestReclamationListComponent} from './attest-reclamation-list/attest-reclamation-list.component';
 
 
 const routes: Routes = [
@@ -102,6 +104,10 @@ const routes: Routes = [
     component: ReclamationsListComponent
   },
   {
+    path:'admin/reclamAttestations',
+    component:AttestReclamationListComponent
+  },
+  {
     path: 'admin/sessions/:idSession/modules/:idModule/edit',
     component: NotemoduleEditComponent
   },
@@ -140,6 +146,10 @@ const routes: Routes = [
     path: 'etudiant/sessions/:id/semestres',
     component: EtudiantSessionSemestresComponent
   },
+  {
+    path: 'etudiant/attestation',
+    component:EtudiantAttestationComponent
+  }
 
 ];
 

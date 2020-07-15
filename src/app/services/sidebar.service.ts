@@ -141,9 +141,14 @@ export class SidebarService {
         type: 'dropdown',
         submenus: [
           {
-            title: 'Liste des réclamations',
+            title: 'réclamations',
             type: 'simple',
             link: 'admin/reclamations'
+          },
+          {
+            title: 'réclamations attestations',
+            type: 'simple',
+            link: 'admin/reclamAttestations'
           }
         ]
       }
@@ -341,6 +346,10 @@ export class SidebarService {
           {
             title: 'Mes sessions',
             link: '/etudiant/sessions',
+          },
+          {
+            title: 'Attestation',
+            link: '/etudiant/attestation'
           }
         ]
       },

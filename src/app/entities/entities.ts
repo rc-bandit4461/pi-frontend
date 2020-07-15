@@ -4,7 +4,7 @@ export class Entity {
   public _links: Links;
   public created_at: Date;
   public updated_at: Date;
-  public deleted:boolean = false;
+  public deleted: boolean = false;
 
 }
 
@@ -24,10 +24,33 @@ export class Demande extends Entity {
   id: Number;
 
 }
-export class Reclamation extends Demande{
-  public user:User;
-  public feedback:string;
+
+export class Reclamation extends Demande {
+  public user: User;
+  public feedback: string;
 }
+
+export class ReclamAttestation extends Demande {
+  public etudiant: Etudiant;
+
+}
+
+export class Attestation_scolarite extends Entity {
+  codeEtudiant: number;
+  nomComplet: string;
+  cin: string;
+  cne: string;
+  date_naissance: Date;
+  ville_naissance: string;
+  annee_session: string;
+  type_diplome: string;
+  annee_univers: string;
+  nbr_telechargement: number = 2;
+  state_completion: boolean;
+  etudiant: Etudiant;
+  reclamations: ReclamAttestation;
+}
+
 export class DemandeAttestation extends Demande {
 
 }
