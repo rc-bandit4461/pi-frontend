@@ -217,13 +217,13 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
     etudiant['selectedAttestation'] = $event.checked;
   }
   async generateSuccessCertificates(){
-    await this.generateCertificate("attestationReussiteTemplate.docx");
+    await this.generateCertificate("attestationReussiteTemplate.docx","AttestastionsReussite_" + this.session.filiere.libelle +"_"+this.session.annee);
   }
   async generateScolariteCertificates(){
-    await this.generateCertificate("attestationScolariteTemplate.docx");
+    await this.generateCertificate("attestationScolariteTemplate.docx","AttestationScolarite_" + this.session.filiere.libelle +"_"+this.session.annee);
 
   }
-  async generateCertificate(fileName:string) {
+  async generateCertificate(fileName:string,outputFileName:string) {
     try {
       let fileReader = new FileReader();
       let file = await this.common.getFileAsBlobObserable(this.common.url + '/download?fileName='+fileName).toPromise();
@@ -241,7 +241,7 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
         }
 
         let entries = [];
-        for (let etudiant of this.etudiantsList) {
+        for (let etudiant of etudiants) {
           let entry = {
             annee_courante:new Date().getFullYear() + '-' + (new Date().getFullYear() + 1),
             diplomeDescription: this.filiere.diplome.description,
@@ -259,7 +259,9 @@ export class SessionActionsComponent implements AfterViewInit, OnDestroy, OnInit
           };
           entries.push(entry);
         }
-        let data = await this.attestationService.generateDocument(entries, fileReader.result);
+        console.log(entries);
+        // return;
+        let data = await this.attestationService.generateDocument({entries:entries}, fileReader.result,outputFileName);
       };
     } catch (e) {
       console.log(e);

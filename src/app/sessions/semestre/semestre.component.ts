@@ -287,7 +287,8 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
         }
         console.log(entries);
 
-        let data = await this.attestationService.generateDocument({'entries': entries}, fileReader.result);
+        let data = await this.attestationService.generateDocument({'entries': entries}, fileReader.result,"Releve_" + this.session.filiere.libelle + "_" + this.session
+          .annee + "_" + this.sessionSemestre.numero);
       };
     } catch (e) {
       console.log(e);
@@ -322,7 +323,8 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
     this.httpClient.get(url).subscribe(value => {
       this.toastr.success( this.common.messages.success.message.update);
       this.httpClient.get(semestreEtudiant._links.self.href).subscribe(data => {
-        semestreEtudiant = <SemestreEtudiant> data;
+        semestreEtudiant.note = data['note'];
+
         this.rerender();
       }, error => {
         this.toastr.error( this.common.messages.error.message.update);

@@ -91,7 +91,7 @@ export class AttestationService {
   }
 
 
-  async generateDocument(data, content) {
+  async generateDocument(data, content,fileName) {
     var PizZip = require('pizzip');
     var Docxtemplater = require('docxtemplater');
     var FileSaver = require('file-saver');
@@ -106,7 +106,6 @@ export class AttestationService {
       // Catch compilation errors (errors caused by the compilation of the template : misplaced tags)
       this.errorHandler(error);
     }
-
 
 //set the templateVariables
     this.doc.setData(data);
@@ -123,7 +122,7 @@ export class AttestationService {
       type: 'blob',
       mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     }); //Output the document using Data-URI
-    FileSaver.saveAs(out, 'output.docx');
+    FileSaver.saveAs(out, fileName + '.docx');
 
   }
 
