@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {CommonService} from './common.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NewRoomService {
-  constructor(private http: HttpClient) {}
-  host = 'http://localhost:8080/api/';
+  constructor(private http: HttpClient, private common:CommonService) {}
+  host = this.common.url + '/api/';
 
   // saveEmployeeUrl = 'save_employee';
   // deleteEmployeeUrl = 'delete_employee/';

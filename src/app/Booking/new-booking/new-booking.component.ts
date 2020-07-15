@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NewBookingService } from '../../services/new-booking.service';
 import { RoomsComponent } from '../../Room/rooms/rooms.component';
 import { ToastrService } from 'ngx-toastr';
+import {AuthService} from '../../services/auth.service';
+import {$e} from 'codelyzer/angular/styles/chars';
 
 @Component({
   selector: 'app-new-booking',
@@ -14,21 +16,24 @@ export class NewBookingComponent implements OnInit {
   showHide: boolean;
   rooms: any;
   users: any;
-
+  userId:number;
   constructor(
+    public authService:AuthService,
     private formBuilder: FormBuilder,
     private newBookingService: NewBookingService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.userId = this.authService.user.id;
     this.bookingForm = this.formBuilder.group({
       date: [Date, Validators.required],
       start: ['', Validators.required],
       end: ['', Validators.required],
       title: ['', Validators.required],
       roomId: [null, Validators.required],
-      userId: [null, Validators.required],
+      userId: [this.authService.user.id, Validators.required],
+
     });
     this.showHide = true;
     this.onGetRooms();
@@ -37,7 +42,7 @@ export class NewBookingComponent implements OnInit {
   onGetRooms() {
     this.newBookingService.getRooms().subscribe(
       (data) => {
-        this.rooms = data;
+        this.rooms = data['_embedded']['rooms'];
       },
       (err) => {
         console.error(err);
@@ -47,7 +52,16 @@ export class NewBookingComponent implements OnInit {
   onGetUsers() {
     this.newBookingService.getUsers().subscribe(
       (data) => {
-        this.users = data;
+        this.users = [];
+        data['_embedded']['users']?.forEach(user => {
+          this.users.push(user);
+        });
+        data['_embedded']['etudiants']?.forEach(user => {
+          this.users.push(user);
+        });
+        data['_embedded']['professeurs']?.forEach(user => {
+          this.users.push(user);
+        });
       },
       (err) => {
         console.error(err);
@@ -56,12 +70,13 @@ export class NewBookingComponent implements OnInit {
   }
   onSubmit() {
     var bookingFormData = this.bookingForm.value;
-    console.log(this.bookingForm.value);
+    console.log(bookingFormData);
     this.saveBookings(bookingFormData);
     this.showHide = false;
   }
 
   saveBookings(bookingFormData) {
+
     this.newBookingService.saveBooking(bookingFormData).subscribe(
       (data) => {
         if (data == 'oui') {
@@ -85,5 +100,9 @@ export class NewBookingComponent implements OnInit {
   showForm_addMore() {
     this.showHide = true;
     this.bookingForm.reset();
+  }
+
+  onChangeZ($event: any) {
+    console.log($event);
   }
 }

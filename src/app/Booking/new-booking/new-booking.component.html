@@ -44,13 +44,13 @@
           required
           name="room"
         >
-          <option *ngFor="let pow of rooms" [value]="pow.id">{{
-            pow.name
+          <option *ngFor="let room of rooms"  [value]="room.id">{{
+            room.name
           }}</option>
         </select>
       </div>
     </div>
-    <div *ngIf="users" class="row">
+      <div *ngIf="users" class="row" [ngClass]="{'d-none':!authService.isAdmin}">
       <div class="form-group col-4">
         <label for="user">User</label>
         <select

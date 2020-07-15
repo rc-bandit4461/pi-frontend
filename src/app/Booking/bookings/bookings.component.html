@@ -23,7 +23,8 @@
     </h2>
   </form>
   <br /><br />
-  <h3 class="mt-5" *ngIf="!bookings">
+  <ng-container *ngIf="isLoaded">
+    <h3 class="mt-5" *ngIf="!bookings">
     There are no meetings currently scheduled for this date.
   </h3>
 
@@ -89,4 +90,9 @@
       </div>
     </div>
   </div>
+  </ng-container>
+  <ng-container *ngIf="isError">
+        Une erreur a empeché le chargement de données.
+  </ng-container>
+
 </div>

@@ -14,131 +14,143 @@ export class SidebarService {
   generalMenu = [];
 
 
-getProfessorMenus(){
+  getProfessorMenus() {
     return [
-    {
-      title: 'general',
-      type: 'header'
-    },
-    {
-      title: 'Rooms and Bookings',
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Bookings',
-          type: 'simple',
-          link: '/admin/bookings'
-        },
-        {
-          title: 'Rooms',
-          type: 'simple',
-          link: '/admin/rooms'
-        },
-      ]
-    },
-    {
-      title: 'Reclamations',
-      type: 'dropdown',
-      submenus: []
-    }
-  ];
+      {
+        title: 'general',
+        type: 'header'
+      },
+      {
+        title: 'Rooms and Bookings',
+        type: 'dropdown',
+        submenus: [
+          {
+            title: 'Bookings',
+            type: 'simple',
+            link: '/admin/bookings'
+          },
+          {
+            title: 'New booking',
+            type: 'simple',
+            link: '/admin/newBooking'
+          },
+          {
+            title: 'Rooms',
+            type: 'simple',
+            link: '/admin/rooms'
+          },
+        ]
+      },
+      {
+        title: 'Reclamations',
+        type: 'dropdown',
+        submenus: []
+      }
+    ];
 
-}
-getAdminMenus(){
-    return[
-    {
-      title: 'Admin',
-      type: 'header'
-    },
-    {
-      title: 'Element',
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Liste des elements',
-          link: '/admin/elements'
-        }
-      ]
-    },
-    {
-      title: 'Filiere',
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Liste des filieres',
-          link: '/admin/filieres',
-        },
-        {
-          title: 'Nouvelle filiere',
-          link: '/admin/filieres/create',
-        },
-      ]
+  }
 
-    },
-    {
-      title: 'Sessions',
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Liste des sessions',
-          link: '/admin/sessions',
-        },
-        {
-          title: 'Nouvelle session',
-          link: '/admin/sessions/create',
-        },
-      ]
+  getAdminMenus() {
+    return [
+      {
+        title: 'Admin',
+        type: 'header'
+      },
+      {
+        title: 'Element',
+        type: 'dropdown',
+        submenus: [
+          {
+            title: 'Liste des elements',
+            link: '/admin/elements'
+          }
+        ]
+      },
+      {
+        title: 'Filiere',
+        type: 'dropdown',
+        submenus: [
+          {
+            title: 'Liste des filieres',
+            link: '/admin/filieres',
+          },
+          {
+            title: 'Nouvelle filiere',
+            link: '/admin/filieres/create',
+          },
+        ]
 
-    },
-    {
-      title: 'Demandes',
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Demandes Relevés',
-          link: '/admin/demandeReleves'
-        },
-        {
-          title: 'Attestations',
-          link: '/admin/demandes'
-        }
-      ]
-    },
-    {
-      title: 'Rooms and Bookings',
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Bookings',
-          type: 'simple',
-          link: '/admin/bookings'
-        },
-        {
-          title: 'Rooms',
-          type: 'simple',
-          link: '/admin/rooms'
-        },
-        {
-          title: 'New Room',
-          type: 'simple',
-          link: '/admin/newRoom'
-        },
-      ]
-    },
-    {
-      title: 'Reclamations',
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Liste des réclamations',
-          type: 'simple',
-          link: 'admin/reclamations'
-        }
-      ]
-    }
+      },
+      {
+        title: 'Sessions',
+        type: 'dropdown',
+        submenus: [
+          {
+            title: 'Liste des sessions',
+            link: '/admin/sessions',
+          },
+          {
+            title: 'Nouvelle session',
+            link: '/admin/sessions/create',
+          },
+        ]
 
-  ]
-}
+      },
+      {
+        title: 'Demandes',
+        type: 'dropdown',
+        submenus: [
+          {
+            title: 'Demandes Relevés',
+            link: '/admin/demandeReleves'
+          },
+          {
+            title: 'Attestations',
+            link: '/admin/demandes'
+          }
+        ]
+      },
+      {
+        title: 'Rooms and Bookings',
+        type: 'dropdown',
+        submenus: [
+          {
+            title: 'Bookings',
+            type: 'simple',
+            link: '/admin/bookings'
+          },
+          {
+            title: 'New booking',
+            type: 'simple',
+            link: '/admin/newBooking'
+          },
+          {
+            title: 'Rooms',
+            type: 'simple',
+            link: '/admin/rooms'
+          },
+          {
+            title: 'New Room',
+            type: 'simple',
+            link: '/admin/newRoom'
+          },
+        ]
+      },
+      {
+        title: 'Reclamations',
+        type: 'dropdown',
+        submenus: [
+          {
+            title: 'Liste des réclamations',
+            type: 'simple',
+            link: 'admin/reclamations'
+          }
+        ]
+      }
+
+    ];
+  }
+
   unloggedMenus = [
     {
       title: 'general',
@@ -354,6 +366,11 @@ getAdminMenus(){
             title: 'Bookings',
             type: 'simple',
             link: '/admin/bookings'
+          },
+          {
+            title: 'New booking',
+            type: 'simple',
+            link: '/admin/newBooking'
           },
           {
             title: 'Rooms',

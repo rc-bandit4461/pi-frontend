@@ -1,7 +1,8 @@
 <div class="container">
   <h1><span>Edit</span> Booking</h1>
 
-  <form (ngSubmit)="onSubmit()" [formGroup]="bookingForm" name="myform">
+  <ng-container *ngIf="isLoaded">
+    <form (ngSubmit)="onSubmit()" [formGroup]="bookingForm" name="myform">
     <div>
       <label for="id">Id</label>
       <input
@@ -53,7 +54,6 @@
         <select
           class="form-control"
           id="room"
-          [(ngModel)]="booking.room.id"
           formControlName="roomId"
           required
           name="room"
@@ -105,4 +105,8 @@
       </div>
     </div>
   </form>
+  </ng-container>
+  <ng-container *ngIf="isError">
+    Une erreur a empeché le chergement de données.
+  </ng-container>
 </div>
