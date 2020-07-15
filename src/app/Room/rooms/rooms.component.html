@@ -2,22 +2,22 @@
   <div class="card">
     <div class="card-header">Rooms List</div>
     <div class="card-body">
-<!--      <form #f="ngForm">-->
-<!--        <div style="width: -10%;">-->
-<!--          <br/>-->
-<!--          <input-->
-<!--            type="text"-->
-<!--            placeholder="Chercher"-->
-<!--            class="form-control col-4"-->
-<!--            style="float: right;"-->
-<!--            name="keyword"-->
-<!--            [(ngModel)]="keyword"-->
-<!--          />-->
-<!--          <br/>-->
-<!--          <br/>-->
-<!--        </div>-->
-<!--        <br/>-->
-<!--      </form>-->
+      <!--      <form #f="ngForm">-->
+      <!--        <div style="width: -10%;">-->
+      <!--          <br/>-->
+      <!--          <input-->
+      <!--            type="text"-->
+      <!--            placeholder="Chercher"-->
+      <!--            class="form-control col-4"-->
+      <!--            style="float: right;"-->
+      <!--            name="keyword"-->
+      <!--            [(ngModel)]="keyword"-->
+      <!--          />-->
+      <!--          <br/>-->
+      <!--          <br/>-->
+      <!--        </div>-->
+      <!--        <br/>-->
+      <!--      </form>-->
 
       <table datatable *ngIf="rooms" class="table table-striped">
         <thead>
@@ -30,17 +30,14 @@
         </tr>
         </thead>
         <tbody>
-<!--        <tr *ngFor="let r of rooms | filter: keyword">-->
+        <!--        <tr *ngFor="let r of rooms | filter: keyword">-->
         <tr *ngFor="let r of rooms">
           <td>{{ r.name }}</td>
           <td>{{ r.location }}</td>
           <td>{{ r.seats }}</td>
           <td>
-            <a
-              *ngIf="!r.state.states"
-              class="badge badge-pill badge-danger"
-              style="color: rgb(255, 255, 255);"
-            >Problem</a
+            <a *ngIf="!r.state.states" class="badge badge-pill badge-danger"
+               style="color: rgb(255, 255, 255);">Problem</a
             ><a
             *ngIf="r.state.states"
             class="badge badge-pill badge-success"
@@ -49,93 +46,96 @@
           >
           </td>
           <td>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="open(mymodal)"
-            >
-              Details
-            </button>
-            <ng-template #mymodal let-modal>
-              <div class="modal-header">
-                <h4 class="modal-title" id="modal-basic-title">
-                  Room Informations
-                </h4>
-              </div>
-              <div class="row container">
-                <div class="col"><b>Id :</b></div>
-                <div class="col">{{ r.id }}</div>
-                <div class="w-100"></div>
-                <div class="col"><b>Name :</b></div>
-                <div class="col">{{ r.name }}</div>
-                <div class="w-100"></div>
-                <div class="col"><b>Location :</b></div>
-                <div class="col">{{ r.location }}</div>
-                <div class="w-100"></div>
-                <div class="col"><b>Seats :</b></div>
-                <div class="col">{{ r.seats }}</div>
-                <div class="w-100"></div>
-                <div class="col"><b>State :</b></div>
-                <div class="col">
-                  <a
-                    *ngIf="!r.state.states"
-                    class="badge badge-pill badge-danger"
-                    style="color: rgb(255, 255, 255);"
-                  >Problem</a
-                  ><a
-                  *ngIf="r.state.states"
-                  class="badge badge-pill badge-success"
-                  style="color: rgb(255, 255, 255);"
-                >Parfait</a
-                >
+            <div class="btn-group">
+
+              <button
+                type="button"
+                class="btn btn-primary m-0"
+                (click)="open(mymodal)"
+              >
+                Details
+              </button>
+              <ng-template #mymodal let-modal>
+                <div class="modal-header">
+                  <h4 class="modal-title" id="modal-basic-title">
+                    Room Informations
+                  </h4>
                 </div>
-                <div class="w-100"></div>
-                <div class="col"><b>Detail :</b></div>
-                <div class="col">{{ r.state.detail }}</div>
-                <div class="w-100"></div>
-                <br/><br/><br/>
-                <hr/>
-                <h5>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b
-                >This room contains:</b
-                >
-                </h5>
-                <div class="w-100"></div>
-                <div *ngFor="let ri of r.layoutCapacities">
+                <div class="row container">
+                  <div class="col"><b>Id :</b></div>
+                  <div class="col">{{ r.id }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><b>Name :</b></div>
+                  <div class="col">{{ r.name }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><b>Location :</b></div>
+                  <div class="col">{{ r.location }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><b>Seats :</b></div>
+                  <div class="col">{{ r.seats }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><b>State :</b></div>
                   <div class="col">
-                    <b>{{ ri.layout }}</b>
+                    <a
+                      *ngIf="!r.state.states"
+                      class="badge badge-pill badge-danger"
+                      style="color: rgb(255, 255, 255);"
+                    >Problem</a
+                    ><a
+                    *ngIf="r.state.states"
+                    class="badge badge-pill badge-success"
+                    style="color: rgb(255, 255, 255);"
+                  >Parfait</a
+                  >
                   </div>
-                  <div class="col">{{ ri.capacity }}</div>
-                  <div class="w-100 h-100"></div>
+                  <div class="w-100"></div>
+                  <div class="col"><b>Detail :</b></div>
+                  <div class="col">{{ r.state.detail }}</div>
+                  <div class="w-100"></div>
+                  <br/><br/><br/>
+                  <hr/>
+                  <h5>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b
+                  >This room contains:</b
+                  >
+                  </h5>
+                  <div class="w-100"></div>
+                  <div *ngFor="let ri of r.layoutCapacities">
+                    <div class="col">
+                      <b>{{ ri.layout }}</b>
+                    </div>
+                    <div class="col">{{ ri.capacity }}</div>
+                    <div class="w-100 h-100"></div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  (click)="modal.close('Save click')"
-                >
-                  Ok
-                </button>
-              </div>
-            </ng-template>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    (click)="modal.close('Save click')"
+                  >
+                    Ok
+                  </button>
+                </div>
+              </ng-template>
 
-            <button
-              class="btn btn-success"
-              [routerLink]="['/admin/editRoom', r.id]"
-              style="margin-left: 20px;"
-            >
-              Edit
-            </button>
-            <button
-              class="btn btn-danger"
-              style="margin-left: 10px;"
-              routerLink="/rooms"
-              (click)="onDeleteRoom(r.id)"
-            >
-              Delete
-            </button>
+              <button
+                class="btn btn-success m-0"
+                [routerLink]="['/admin/editRoom', r.id]"
+                style="margin-left: 20px;"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-danger m-0"
+                style="margin-left: 10px;"
+                routerLink="/rooms"
+                (click)="onDeleteRoom(r.id)"
+              >
+                Delete
+              </button>
+            </div>
           </td>
         </tr>
 

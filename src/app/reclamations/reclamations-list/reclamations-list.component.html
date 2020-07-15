@@ -41,10 +41,13 @@
                 'Denied':'Fixed')}}</td>
               <td>{{reclamation.libelle}}</td>
               <td>
-                <button class="btn btn-success mr-1 btn-sm" (click)="onResolve(reclamation)">Resolve</button>
-                <button class="btn btn-warning btn-sm mr-1" (click)="onDeny(reclamation)">Deny</button>
+                <div class="btn-group">
+
+                <button class="btn btn-success btn-sm" (click)="onResolve(reclamation)">Resolve</button>
+                <button class="btn btn-warning btn-sm " (click)="onDeny(reclamation)">Deny</button>
                 <button class="btn btn-danger btn-sm" (click)="onDelete(reclamation)">Delete</button>
                 <button class="btn btn-primary btn-sm" (click)="onDetails(reclamation)">Details</button>
+                </div>
               </td>
             </tr>
             </tbody>

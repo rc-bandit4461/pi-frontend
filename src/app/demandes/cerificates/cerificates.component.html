@@ -42,9 +42,12 @@
               <td>{{demande.libelle}}</td>
               <td>{{demande.createdAt | date}}</td>
               <td>
-                <button class="btn btn-primary btn-sm" (click)="onResolve(demande)">Resolve</button>
-                <button class="btn btn-warning btn-sm" (click)="onDeny(demande)">Deny</button>
-                <button class="btn btn-danger btn-sm" (click)="onDelete(demande)">Delete</button>
+                <div class="btn-group">
+
+                  <button class="btn btn-primary btn-sm" (click)="onResolve(demande)">Resolve</button>
+                  <button class="btn btn-warning btn-sm" (click)="onDeny(demande)">Deny</button>
+                  <button class="btn btn-danger btn-sm" (click)="onDelete(demande)">Delete</button>
+                </div>
               </td>
             </tr>
             </tbody>

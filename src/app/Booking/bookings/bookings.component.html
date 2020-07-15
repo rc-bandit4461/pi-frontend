@@ -69,19 +69,22 @@
           </p> -->
         </div>
         <div class="col-6">
+          <div class="btn-group">
+
           <button
-            class="btn btn-warning"
+            class="btn btn-warning m-0"
             [routerLink]="['/admin/editBooking', b.id]"
           >
             Edit
           </button>
           <button
-            class="btn btn-danger"
+            class="btn btn-danger m-0"
             style="margin-left: 10px;"
             (click)="onDeleteBoonking(b.id)"
           >
             Cancel
           </button>
+          </div>
         </div>
       </div>
     </div>

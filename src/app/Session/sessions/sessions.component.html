@@ -21,15 +21,21 @@
           <td><a [routerLink]="'/admin/sessions/' + session.id + '/actions'">{{session.id}}</a></td>
           <td>{{session.filiere['libelle']}}</td>
           <td>{{session.annee}}</td>
-          <td>{{session['is_done']? 'Terminée':'En cours'}}</td>
+          <td>{{session['is_done'] ? 'Terminée' : 'En cours'}}</td>
           <td>{{session.createdAt| date:'medium'}}</td>
           <td>{{session.updatedAt | date:'medium'}}</td>
           <td>
-            <button class="btn btn-danger mr-1" (click)="onDeleteSession(session)">delete</button>
-            <button [routerLink]="'/admin/sessions/' + session.id + '/edit'"
-              class="btn btn-info mr-1">Edit
-            </button>
-            <a [routerLink]="'/admin/sessions/' + session.id + '/actions'" class="btn btn-primary mr-1">Actions</a></td>
+            <div class="btn-group">
+
+              <button class="btn btn-danger" (click)="onDeleteSession(session)"><i class="fa fa-fw fa-trash"
+                                                                                        aria-hidden="true"></i>
+              </button>
+              <button [routerLink]="'/admin/sessions/' + session.id + '/edit'"
+                      class="btn btn-info"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i>
+              </button>
+              <a [routerLink]="'/admin/sessions/' + session.id + '/actions'" class="btn btn-primary">Actions</a>
+            </div>
+          </td>
         </tr>
         </tbody>
         <tbody>

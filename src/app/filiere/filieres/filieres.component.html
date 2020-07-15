@@ -36,9 +36,13 @@
           <td>{{filiere.createdAt | date:'medium'}}</td>
           <td>{{filiere.updatedAt | date:'medium'}}</td>
           <td>
-            <button class="btn btn-danger float-left p-1 mr-1" (click)="onDelete(filiere)">del</button>
-            <button class="btn btn-warning btn-sm float-left p-1" (click)="onEdit(filiere)">Edit</button>
-
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(filiere)"><i
+                  class="fa fa-fw fa-trash"
+                                                                                              aria-hidden="true"></i></button>
+                 <button type="button" class="btn btn-warning btn-sm" (click)="onEdit(filiere)"><i
+                   class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i></button>
+            </div>
           </td>
         </tr>
         </tbody>

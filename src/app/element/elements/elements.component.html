@@ -35,8 +35,13 @@
           <td>{{element.id}}</td>
           <td>{{element.libelle}}</td>
           <td>
-            <button class="btn btn-danger" (click)="onDelete(element)">Supprimer</button>
-            <button class="btn btn-info" (click)="onModify(element)">Modifier</button>
+            <div class="btn-group">
+
+              <button class="btn btn-info"
+                      (click)="onDelete(element)"><i class="fa fa-fw fa-trash" aria-hidden="true"></i></button>
+              <button class="btn btn-danger" (click)="onModify(element)"><i
+                class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i></button>
+            </div>
           </td>
         </tr>
         </tbody>
