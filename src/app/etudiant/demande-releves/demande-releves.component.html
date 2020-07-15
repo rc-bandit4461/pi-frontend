@@ -17,13 +17,16 @@
         <div class="float-left">
           <span class="font-weight-bold mr-1">
             {{demande.semestreEtudiant.session.filiere.libelle}}{{demande.semestreEtudiant.session.annee}}
-          -S{{demande.semestreEtudiant.numero}} </span>
+            -S{{demande.semestreEtudiant.numero}} </span>
           <span>{{demande.updatedAt | date:'medium'}} </span>
 
         </div>
         <div class="float-right">
-                <button class="btn btn-success"
-                        (click)="onClearRequest(demande)">{{!demande.seen ? 'Clear':'Cleared'}}</button>
+          <button class="btn"
+                  (click)="onClearRequest(demande)"
+                  [ngClass]="{'btn-success':!demande.rejected,'btn-warning':demande.rejected}">{{!demande.seen ?
+            'Clear' : 'Cleared'}}</button>
+
         </div>
 
       </div>
@@ -31,12 +34,12 @@
    <span *ngIf="demande.done && !demande.rejected">Vote demande de relevé  de note pour le semestre
      {{demande.semestreEtudiant.numero}} de
      {{demande.semestreEtudiant.session.filiere.libelle}} {{demande.semestreEtudiant.session.annee}} est
-                  pret a etre retiré.
+                  <span class="text-success">prete a etre retiré.</span>
                 </span>
         <span *ngIf="demande.rejected">Vote demande de relevé  de note pour le semestre
           {{demande.semestreEtudiant.numero}} de
           {{demande.semestreEtudiant.session.filiere.libelle}} {{demande.semestreEtudiant.session.annee}} a
-                été rejeté.
+                <span class="text-warning">été rejeté.</span>
                 </span>
       </div>
     </div>

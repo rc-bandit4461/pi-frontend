@@ -19,13 +19,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.isStudent) {
+    if (this.authService.isStudent && this.authService.isLoggedIn()) {
       this.etudiantService.initData();
     }
-    if(!this.authService.isAdmin){
+    if(!this.authService.isAdmin && this.authService.isLoggedIn()){
       this.userService.initData();
     }
     this.sidebarservice.setMenuByUser();
+    // this.initData();
   }
   async initData(){
     if (this.authService.isStudent) {

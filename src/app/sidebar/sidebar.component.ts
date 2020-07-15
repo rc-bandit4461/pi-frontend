@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sidebarservice.setMenuByUser();
+    // this.sidebarservice.setMenuByUser();
     this.menus = this.sidebarservice.getMenuList();
   }
 

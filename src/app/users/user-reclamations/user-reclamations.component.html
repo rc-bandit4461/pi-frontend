@@ -80,7 +80,7 @@
                 Feedback<span class="float-right">:</span>
               </div>
               <div class="col-9">
-                <span *ngIf="!demande.feedback">
+                <span *ngIf="demande.feedback">
                       {{demande.feedback}}
                 </span>
                 <span *ngIf="demande.feedback == undefined || demande.feedback == null || demande.feedback == ''">

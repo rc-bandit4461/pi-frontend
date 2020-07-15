@@ -26,8 +26,10 @@
 
         </div>
         <div class="float-right">
-                <button class="btn btn-success"
-                        (click)="onClearRequest(demande)">{{!demande.seen ? 'Clear':'Cleared'}}</button>
+                <button class="btn"
+                        (click)="onClearRequest(demande)"
+                        [ngClass]="{'btn-success':!demande.rejected,'btn-warning':demande.rejected}">{{!demande.seen ?
+                  'Clear':'Cleared'}}</button>
         </div>
 
       </div>
@@ -35,12 +37,14 @@
    <span *ngIf="demande.done && demande.rejected">
      Votre demande d'attestation de {{demande.type == 'scolarite' ?
      'Scolarité' : 'Réussite'}} pour la session {{demande.session.filiere.libelle + ' ' + demande.session.annee}} a été
-     rejetée.
+     <span class="text-danger">rejetée.</span>.
    </span>
         <span *ngIf="!demande.rejected">
           Votre demande d'attestation de {{demande.type == 'scolarite' ?
           'Scolarité' : 'Réussite'}} pour la session
-          {{demande.session.filiere.libelle + ' ' + demande.session.annee}} est pret à être retirée.
+          {{demande.session.filiere.libelle + ' ' + demande.session.annee}} est <span
+          class="text-success">prete à être
+          retirée</span>.
         </span>
       </div>
     </div>

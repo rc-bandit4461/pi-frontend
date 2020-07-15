@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   password: string = '';
   isFalseCredentials: boolean = false;
 
-  constructor(public sidebarService:SidebarService,public authService: AuthService, public router: Router, public common: CommonService, public httpClient: HttpClient) {
+  constructor(public sidebarService: SidebarService, public authService: AuthService, public router: Router, public common: CommonService, public httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -34,9 +34,13 @@ export class LoginComponent implements OnInit {
       'userName': this.username,
       'password': this.password
     }).then(value1 => {
-      if(!value1){
-        this.sidebarService.setMenuByUser();
+      this.sidebarService.setMenuByUser();
+      if (!value1) {
+        location.reload();
+        this.router.navigateByUrl('/');
       }
+
+
       this.isFalseCredentials = value1;
     });
 

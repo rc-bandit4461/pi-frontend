@@ -83,8 +83,6 @@ export class AuthService {
           auth: true
         };
         localStorage.setItem('user', JSON.stringify(userData));
-        this.router.navigateByUrl('/');
-
         return false;
       }
 

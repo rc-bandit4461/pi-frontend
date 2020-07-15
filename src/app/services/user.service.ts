@@ -15,6 +15,7 @@ export class UserService implements OnInit{
   }
     public async initData() {
     try {
+      if(this.authService.isLoggedIn())
       this.reclamationsCount = await this.httpClient.get<number>(this.common.url + '/reclamations/search/countNotSeen?idUser=' + this.authService.user.id).toPromise();
 
     } catch (e) {

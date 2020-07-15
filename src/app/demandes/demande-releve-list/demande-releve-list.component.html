@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container-fluid mt-4">
   <div class="row">
     <div class="col-md-10 offset-md-1 col-12">
 
@@ -40,15 +40,19 @@
               <td>{{demande.semestreEtudiant.session.filiere.libelle}}</td>
               <td>{{demande.semestreEtudiant['numero']}}</td>
               <td class="font-weight-bold"
-                  [ngClass]="{'text-danger':demande.deleted,'text-warning': !demande.deleted&&
-                demande.rejected,'text-success':!demande.rejected && !demande.deleted}">{{ demande.deleted ? 'deleted'
-                : (demande.done ? (demande.rejected ? 'Denied' : 'Resolved') : 'not Processed')}}</td>
+                  [ngClass]="{'text-danger':demande.deleted && demande.done,'text-warning': !demande.deleted&&
+                demande.rejected && demande.done,'text-success':!demande.rejected && demande.done &&
+                 !demande.deleted}">{{
+                demande.done ? (demande.deleted ? 'deleted' : (demande.rejected ?
+                  'Denied' : 'Fixed')) : 'Not processed'
+                }}</td>
 
               <td>
+
                 <div class="btn-group">
 
-                  <button class="btn btn-success mr-1 btn-sm" (click)="onResolve(demande)">Resolve</button>
-                  <button class="btn btn-warning btn-sm mr-1" (click)="onDeny(demande)">Deny</button>
+                  <button class="btn btn-success btn-sm" (click)="onResolve(demande)">Resolve</button>
+                  <button class="btn btn-warning btn-sm" (click)="onDeny(demande)">Deny</button>
                   <button class="btn btn-danger btn-sm" (click)="onDelete(demande)">Delete</button>
                 </div>
               </td>
