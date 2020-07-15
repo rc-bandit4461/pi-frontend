@@ -288,7 +288,7 @@ export class SemestreComponent implements AfterViewInit, OnDestroy, OnInit {
         console.log(entries);
 
         let data = await this.attestationService.generateDocument({'entries': entries}, fileReader.result,"Releve_" + this.session.filiere.libelle + "_" + this.session
-          .annee + "_" + this.sessionSemestre.numero);
+          .annee + "_S" + this.sessionSemestre.numero);
       };
     } catch (e) {
       console.log(e);
