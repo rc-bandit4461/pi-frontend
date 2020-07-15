@@ -15,7 +15,7 @@ export class ElementsComponent implements OnInit {
   public elementsList: Element[] = [];
   public currentElement: Element = new Element(null);
   public newElement: Element = new Element(null);
-  public pageSize: number = 3;
+  public pageSize: number = 6 ;
   public currentPage: number = 0;
   public pagesArray: number[] = [];
   public isAdd: boolean = false;

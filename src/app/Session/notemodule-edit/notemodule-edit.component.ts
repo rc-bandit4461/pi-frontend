@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Element, Etudiant, EtudiantSession, Filiere, Module, NoteElementModule, NoteModule, Session} from '../../entities/entities';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {$e} from 'codelyzer/angular/styles/chars';
+import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 
@@ -23,7 +24,7 @@ export class NotemoduleEditComponent implements OnInit {
   selectAll: boolean = false;
   public dtOptions: any;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
+  constructor(private toastr:ToastrService,private httpClient: HttpClient, private common: CommonService, private activatedRoute: ActivatedRoute) {
 
   }
 
@@ -118,6 +119,7 @@ export class NotemoduleEditComponent implements OnInit {
   }
 
   onClickSubmit() {
+
     let toUpdateNoteElementModules = [];
     let updatedNoteElementModules = [];
     if (!this.verifyConsistency()) {

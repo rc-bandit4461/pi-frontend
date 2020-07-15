@@ -37,21 +37,43 @@
           <td>
             <div class="btn-group">
 
-              <button class="btn btn-info"
+              <button class="btn btn-danger"
                       (click)="onDelete(element)"><i class="fa fa-fw fa-trash" aria-hidden="true"></i></button>
-              <button class="btn btn-danger" (click)="onModify(element)"><i
+              <button class="btn btn-info" (click)="onModify(element)"><i
                 class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i></button>
             </div>
           </td>
         </tr>
         </tbody>
       </table>
-      <ul *ngIf="pagesArray.length>0; " class="nav nav-pills">
-        <li *ngFor="let p of pagesArray" class="nav-item mr-1 ">
-          <a (click)="onPageClick(p)" class="nav-link btn" [ngClass]="p == currentPage ? ' disabled active':''"
-          >{{p + 1}}</a>
-        </li>
-      </ul>
+      <div *ngIf="pagesArray.length>1; " class="btn-group">
+        <button class="btn btn-light" (click)="onPageClick(0)">
+          First</button>
+        <ng-container *ngIf="currentPage >= 2">
+          <button [ngClass]="{'active':currentPage == 1}" class="btn btn-light" (click)="onPageClick(currentPage-2)">{{currentPage - 1}}</button>
+          <button  [ngClass]="{'active':currentPage == 1}" class="btn btn-light" (click)="onPageClick(currentPage-1)">{{currentPage}}</button>
+          <button  [ngClass]="{'active':currentPage == 1}" class="btn btn-light" (click)="onPageClick(currentPage)">{{currentPage + 1}}</button>
+          <button [ngClass]="{'active':currentPage == 1}" class="btn btn-light" *ngIf="currentPage+ 1 < pagesArray.length"
+                  (click)="onPageClick(currentPage+1)">{{currentPage + 2}}</button>
+          <button [ngClass]="{'active':currentPage == 1}"  class="btn btn-light" *ngIf="currentPage+ 2 < pagesArray.length"
+                  (click)="onPageClick(currentPage+1)">{{currentPage + 3}}</button>
+        </ng-container>
+        <ng-container *ngIf="currentPage < 2">
+          <button *ngIf="currentPage < pagesArray.length" class="btn btn-light" (click)="onPageClick(currentPage)"
+                  [ngClass]="{'active':currentPage == 0}">{{currentPage+1}}</button>
+           <button *ngIf="currentPage+1 < pagesArray.length" class="btn btn-light" (click)="onPageClick(currentPage+1)"
+                  [ngClass]="{'active':currentPage == 1}">{{currentPage+2}}</button>
+           <button *ngIf="currentPage+2 < pagesArray.length" class="btn btn-light" (click)="onPageClick(currentPage+2)"
+                  [ngClass]="{'active':currentPage == 2}">{{currentPage+3}}</button>
+           <button *ngIf="currentPage+3 < pagesArray.length" class="btn btn-light" (click)="onPageClick(currentPage+3)"
+                  [ngClass]="{'active':currentPage == 3}">{{currentPage+4}}</button>
+<!--          <button *ngFor="let p of pagesArray" class="btn btn-light">-->
+<!--            <a (click)="onPageClick(p)" [ngClass]="p == currentPage ? ' disabled active':''"-->
+<!--            >{{p + 1}}</a>-->
+        </ng-container>
+        <button class="btn btn-light"
+                (click)="onPageClick(pagesArray[pagesArray.length - 1])">Last</button>
+      </div>
     </div>
     <div class="card-body" *ngIf="elementsList.length == 0">
       La liste est vide.
