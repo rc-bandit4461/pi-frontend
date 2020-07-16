@@ -23,7 +23,10 @@ import {UserService} from '../services/user.service';
 })
 export class SidebarComponent implements OnInit {
   menus = [];
-
+  isToggled = false;
+  animationState = [];
+  subTitle;
+  crumb = [];
   constructor(public userService: UserService, public common: CommonService, public sidebarservice: SidebarService, public authService: AuthService, public etudiantService: EtudiantServiceService) {
 
   }
@@ -60,7 +63,10 @@ export class SidebarComponent implements OnInit {
       return 'up';
     }
   }
-
+ toggleShowDiv(index) {
+    this.animationState[index] = this.animationState[index] === 'out' ? 'in' : 'out';
+    return false;
+  }
   hasBackgroundImage() {
     return this.sidebarservice.hasBackgroundImage;
   }

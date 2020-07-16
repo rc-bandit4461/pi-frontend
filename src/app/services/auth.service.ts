@@ -18,11 +18,14 @@ export class AuthService {
   public isAdmin = false;
   public isProf = false;
   public isStudent = false;
-
+  isToggled = false;
   isLoggedIn(): boolean {
     return this.loggedIn.getValue();
   }
 
+  getCurrentUser(){
+    return this.user;
+  }
   setUserRole() {
     if (this.user.role == User.ROLE_STUDENT) {
       this.isStudent = true;
@@ -58,6 +61,7 @@ export class AuthService {
       this.setUserRole();
       this.server.setLoggedIn(true, this.token);
       this.loggedIn.next(true);
+
     }
   }
 

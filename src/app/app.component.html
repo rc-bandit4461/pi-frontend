@@ -1,33 +1,444 @@
-<div class="page-wrapper" [ngClass]="{'toggled' : getSideBarState()}">
-  <app-sidebar></app-sidebar>
-  <main class="page-content">
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark w-100">
+<div class="page-wrapper chiller-theme" [ngClass]="common.isToggled?'toggled':''">
+  <nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+      <div class="sidebar-brand">
+        <a href="http://localhost:4300/home">E-School</a>
+        <img src="./assets/logo.png" width="50" alt="logo">
+      </div>
+      <div class="sidebar-header">
+        <div class="user-pic">
+          <img class="img-responsive img-rounded"
+               src="./assets/{{authService.isLoggedIn()?authService.getCurrentUser().sexe:'female'}}.jpg"
+               alt="User picture">
+        </div>
+        <div class="user-info">
+          <span class="user-name">{{authService.isLoggedIn() ? authService.getCurrentUser().prenom : ''}}
+            <strong>{{authService.isLoggedIn() ? authService.getCurrentUser().nom : ''}}</strong>
+          </span>
+          <span
+            class="user-role">{{(authService.isLoggedIn() ? (authService.isAdmin ? "Administrateur" : "Utilisateur") : "Utilisateur")}}</span>
+        </div>
+      </div>
+      <div class="sidebar-menu">
+        <ul>
+          <li class="header-menu">
+            <span>Générale</span>
+          </li>
+          <li class="sidebar-dropdown" [ngClass]="animationState[0]=='in'?'active':''">
+            <a href="/" (click)="toggleShowDiv(0)">
+              <i class="fa fa-tachometer-alt"></i>
+              <span>Tableaux de bord</span>
+              <!--<span class="badge badge-pill badge-warning">New</span>-->
+            </a>
+            <div class="sidebar-submenu" [@slideInOut]="animationState[0]">
+              <ul>
+                <li>
+                  <a href="http://localhost:4300/dashboard">Dashboard</a>
+                </li>
+                <li>
+                  <a href="http://localhost:4300/structure">Structure</a>
+                </li>
+                <li>
+                  <a href="http://localhost:4300/clubs">Clubs</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="sidebar-dropdown" [ngClass]="animationState[1]=='in'?'active':''">
+            <a href="#" (click)="toggleShowDiv(1)">
+              <i class="fa fa-cogs"></i>
+              <span>Paramètres</span>
+              <!--<span class="badge badge-pill badge-danger">3</span>-->
+            </a>
+            <div class="sidebar-submenu" [@slideInOut]="animationState[1]">
+              <ul>
+                <li>
+                  <a href="http://localhost:4300/admin/professors"
+                     *ngIf="authService.isLoggedIn() && authService.isAdmin ">Professeurs
+                  </a>
+                </li>
+                <li>
+                  <a href="http://localhost:4300/admin/students"
+                     *ngIf="authService.isLoggedIn() && authService.isAdmin ">Etudiants
+                  </a>
+                </li>
+                <li>
+                  <a href="http://localhost:4300/admin/clubs" *ngIf="authService.isLoggedIn() && authService.isAdmin ">
+                    Clubs</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li  class="sidebar-dropdown d-none" [ngClass]="animationState[2]=='in'?'active':''">
+            <a href="#" (click)="toggleShowDiv(2)">
+              <i class="far fa-calendar-alt"></i>
+              <span>Résérvation</span>
+            </a>
+            <div class="sidebar-submenu" [@slideInOut]="animationState[2]">
+              <ul>
+                <li>
+                  <a href="http://localhost:4300/classroom">Salles</a>
+                </li>
+                <li>
+                  <a href="http://localhost:4300/classroomTP">Salles TP</a>
+                </li>
+                <li>
+                  <a href="http://localhost:4300/amphi">Emphi</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <ng-container *ngIf="authService.isLoggedIn() && authService.isAdmin">
 
-      <!-- Brand -->
-      <a class="navbar-brand" href="#">
-        <img src="assets/enset-logo-monochrome.png" alt="enset-logo-monochrome" width="100" height="auto" alt="">
-      </a>
-      <!-- Links -->
-      <ul class="navbar-nav w-100">
-        <li class="nav-item">
-          <a href="#" class="btn btn-outline-secondary mr-1 mb-1" (click)="toggleSidebar($event)">Toggle Sidebar</a>
-        </li>
-      </ul>
-    </nav>
+            <li class="sidebar-dropdown" [ngClass]="animationState[3]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(3)">
+                <i class="fas fa-file-contract"></i>
+                <span>Elements</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[3]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/elements">Liste des elements</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[4]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(4)">
+                <i class="fas fa-file-contract"></i>
+                <span>Filiere</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[4]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/filieres">Liste des filieres</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/filieres/create">Nouvelle filiere</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[5]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(5)">
+                <i class="fas fa-file-contract"></i>
+                <span>Filiere</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[5]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/sessions">Liste des sessions</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/sessions/create">Nouvelle session</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[6]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(6)">
+                <i class="fas fa-file-contract"></i>
+                <span>Demandes</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[6]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/demandeReleves">Demandes de relevés</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/demandes">Attestations</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[7]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(7)">
+                <i class="fas fa-file-contract"></i>
+                <span>Rooms and Bookings</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[7]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/bookings">Bookings</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/newBooking">New booking</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/rooms">Rooms</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/newRoom">New Room</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[8]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(8)">
+                <i class="fas fa-file-contract"></i>
+                <span>Réclamations</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[8]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/reclamations">Liste des Réclamations</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/reclamAttestations">Réclamations des attestations</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="authService.isLoggedIn() && authService.isStudent">
+            <li class="sidebar-dropdown" [ngClass]="animationState[3]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(3)">
+                <i class="fas fa-file-contract"></i>
+                <span>Sessions</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[3]">
+                <ul>
+                  <li>
+                    <a routerLink="/etudiant/sessions">Mes sessions</a>
+                  </li>
+                  <li>
+                    <a routerLink="/etudiant/attestation">Attestation de Scolarité</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[4]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(4)">
+                <i class="fas fa-file-contract"></i>
+                <span>Mes demandes <span *ngIf="etudiantService.demandeAttestationCount +
+                etudiantService.demandeReleveCount > 0"
+                      >{{ etudiantService.demandeAttestationCount + etudiantService.demandeReleveCount}}</span></span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[4]">
+                <ul>
+                  <li>
+                    <a (click)="etudiantService.showAttestationModal = !etudiantService.showAttestationModal">Attestations
+                      <span class="badge badge-pill badge-success" *ngIf="etudiantService.demandeAttestationCount > 0"
+                      >{{ etudiantService.demandeAttestationCount}}</span></a>
+                  </li>
+                  <li>
+                    <a (click)="etudiantService.showRelevesModal = !etudiantService.showRelevesModal"
+                    >Relevés
+                      <span *ngIf="etudiantService.demandeReleveCount > 0"
+                            class="badge badge-pill badge-success">{{etudiantService.demandeReleveCount}} </span></a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+                  <li class="sidebar-dropdown" [ngClass]="animationState[5]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(5)">
+                <i class="fas fa-file-contract"></i>
+                <span>Rooms and Bookings</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[5]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/bookings">Bookings</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/newBooking">New booking</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/rooms">Rooms</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[6]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(6)">
+                <i class="fas fa-file-contract"></i>
+                <span>Réclamations</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[6]">
+                <ul>
+                    <li>
+                    <a (click)="userService.showUserReclmationModal = !userService.showUserReclmationModal">Mes
+                      réclamations
+                      <span class="badge badge-pill badge-success" *ngIf="userService.reclamationsCount > 0"
+                      >{{ userService.reclamationsCount}}</span></a>
+                  </li>
+                   <li>
+                    <a href="#" (click)="common.showReclamationModal($event)">
+                      Réclamer
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="authService.isLoggedIn() && authService.isProf">
+             <li class="sidebar-dropdown" [ngClass]="animationState[3]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(3)">
+                <i class="fas fa-file-contract"></i>
+                <span>Rooms and Bookings</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[3]">
+                <ul>
+                  <li>
+                    <a routerLink="/admin/bookings">Bookings</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/newBooking">New booking</a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin/rooms">Rooms</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown" [ngClass]="animationState[4]=='in'?'active':''">
+              <a href="#" (click)="toggleShowDiv(4)">
+                <i class="fas fa-file-contract"></i>
+                <span>Réclamations</span>
+              </a>
+              <div class="sidebar-submenu" [@slideInOut]="animationState[4]">
+                <ul>
+                    <li>
+                    <a (click)="userService.showUserReclmationModal = !userService.showUserReclmationModal">Mes
+                      réclamations
+                      <span class="badge badge-pill badge-success" *ngIf="userService.reclamationsCount > 0"
+                      >{{ userService.reclamationsCount}}</span></a>
+                  </li>
+                   <li>
+                    <a href="#" (click)="common.showReclamationModal($event)">
+                      Réclamer
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ng-container>
 
-    <div class="container-fluid p-3">
-
-
-      <router-outlet></router-outlet>
-
+          <!--
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="far fa-gem"></i>
+              <span>Components</span>
+            </a>
+            <div class="sidebar-submenu">
+              <ul>
+                <li>
+                  <a href="#">General</a>
+                </li>
+                <li>
+                  <a href="#">Panels</a>
+                </li>
+                <li>
+                  <a href="#">Tables</a>
+                </li>
+                <li>
+                  <a href="#">Icons</a>
+                </li>
+                <li>
+                  <a href="#">Forms</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-chart-line"></i>
+              <span>Charts</span>
+            </a>
+            <div class="sidebar-submenu">
+              <ul>
+                <li>
+                  <a href="#">Pie chart</a>
+                </li>
+                <li>
+                  <a href="#">Line chart</a>
+                </li>
+                <li>
+                  <a href="#">Bar chart</a>
+                </li>
+                <li>
+                  <a href="#">Histogram</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-globe"></i>
+              <span>Maps</span>
+            </a>
+            <div class="sidebar-submenu">
+              <ul>
+                <li>
+                  <a href="#">Google maps</a>
+                </li>
+                <li>
+                  <a href="#">Open street map</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          -->
+          <li class="header-menu">
+            <span>Extra</span>
+          </li>
+          <li>
+            <a href="#" onclick="return false;">
+              <i class="fa fa-book"></i>
+              <span>Documentation</span>
+              <!--<span class="badge badge-pill badge-primary">Beta</span>-->
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="return false;">
+              <i class="fa fa-calendar"></i>
+              <span>Calendrier</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-folder"></i>
+              <span>Exemples</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <img src="assets/enset-logo-monochrome.png" alt="enset-logo-monochrome"
-         style="max-width: 200px;max-height: 50px;position:absolute;bottom: 0;left:50%;z-index: -5;
-     opacity: 0.1;transform:
-     translate(-50%,0)">
-  </main>
+    <div class="sidebar-footer">
+      <a href="#">
+        <i class="fa fa-bell"></i>
+        <span class="badge badge-pill badge-warning notification">3</span>
+      </a>
+      <a href="#">
+        <i class="fa fa-envelope"></i>
+        <span class="badge badge-pill badge-success notification">7</span>
+      </a>
+      <a href="#">
+        <i class="fa fa-cog"></i>
+        <span class="badge-sonar"></span>
+      </a>
+      <a (click)="logout()">
+        <i class="fa fa-power-off"></i>
+      </a>
+    </div>
+  </nav>
+  <main class="page-content">
+    <div class="container-fluid">
+      <nav *ngIf="!authService.isLoggedIn()" class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="http://localhost:4300/login">
+          <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          E-School
+        </a>
+      </nav>
+      <nav *ngIf="authService.isLoggedIn()" class="navbar navbar-dark bg-dark">
+        <div class="btn btn-dark" (click)="common.isToggled=!common.isToggled"><i class="fas fa-bars"></i></div>
+        <h3 class="m-auto" style="color:white;">{{this.subTitle}}</h3>
+      </nav>
+      <router-outlet>
 
-  <!-- <a href="https://github.com/azouaoui-med/angular-pro-sidebar"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a> -->
+      </router-outlet>
+    </div>
+  </main>
 </div>
 
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">

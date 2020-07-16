@@ -34,9 +34,10 @@ export class LoginComponent implements OnInit {
       'userName': this.username,
       'password': this.password
     }).then(value1 => {
-      this.sidebarService.setMenuByUser();
+      // this.sidebarService.setMenuByUser();
       if (!value1) {
-        location.reload();
+        this.common.isToggled = true;
+        // location.reload();
         this.router.navigateByUrl('/');
       }
 

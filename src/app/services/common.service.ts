@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class CommonService {
   public url: string = 'http://localhost:8080';
+  public isToggled = true;
   public messages = {
     error: {
       title:'Erreur',
